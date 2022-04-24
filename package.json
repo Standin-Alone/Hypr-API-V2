@@ -1,0 +1,43 @@
+{
+  "name": "hypr-api-v2",
+  "version": "1.0.0",
+  "description": "Hypr API V2 ",
+  "main": "app.js",
+  "watch": {
+    "build": "modules/**/*.js,routes/**/*.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon ./bin/www",
+    "start": "node app.js"
+  },
+  "author": "Zenarosa and Duterte",
+  "license": "ISC",
+  "dependencies": {
+    "@forkjs/group-router": "^1.0.5",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.7",
+    "express": "^4.17.3",
+    "express-fileupload": "^1.3.1",
+    "express-session": "^1.17.2",
+    "fs": "^0.0.1-security",
+    "helmet-crossdomain": "^0.5.0",
+    "http-errors": "^2.0.0",
+    "https": "^1.0.0",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^6.3.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.0",
+    "nodemailer": "^6.7.3",
+    "nodemon": "^2.0.15",
+    "path": "^0.12.7",
+    "paypal-rest-sdk": "^1.8.1",
+    "validator": "^13.7.0",
+    "watch": "^1.0.2"
+  }
+}
