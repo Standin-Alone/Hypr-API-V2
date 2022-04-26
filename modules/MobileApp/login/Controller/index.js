@@ -216,17 +216,24 @@ methods.getSignIn = async (req,res)=>{
         if(checkUserIfExists){
 
             let decryptPassword = await bcrypt.compare(password, checkUserIfExists.password);
-
-            if(decryptPassword){
-                res.send({
-                    status:'success',
-                    message:'Successfully logged in.',                
-                })
+            
+            if(checkUserIfExists.verified_date){                
+                if(decryptPassword){
+                    res.send({
+                        status:'success',
+                        message:'Successfully logged in.',                
+                    })
+                }else{
+                    res.send({
+                        status:'error',
+                        message:'Incorrect email or password.',                
+                    })
+                }
             }else{
                 res.send({
                     status:'error',
-                    message:'Incorrect email or password.',                
-                })
+                    message:'Please check your email to verify your account.',                
+                })    
             }
         }else{
             res.send({
