@@ -294,10 +294,56 @@ methods.getSignIn = async (req,res)=>{
                     })
                 }
             }else{
-                res.send({
-                    status:false,
-                    message:'Please check your email to verify your account.',                
-                })    
+
+                let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${checkUserIfExists._id}`;
+                let fullName =  `${checkUserIfExists.first_name} ${checkUserIfExists.last_name}`;            
+
+                // email payload
+                let emailPayload = {
+                                    name:fullName,
+                                    toemail:checkUserIfExists.email,                                        
+                                    url:verficationLink
+                                 };
+
+                // SEND VERIFICATION EMAIL
+                ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                    // co
+                    // ready for email otp
+                    var mailOptions = {
+                        from: "Hypr", // sender address
+                        to: checkUserIfExists.email,                                        
+                        subject: 'Hypr Verification  Email',
+                        html:      data,
+                        attachments: [{
+                            filename: 'otp.jpeg',
+                            path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                            cid: 'otp' //same cid value as in the html img src
+                        },{
+                            filename: 'hypr-logo.png',
+                            path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                            cid: 'logo' //same cid value as in the html img src
+                        }]
+                    }
+                    transporter.sendMail(mailOptions, function (mailError, info) {
+                        if (mailError) {
+                            console.log('Error: ' + mailError);
+                            console.warn('Email not sent');
+                            res.json({
+                                status: false,
+                                msg: 'Email not sent',
+                                code: 'E110'
+                            });
+                        } else {
+                           // success create
+                           res.send({
+                            status:false,
+                            message:'Please check your email to verify your account.',                
+                            })    
+                        }
+                    });
+                 });      
+
+               
             }
         }else{
             res.send({
