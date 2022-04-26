@@ -5,7 +5,71 @@ const e = require("express");
 
 const methods = {};
 
+const sendOtp = (userId,res)=>{
+    
+    let generateOtp =   Math.random().toFixed(4).substr(`-4`);
+    // initialize update options
+    let updateOptions = {
+        otp: generateOtp
+    }
 
+
+    // UPDATE TABLE
+    UsersSchema.findByIdAndUpdate(userId.toString(),updateOptions,(updateError, updateResult)=>{
+        if(updateError){
+            console.warn(updateError);
+            // error on update
+            res.send({
+                status:false,
+                message:'Something went wrong',
+                error:updateError
+            })
+
+        }else{                  
+            
+            let otpEmailPayload = {
+                name:`${updateResult.first_name} ${updateResult.last_name}`,
+                toEmail:updateResult.email,
+                otp:generateOtp
+            }
+
+            ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
+                let mailOptions = {
+                                    from: "Hypr", // sender address
+                                    to: otpEmailPayload.toEmail,                                        
+                                    subject: 'Hypr One Time Password',
+                                    html:      data,
+                                    attachments: [{
+                                    filename: 'otp.jpeg',
+                                    path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                    cid: 'otp' //same cid value as in the html img src
+                                },{
+                                    filename: 'hypr-logo.png',
+                                    path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                    cid: 'logo' //same cid value as in the html img src
+                                }]
+                                }
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {                    
+                        res.send({
+                            status:false,
+                            message:'Error sent.',                
+                        })
+                    } else {
+                    
+                        res.send({
+                            status:true,
+                            message:'Successfully logged in.',     
+                            userId:userId.toString()           
+                        })
+                    }            
+                });
+            });
+            
+            
+        }
+    });
+}
 
 // SIGN UP BUTTON
 methods.getSignUp = async (req,res)=>{
@@ -59,7 +123,7 @@ methods.getSignUp = async (req,res)=>{
         if(checkUserIfExists){
 
             res.send({
-                status:'error',
+                status:false,
                 message:'Your Email already exists.',                
             })
 
@@ -69,7 +133,7 @@ methods.getSignUp = async (req,res)=>{
                 if(userError){
                     // error create
                     res.send({
-                        status:'error',
+                        status:false,
                         message:'Something went wrong.',    
                         error:userError         
                     })
@@ -119,7 +183,7 @@ methods.getSignUp = async (req,res)=>{
                             } else {
                                // success create
                                 res.send({
-                                    status:'success',
+                                    status:true,
                                     message:'Sucessfully created your account. Please check your email to  verify your account.',                            
                                 })
                             }
@@ -132,7 +196,7 @@ methods.getSignUp = async (req,res)=>{
         // CATCH ERROR 
         console.warn(error)
         res.send({
-            status:'error',
+            status:false,
             message:'Something went wrong',
             error:JSON.stringify(error)
         })
@@ -174,7 +238,7 @@ methods.renderVerifyAccount = async (req,res)=>{
                         console.warn(updateError);
                         // error on update
                         res.send({
-                            status:'error',
+                            status:false,
                             message:'Something went wrong',
                             error:updateError
                         })
@@ -188,13 +252,13 @@ methods.renderVerifyAccount = async (req,res)=>{
             }
         }else{            
             res.send({
-                status:'error',
+                status:false,
                 message:'User Cannot be found',                
             })
         }
     }catch(error){
         console.log(error);
-        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:'error'});        
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
     }
 }
 
@@ -219,25 +283,25 @@ methods.getSignIn = async (req,res)=>{
             
             if(checkUserIfExists.verified_date){                
                 if(decryptPassword){
-                    res.send({
-                        status:'success',
-                        message:'Successfully logged in.',                
-                    })
+
+                    sendOtp(checkUserIfExists._id,res);
+
+                   
                 }else{
                     res.send({
-                        status:'error',
+                        status:false,
                         message:'Incorrect email or password.',                
                     })
                 }
             }else{
                 res.send({
-                    status:'error',
+                    status:false,
                     message:'Please check your email to verify your account.',                
                 })    
             }
         }else{
             res.send({
-                status:'error',
+                status:false,
                 message:'Username or email not found.',                
             })
         }
@@ -247,8 +311,9 @@ methods.getSignIn = async (req,res)=>{
        
 
     }catch(error){
+        console.log(error);
         res.send({
-            status:'error',
+            status:false,
             message:'Something went wrong',
             error:error
         })
@@ -266,34 +331,35 @@ methods.getVeriyfyOtp = async (req,res)=>{
         // initialize body
         let userId = req.body.userId;
         let otp = req.body.otp;
-
+        
         let checkUserId = await UsersSchema.findById(userId);
 
         if(checkUserId){
+            
             if(checkUserId.otp == otp){
-
+                console.warn(otp)
                 res.send({
-                    status:'success',
+                    status:true,
                     message:'Your otp is correct.',                    
                 })
 
             }else{
                 // error 
                 res.send({
-                    status:'error',
+                    status:false,
                     message:'Incorrect OTP.',                    
                 })
             }
 
         }else{
             res.send({
-                status:'error',
+                status:false,
                 message:'User not found.',                    
             })
         }
     }catch(error){
         res.send({
-            status:'error',
+            status:false,
             message:'Something went wrong',
             error:error
         })

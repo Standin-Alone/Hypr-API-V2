@@ -951,15 +951,18 @@ methods.getProductsInAPI = (req, res) => {
     }
   )
     .then((response) => {
+      
       if (!response.ok) {
         throw "error on fetching token";
       }
       return response.json();
     })
     .then((response) => {
+      console.warn(response)
       return res.send(response);
     })
     .catch((err) => {
+      console.warn(err)
       res.send({ response: "something went wrong :<" });
       if (err.name === "AbortError") {
         res.send("Timed out");
@@ -1279,7 +1282,7 @@ methods.trackingDetails = (req, res) => {
 methods.productSync = (req, res) => {
   const token = req.cookies.auth;
   const search = _getParamString(req);
-
+  
   fetch(
     `https://developers.cjdropshipping.com/api2.0/v1/product/list?${search}`,
     {
@@ -1333,9 +1336,6 @@ methods.productSync = (req, res) => {
 };
 
 methods.getSyncProducts = async (req, res) => {
-
-
-
   const max = await db
     .collection("t_api_products")
     .find()
