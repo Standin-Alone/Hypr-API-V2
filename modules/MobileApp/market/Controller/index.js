@@ -498,4 +498,136 @@ methods.addToWishList = async (req,res)=>{
 }
 
 
+
+
+methods.increaseQuantity = async (req,res)=>{
+
+    try{
+        // initialize body        
+        let userId = req.body.userId;
+        let product = req.body.item;
+  
+        console.warn(product);
+        let checkUser = await UsersSchema.findById(userId);
+
+
+        // CHECK IF USER ID EXIST
+        if(checkUser){
+             
+           
+
+            let checkProduct = await CartSchema.find({variant_id:product.variant_id});
+      
+            if(checkProduct.length !=  0){
+
+                let computeQuantity = checkProduct[0].quantity  + 1;
+                let computeTotalAmount = checkProduct[0].product_price * computeQuantity;
+                let updateOptions = {
+                    $set:{
+                        quantity:computeQuantity,
+                        total_amount:computeTotalAmount
+                    }
+                }
+
+
+                CartSchema.findByIdAndUpdate(product._id,updateOptions,function(updateError,updateResult){
+                    if(updateError){
+                        // error create
+                        return  res.send({
+                            status:false,
+                            message:'Something went wrong.',    
+                            error:updateError         
+                        })
+                    }else{
+                        return  res.send({
+                            status:true,
+                            message:'Successfully increase the quantity of item.',                                
+                        })
+                    }
+                });                
+
+            }                        
+        }else{            
+            return  res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return  res.send({
+            status:false,
+            message:'Something went wrong',    
+            error:error            
+        })    
+    }
+
+}
+
+
+
+
+methods.decreaseQuantity = async (req,res)=>{
+
+    try{
+        // initialize body        
+        let userId = req.body.userId;
+        let product = req.body.item;
+  
+        console.warn(product);
+        let checkUser = await UsersSchema.findById(userId);
+
+
+        // CHECK IF USER ID EXIST
+        if(checkUser){
+             
+           
+
+            let checkProduct = await CartSchema.find({variant_id:product.variant_id});
+      
+            if(checkProduct.length !=  0){
+
+                let computeQuantity = (checkProduct[0].quantity <= 1 ? 1 : (checkProduct[0].quantity  - 1) ) ;
+                let computeTotalAmount = checkProduct[0].product_price * computeQuantity;
+                let updateOptions = {
+                    $set:{
+                        quantity:computeQuantity,
+                        total_amount:computeTotalAmount
+                    }
+                }
+
+
+                CartSchema.findByIdAndUpdate(product._id,updateOptions,function(updateError,updateResult){
+                    if(updateError){
+                        // error create
+                        return  res.send({
+                            status:false,
+                            message:'Something went wrong.',    
+                            error:updateError         
+                        })
+                    }else{
+                        return  res.send({
+                            status:true,
+                            message:'Successfully increase the quantity of item.',                                
+                        })
+                    }
+                });                
+
+            }                        
+        }else{            
+            return  res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return  res.send({
+            status:false,
+            message:'Something went wrong',    
+            error:error            
+        })    
+    }
+
+}
 module.exports = methods;
