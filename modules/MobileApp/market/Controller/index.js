@@ -141,6 +141,7 @@ methods.saveAddress =  async (req,res)=>{
         let zipCode = req.body.zipCode;
         let address = req.body.address;
         let city = req.body.city;
+        let state = req.body.state;
         
        
         
@@ -166,6 +167,7 @@ methods.saveAddress =  async (req,res)=>{
                         zip_code:zipCode,
                         address:address,
                         city:city,
+                        state:state,
                         is_selected: checkShippingAddress
                     }
                 }

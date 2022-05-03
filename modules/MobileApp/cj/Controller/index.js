@@ -1066,6 +1066,7 @@ methods.createOrder = (req, res) => {
   const body = req.body.products;
   const len = body.length;
 
+  console.warn('token',token);
   let products = [];
 
   for (let i = 0; i < len; i++) {
@@ -1090,6 +1091,8 @@ methods.createOrder = (req, res) => {
     req.body.province,
     req.body.zip
   );
+
+  console.warn(shipping);
 
   fetch(
     `https://developers.cjdropshipping.com/api2.0/v1/shopping/order/createOrder`,
