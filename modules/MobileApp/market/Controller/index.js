@@ -5,6 +5,44 @@ const { method } = require("lodash");
 
 const methods = {};
 
+methods.getState = async (req,res)=>{
+
+    try{
+        // initialize body        
+        let countryName = req.params.countryName;
+      
+       
+    
+        let checkCountry = await CountriesSchema.find({country_name:countryName});
+       
+        // CHECK IF USER ID EXIST
+        if(checkCountry.length != 0 ){
+
+            let countryId = checkCountry[0].country_id;
+            
+            let getStates = await StateSchema.find({country_id:countryId})
+
+            
+          
+            res.send({
+                status:true,
+                message:'Successfully Found.',                
+                data:getStates
+            })
+     
+        }else{            
+            res.send({
+                status:false,
+                message:'Country Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 
 methods.getCities = async (req,res)=>{
 

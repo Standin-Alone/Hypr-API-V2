@@ -15,6 +15,7 @@ route.group('/hypr-mobile/market',()=>{
     route.post('/update-selected-address',controller.updateSelectedAddress)
     route.post('/get-wish-list',controller.getWishList)
     route.get('/get-cities/:countryCode',controller.getCities)
+    route.get('/get-state/:countryName',controller.getState)
     route.post('/save-address',controller.saveAddress)
     route.post('/increase-quantity',controller.increaseQuantity)
     route.post('/decrease-quantity',controller.decreaseQuantity)
