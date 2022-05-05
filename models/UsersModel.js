@@ -2,6 +2,7 @@
 require('../global/variables');
 
 let userNewSchema = new schema({
+    profile_image: String,
     first_name: String,
     last_name: String,
     email: String,   
