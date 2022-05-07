@@ -19,7 +19,7 @@ const sendOtp = (userId,res)=>{
         if(updateError){
             console.warn(updateError);
             // error on update
-            res.send({
+            return  res.send({
                 status:false,
                 message:'Something went wrong',
                 error:updateError
@@ -51,13 +51,13 @@ const sendOtp = (userId,res)=>{
                                 }
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {                    
-                        res.send({
+                        return  res.send({
                             status:false,
                             message:'Error sent.',                
                         })
                     } else {
                     
-                        res.send({
+                        return  res.send({
                             status:true,
                             message:'Successfully logged in.',     
                             userId:userId.toString()           
@@ -122,7 +122,7 @@ methods.getSignUp = async (req,res)=>{
 
         if(checkUserIfExists){
 
-            res.send({
+            return res.send({
                 status:false,
                 message:'Your Email already exists.',                
             })
@@ -132,7 +132,7 @@ methods.getSignUp = async (req,res)=>{
             UsersSchema.create(payload, (userError, insertUserResult) => {                    
                 if(userError){
                     // error create
-                    res.send({
+                    return  res.send({
                         status:false,
                         message:'Something went wrong.',    
                         error:userError         
@@ -175,14 +175,14 @@ methods.getSignUp = async (req,res)=>{
                             if (mailError) {
                                 console.log('Error: ' + mailError);
                                 console.warn('Email not sent');
-                                res.json({
+                                return  res.json({
                                     status: false,
                                     msg: 'Email not sent',
                                     code: 'E110'
                                 });
                             } else {
                                // success create
-                                res.send({
+                               return  res.send({
                                     status:true,
                                     message:'Sucessfully created your account. Please check your email to  verify your account.',                            
                                 })
@@ -195,7 +195,7 @@ methods.getSignUp = async (req,res)=>{
     }catch(error){
         // CATCH ERROR 
         console.warn(error)
-        res.send({
+        return  res.send({
             status:false,
             message:'Something went wrong',
             error:JSON.stringify(error)
@@ -237,7 +237,7 @@ methods.renderVerifyAccount = async (req,res)=>{
                     if(updateError){
                         console.warn(updateError);
                         // error on update
-                        res.send({
+                        return res.send({
                             status:false,
                             message:'Something went wrong',
                             error:updateError
@@ -245,20 +245,20 @@ methods.renderVerifyAccount = async (req,res)=>{
 
                     }else{                   
                         // success on update
-                        res.render('./templates/verified.ejs');
+                        return  res.render('./templates/verified.ejs');
                     }
                 })
               
             }
         }else{            
-            res.send({
+            return  res.send({
                 status:false,
                 message:'User Cannot be found',                
             })
         }
     }catch(error){
         console.log(error);
-        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+        return  res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
     }
 }
 

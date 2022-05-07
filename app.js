@@ -50,6 +50,12 @@ app.use(session({
 }));
 
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+
 // routes
 require('./routes')(app); 
 
@@ -77,10 +83,7 @@ app.use(function (req, res, next) {
 
 app.disable('x-powered-by');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+
 
 app.use(fileUpload());
 app.use(permittedCrossDomainPolicies())

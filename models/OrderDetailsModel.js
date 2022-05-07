@@ -3,12 +3,11 @@ require('../global/variables');
 
 let orderDetailsSchema = new schema({
     order_id:   mongoose.Schema.Types.ObjectId ,
-    order_number:   String ,    
-    cart_id:   String ,            
+    order_number:   String ,              
     product_id:   String ,
     variant_id: String,    
     product_price:   String ,            
-    item_quantity:   String ,
+    quantity:   String ,
     total_amount: String,                            
     status:   Boolean ,
     created_at:{

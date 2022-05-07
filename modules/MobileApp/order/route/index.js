@@ -9,7 +9,8 @@ const controller  = require('../Controller');
 route.group('/hypr-mobile/order',()=>{
 
     route.post('/order',controller.getOrder)
-
+    
+    
 })
 
 
