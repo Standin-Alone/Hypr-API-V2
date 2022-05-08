@@ -77,7 +77,6 @@ methods.payWithPaypal = async (req,res)=>{
             }]
         };
 
-        console.warn(createPaymentJson.transactions);
 
       
 
@@ -87,7 +86,7 @@ methods.payWithPaypal = async (req,res)=>{
                 throw error;
             } else {
 
-                console.warn(payment);
+              
                 payment.links.map(itemLinks=>{
                
                     if(itemLinks.rel == 'approval_url'){
@@ -243,7 +242,6 @@ methods.finalSuccessPayment = async (req,res)=>{
 
                 // CREATE ORDER DETAILS
                 OrderDetailsSchema.create(orderDetailsPayload, (orderDetailsError, insertOrderDetailsResult) => {     
-
                     if(orderDetailsError){
                         count_error++;
                         // error on insert
@@ -253,13 +251,6 @@ methods.finalSuccessPayment = async (req,res)=>{
                             error:orderError
                         })
         
-                    }else{     
-                        
-
-                        console.warn('Order Details',insertOrderDetailsResult);
-
-                        
-
                     }
                 })
                 
@@ -276,17 +267,17 @@ methods.finalSuccessPayment = async (req,res)=>{
                     shipping_address:{$elemMatch:{country_code:items.shipping_address[0].country_code}}
                     
                 };
-                console.warn('delete cart',deleteCart);
+        
                 CartSchema.deleteOne(deleteCart, function (err) {
                     if (err) return handleError(err);
-                    // deleted at most one tank document
+              
                   });
 
             });
-            // return res.send({
-            //     status:true,
-            //     message:'Thank you for buying. Please wait for the delivery.'                
-            // })
+            return res.send({
+                status:true,
+                message:'Thank you for buying. Please wait for the delivery.'                
+            })
         }else{
             return res.send({
                 status:false,

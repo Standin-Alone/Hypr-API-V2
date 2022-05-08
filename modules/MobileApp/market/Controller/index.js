@@ -1,6 +1,7 @@
 // MARKET CONTROLLER
 
 const { method } = require("lodash");
+const { default: mongoose } = require("mongoose");
 
 
 const methods = {};
@@ -163,6 +164,161 @@ methods.updateSelectedAddress =  async (req,res)=>{
 }
 
 
+
+
+
+
+
+  methods.deleteAddress =  async (req,res)=>{
+    console.warn('req',req.body);
+    try{
+
+
+   
+        // initialize body        
+        let userId = req.body.userId;
+        let addressId = req.body.addressId; 
+        
+       
+
+        
+
+        let checkUserId = await UsersSchema.findById(userId);
+
+  
+        // CHECK IF USER ID EXIST
+        if(checkUserId){
+                         
+
+            //  DELETE SHIPPING ADDRESS
+            let deletePayload ={                            
+               $pull: { shipping_address: {id:mongoose.Types.ObjectId(addressId)} },
+            };            
+
+            
+            UsersSchema.findByIdAndUpdate(userId,deletePayload, function (deleteError,deleteResult) {
+                if(deleteError){
+                    console.warn(deleteError)
+                    // error on update
+                    return res.send({
+                        status:false,
+                        message:'Something went wrong',
+                        error:deleteError
+                    })
+        
+                }else{                        
+
+                    return res.send({
+                        status:true,
+                        message:'Successfully removed your address',                        
+                    })
+                }
+            
+            });
+
+
+            
+            
+           
+        }else{            
+            return res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
+methods.updateAddress =  async (req,res)=>{
+    console.warn('req',req.body);
+    try{
+
+
+   
+        // initialize body        
+        let userId = req.body.userId;
+        let addressId = req.body.addressId;
+        let fullName = `${req.body.firstName} ${req.body.lastName}`;
+        let contact = req.body.contact;        
+        let country = req.body.country;
+        let countryName = req.body.countryName;
+        let zipCode = req.body.zipCode;
+        let address = req.body.address;
+        let city = req.body.city;
+        let state = req.body.state;
+        
+       
+        console.warn(req.body);
+        
+
+        let checkUserId = await UsersSchema.findById(userId);
+
+  
+        // CHECK IF USER ID EXIST
+        if(checkUserId){
+
+
+                        
+
+
+            let cleanPayload = {
+                $set: {
+                                                    
+                        'shipping_address.$[element].full_name': fullName,
+                        'shipping_address.$[element].contact': contact,
+                        'shipping_address.$[element].country': countryName,
+                        'shipping_address.$[element].country_code': country,
+                        'shipping_address.$[element].zip_code': zipCode,
+                        'shipping_address.$[element].address': address,
+                        'shipping_address.$[element].city': city,
+                        'shipping_address.$[element].state': state,
+                }
+            };
+
+            //  UPDATE SHIPPING ADDRESSS
+            UsersSchema.findByIdAndUpdate(userId, cleanPayload,{
+                arrayFilters: [ { "element.id": mongoose.Types.ObjectId(addressId)} ]
+            },function(updateError,updateResult){
+                if(updateError){
+                    console.warn(updateError)
+                    // error on update
+                    return res.send({
+                        status:false,
+                        message:'Something went wrong',
+                        error:updateError
+                    })
+        
+                }else{                        
+                    return res.send({
+                        status:true,
+                        message:'Successfully updated your address',                        
+                    })
+                }
+            }) 
+
+
+            
+            
+           
+        }else{            
+            return res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 
 methods.saveAddress =  async (req,res)=>{
     console.warn('req',req.body);
@@ -457,6 +613,57 @@ methods.addToCart = async (req,res)=>{
 
 }
 
+
+
+methods.removeProductFromWishList =  async (req,res)=>{
+    console.warn('req',req.body);
+    try{
+        // initialize body        
+        let wishListId = req.body.wishListId;
+    
+
+        let checkWishList = await WishListSchema.findById(wishListId);
+
+        // CHECK IF WISH LIST EXIST
+        if(checkWishList){
+                         
+
+            //  DELETE PRODUCT FROM WISHLIST
+            let deletePayload ={                            
+                _id: checkWishList._id           
+            };            
+
+    
+            WishListSchema.deleteOne(deletePayload, function (deleteError,deleteResult) {
+                if(deleteError){
+                    // error create
+                    return  res.send({
+                        status:false,
+                        message:'Something went wrong.',    
+                        error:deleteError         
+                    })
+                }else{
+                    return  res.send({
+                        status:true,
+                        message:'Successfully removed the product from wish list.',                                
+                    })
+                }
+          
+              });
+                        
+        }else{            
+            return res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 
 
 methods.addToWishList = async (req,res)=>{

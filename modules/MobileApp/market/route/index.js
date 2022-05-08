@@ -9,6 +9,7 @@ const controller  = require('../Controller');
 route.group('/hypr-mobile/market',()=>{
 
     route.post('/add-to-wishlist',controller.addToWishList)
+    route.post('/remove-product-from-wishlist',controller.removeProductFromWishList)
     route.post('/add-to-cart',controller.addToCart)
     route.post('/get-shipping-address',controller.getShippingAddress)
     route.post('/get-cart',controller.getCart)
@@ -17,6 +18,8 @@ route.group('/hypr-mobile/market',()=>{
     route.get('/get-cities/:countryCode',controller.getCities)
     route.get('/get-state/:countryName',controller.getState)
     route.post('/save-address',controller.saveAddress)
+    route.post('/update-address',controller.updateAddress)
+    route.post('/delete-address',controller.deleteAddress)
     route.post('/increase-quantity',controller.increaseQuantity)
     route.post('/decrease-quantity',controller.decreaseQuantity)
 
