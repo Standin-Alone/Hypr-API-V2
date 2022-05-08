@@ -141,6 +141,8 @@ methods.paypalSuccess = async (req,res)=>{
 
             } else {
                 
+
+
                 res.render('templates/payment/successPayment', {
                     payerId: payerId,
                     paymentTitle: 'Paypal',
@@ -274,6 +276,10 @@ methods.finalSuccessPayment = async (req,res)=>{
                   });
 
             });
+
+
+            
+
             return res.send({
                 status:true,
                 message:'Thank you for buying. Please wait for the delivery.'                

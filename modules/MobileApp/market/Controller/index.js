@@ -492,6 +492,45 @@ methods.getCart =  async (req,res)=>{
 
 
 
+methods.getCartCount =  async (req,res)=>{
+
+    try{
+        // initialize body        
+        let userId = req.body.userId;
+        
+
+        let checkUser = await UsersSchema.findById(userId);
+
+
+        // CHECK IF USER ID EXIST
+        if(checkUser){
+
+
+            // get cart
+            let getCart = await CartSchema.find({buyer_id:userId});
+
+            return res.send({
+                status:true,
+                message:'You have items in your cart',                
+                data:getCart.length
+            })
+
+
+        }else{            
+            return res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
 methods.getWishList =  async (req,res)=>{
 
     try{
