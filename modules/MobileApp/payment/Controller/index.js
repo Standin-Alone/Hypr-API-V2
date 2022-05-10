@@ -187,7 +187,7 @@ methods.finalSuccessPayment = async (req,res)=>{
             payment_method:paymentMethod,
             payerId:payerId,
             paymentId:paymentId,
-            order_status:'For Delivery',
+            order_status:'For Verification',
             payment_status:'paid',       
             billing_name:shippingAddress.full_name,
             billing_address:shippingAddress.address,

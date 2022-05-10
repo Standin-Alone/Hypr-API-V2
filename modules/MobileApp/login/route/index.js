@@ -11,7 +11,9 @@ route.group('/hypr-mobile/user',()=>{
     route.post('/sign-up',controller.getSignUp);    
     route.get('/verifyAccount/:userId',controller.renderVerifyAccount);
     route.post('/sign-in',controller.getSignIn);    
+    route.post('/resend-otp',controller.resendOtp)
     route.post('/verify-otp',controller.getVeriyfyOtp);
+    route.post('/get-user-info',controller.getUserInfo);
 
 })
 

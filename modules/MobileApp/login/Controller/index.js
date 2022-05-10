@@ -13,7 +13,7 @@ const sendOtp = (userId,res)=>{
         otp: generateOtp
     }
 
-
+    let email = '';
     // UPDATE TABLE
     UsersSchema.findByIdAndUpdate(userId.toString(),updateOptions,(updateError, updateResult)=>{
         if(updateError){
@@ -33,6 +33,7 @@ const sendOtp = (userId,res)=>{
                 otp:generateOtp
             }
 
+       
             ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
                 let mailOptions = {
                                     from: "Hypr", // sender address
@@ -59,8 +60,9 @@ const sendOtp = (userId,res)=>{
                     
                         return  res.send({
                             status:true,
-                            message:'Successfully logged in.',     
-                            userId:userId.toString()           
+                            message:'Successfully send OTP to your email.',     
+                            userId:userId.toString(),
+                            email:otpEmailPayload.toEmail  
                         })
                     }            
                 });
@@ -140,7 +142,7 @@ methods.getSignUp = async (req,res)=>{
                 }else if(insertUserResult){
 
                     // success create
-                    console.warn(insertUserResult);
+                  
 
                     let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
                     let fullName =  `${first_name} ${last_name}`;            
@@ -383,7 +385,7 @@ methods.getVeriyfyOtp = async (req,res)=>{
         if(checkUserId){
             
             if(checkUserId.otp == otp){
-                console.warn(otp)
+          
                 res.send({
                     status:true,
                     message:'Your otp is correct.',                    
@@ -416,6 +418,70 @@ methods.getVeriyfyOtp = async (req,res)=>{
 
 
 
+
+
+
+// GET USER INFO
+methods.getUserInfo = async (req,res)=>{    
+    try{
+        // initialize body
+        let userId = req.body.userId;
+    
+ 
+        let checkUserId = await UsersSchema.findById(userId);
+        console.warn(checkUserId);
+        if(checkUserId){
+                               
+            return res.send({
+                status:true,
+                message:'User info has been found.',                    
+                data:checkUserId
+            })
+        
+        }else{
+            return res.send({
+                status:false,
+                message:'User not found.',                    
+            })
+        }
+    }catch(error){
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:'Something went wrong',
+            error:error
+        })
+    }
+}
+
+
+// RESEND OTP
+methods.resendOtp = async (req,res)=>{    
+    try{
+        // initialize body
+        let userId = req.body.userId;
+    
+ 
+        let checkUserId = await UsersSchema.findById(userId);
+
+        if(checkUserId){
+                               
+            return sendOtp(userId,res);
+        }else{
+            return res.send({
+                status:false,
+                message:'User not found.',                    
+            })
+        }
+    }catch(error){
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:'Something went wrong',
+            error:error
+        })
+    }
+}
 
 
 module.exports = methods;
