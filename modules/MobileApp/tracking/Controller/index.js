@@ -41,6 +41,43 @@ methods.getToVerifyOrders = async (req,res)=>{
 
 
 
+methods.getOrderedProducts = async (req,res)=>{
+
+    try{
+        // initialize body        
+        const orderNumber = req.body.orderNumber;
+        
+        let checkOrderDetails = await OrderDetailsSchema.find({order_number : orderNumber});
+
+        if(checkOrderDetails.length != 0 ){
+
+                         
+        
+                return res.send({
+                    status:true,
+                    message:'Successfully get my ordered products.',
+                    data:checkOrderDetails
+                })
+
+
+ 
+
+            
+        }else{
+            return res.send({
+                status:false,
+                message:'Failed to get my ordered products.',                
+            })
+        }
+               
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
 
 
 module.exports = methods;

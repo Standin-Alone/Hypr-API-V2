@@ -8,6 +8,7 @@ const controller  = require('../Controller');
 // GROUP ROUTE
 route.group('/hypr-mobile/tracking',()=>{    
     route.post('/get-to-verify-orders',controller.getToVerifyOrders)    
+    route.post('/get-ordered-products',controller.getOrderedProducts)    
 })
 
 

@@ -1288,7 +1288,7 @@ methods.trackingDetails = (req, res) => {
 methods.productSync = (req, res) => {
   const token = req.cookies.auth;
   const search = _getParamString(req);
-  
+  console.warn(token)
   fetch(
     `https://developers.cjdropshipping.com/api2.0/v1/product/list?${search}`,
     {
@@ -1342,6 +1342,8 @@ methods.productSync = (req, res) => {
 };
 
 methods.getSyncProducts = async (req, res) => {
+
+  
   const max = await db
     .collection("t_api_products")
     .find()

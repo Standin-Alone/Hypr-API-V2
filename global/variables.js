@@ -7,8 +7,13 @@ global.mongoStore = require('connect-mongo')(session);
 global.schema  = mongoose.Schema;
 global.ejs = require("ejs");
 global.fetch = require('node-fetch');
-
+global.lodash = require('lodash');
 global.paypal= require('paypal-rest-sdk');
+let stripeAPI =  { secretKey: 'sk_test_51KnhTJGAX1ovFy7TMDtGCPVy0UOnaZWO0cdMcS5cytztE0a1sw3S2jSEytJfmWzI6SvWNROc7TGoGze41AbIgFsx00szySNDGm'};
+
+global.stripe= require('stripe')(stripeAPI.secretKey);
+
+
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live    

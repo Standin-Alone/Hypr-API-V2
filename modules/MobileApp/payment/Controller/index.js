@@ -6,9 +6,58 @@ const { method } = require("lodash");
 
 const methods = {};
 
+methods.renderSuccessPaymentUrl  = (req,res)=>{
+    let payerId = req.query.payerId;
+    let paymentTitle = req.query.paymentTitle;
+    let paymentId = req.query.paymentId;
+    res.render('templates/payment/successPayment', {
+        payerId: payerId,
+        paymentTitle: paymentTitle,
+        paymentId: paymentId
+    })
+}
+
+// GENERATE CHECKOUT SESSION ID
+methods.stripeCheckoutSession = async (req,res)=>{
+
+    try{
+        // initialize body        
 
 
 
+
+        let lineItemsPayload = req.body.lineItemsPayload;  
+        let orderId = req.body.orderId;
+
+        const session = await stripe.checkout.sessions.create({
+            line_items: lineItemsPayload,
+            mode: 'payment',
+            success_url: `${process.env.DEV_URL}/successPayment?sc_checkout=success&paymentId=${orderId}&PayerId=${orderId}&paymentTitle=Stripe`,
+            cancel_url: `${process.env.DEV_URL}/cancelledPayment?sc_checkout=cancel&paymentTitle=Stripe`,
+          });
+
+        if(session){
+
+        
+            return res.send({
+                status:true,
+                checkoutSessionId:session.id,        
+            })
+
+        }else{
+            return res.send({
+                status:false,
+                message:'Session Failed'
+            })
+        }
+    
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 
 methods.payWithPaypal = async (req,res)=>{
 
@@ -233,8 +282,10 @@ methods.finalSuccessPayment = async (req,res)=>{
                         order_number:   getOrderNumber ,                            
                         product_id:   items.product_code ,
                         variant_id: items.variant_id,    
+                        product_image: items.product_img,    
+                        product_name: items.variant_name,    
                         product_price:   items.product_price ,            
-                        item_quantity:    items.quantity ,
+                        quantity:    items.quantity ,
                         total_amount: items.total_amount,                            
                         status:true ,
                     })

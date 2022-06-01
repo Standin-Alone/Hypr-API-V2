@@ -599,15 +599,37 @@ methods.addToCart = async (req,res)=>{
                 shipping_address:shippingAddress
             };
 
-            let checkIfProductExistInCart = await CartSchema.find({product_id: variant.pid,variant_id: variant.variantVid});
+            let checkIfProductExistInCart = await CartSchema.findOne({product_id: variant.pid,variant_id: variant.variantVid,buyer_id:userId});
       
-            if(checkIfProductExistInCart.length !=  0){
+            if(checkIfProductExistInCart){                
                 return res.send({
                     status:false,
                     message:'This product is already exist in your cart.',                        
                 })
 
             }else{            
+
+                let getShippingAddressInCart = await CartSchema.find({buyer_id:userId});
+
+                
+                if(getShippingAddressInCart.length > 0){
+                
+                    // CHECK SHIPPING ADDRESSS IF THE SAME
+                    getShippingAddressInCart.map((item)=>{
+                        if(!lodash.isEqual(item.shipping_address , shippingAddress)){
+                            let deleteCart ={                                
+                                buyer_id:userId,                                
+                            };
+                    
+                            CartSchema.deleteMany(deleteCart, function (err) {
+                                if (err) return handleError(err);                          
+                            });
+                        }               
+                    })  
+                }
+
+
+                if(checkIfProductExistInCart)
                 CartSchema.create(cleanPayload, (userError, insertUserResult) => {                    
                     if(userError){
                         // error create
