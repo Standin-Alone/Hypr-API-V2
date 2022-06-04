@@ -9,6 +9,7 @@ const controller  = require('../Controller');
 route.group('/hypr-mobile/user',()=>{
 
     route.post('/sign-up',controller.getSignUp);    
+    route.post('/sign-up-using-google',controller.getSignUpUsingGoogle);    
     route.get('/verifyAccount/:userId',controller.renderVerifyAccount);
     route.post('/sign-in',controller.getSignIn);    
     route.post('/resend-otp',controller.resendOtp)

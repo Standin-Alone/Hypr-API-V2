@@ -90,7 +90,7 @@ methods.payWithPaypal = async (req,res)=>{
         
         let cleanTotal = total_amount = cleanCart.reduce((prev, current) => prev + (current.price * current.quantity), 0).toFixed(2);
 
-
+        console.warn(cart[0].shipping_address[0]);
         let shippingAddress = {
             "recipient_name": cart[0].shipping_address[0].full_name,
             "line1": cart[0].shipping_address[0].address,

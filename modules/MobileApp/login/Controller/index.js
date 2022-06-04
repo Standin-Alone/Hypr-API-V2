@@ -73,6 +73,69 @@ const sendOtp = (userId,res)=>{
     });
 }
 
+
+
+// GOOGLE SIGN IN BUTTON
+methods.getSignUpUsingGoogle = async (req,res)=>{
+    try{
+        // INITIALIZE BODY
+        let first_name           = req.body.first_name;
+        let last_name            = req.body.last_name;
+        let email                = req.body.email;
+
+
+
+
+        // PAYLOAD 
+        let payload = {
+            first_name:first_name,
+            last_name:last_name,
+            email:email,
+            verified_date: new Date(),
+      
+         
+        }
+
+        let checkUserIfExists = await UsersSchema.findOne({ email: email });
+   
+        
+
+
+        if(checkUserIfExists){
+
+
+            sendOtp(checkUserIfExists._id,res);
+          
+
+        }else{             
+            
+            UsersSchema.create(payload, (userError, insertUserResult) => {                    
+                if(userError){
+                    // error create
+                    return  res.send({
+                        status:false,
+                        message:'Something went wrong.',    
+                        error:userError         
+                    })
+                }else if(insertUserResult){
+                    sendOtp(insertUserResult._id,res);
+                    
+                 
+                }
+            });          
+        }
+    }catch(error){
+        // CATCH ERROR 
+        console.warn(error)
+        return  res.send({
+            status:false,
+            message:'Something went wrong',
+            error:JSON.stringify(error)
+        })
+    }
+}
+
+
 // SIGN UP BUTTON
 methods.getSignUp = async (req,res)=>{
     try{

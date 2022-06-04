@@ -629,7 +629,7 @@ methods.addToCart = async (req,res)=>{
                 }
 
 
-                if(checkIfProductExistInCart)
+          
                 CartSchema.create(cleanPayload, (userError, insertUserResult) => {                    
                     if(userError){
                         // error create

@@ -906,6 +906,8 @@ methods.getToken = (req, res) => {
     .then((response) => {
       if (response.data.accessToken) {
         const token = req.cookies.auth;
+
+        
         return res.send({ nekot: token });
       }
     })
