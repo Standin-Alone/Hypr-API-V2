@@ -28,7 +28,11 @@ methods.getToVerifyOrders = async (req,res)=>{
 
             
         }else{
-
+            return res.send({
+                status:false,
+                message:'You have no active orders.',
+                data:[]
+            })
         }
                
     }catch(error){

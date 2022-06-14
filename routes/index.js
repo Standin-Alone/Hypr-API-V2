@@ -5,6 +5,7 @@ var market = require('../modules/MobileApp/market/route');
 var order = require('../modules/MobileApp/order/route');
 var payment = require('../modules/MobileApp/payment/route');
 var tracking = require('../modules/MobileApp/tracking/route');
+var social = require('../modules/MobileApp/social/route');
 
 
 
@@ -16,6 +17,6 @@ module.exports = function(app){
     app.use('',order);
     app.use('',payment);
     app.use('',tracking);
-
+    app.use('',social);
 
 }

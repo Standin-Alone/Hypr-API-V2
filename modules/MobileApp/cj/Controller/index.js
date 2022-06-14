@@ -1180,6 +1180,7 @@ methods.getOrder = (req, res) => {
     }
   )
     .then((response) => {
+      console.warn(response)
       if (!response.ok) {
         throw "error on fetching token";
       }
@@ -1189,6 +1190,8 @@ methods.getOrder = (req, res) => {
       return res.send(response);
     })
     .catch((err) => {
+
+      console.warn(err)
       res.send({ response: "something went wrong :<" });
       if (err.name === "AbortError") {
         res.send("Timed out");
@@ -1361,14 +1364,18 @@ methods.searchProducts = async (req, res) => {
   const searchValue = req.body.searchValue;
   const skips = req.body.skip == undefined ? 0 : req.body.skip;
   const results = [];
+
+  
   const query = await db
     .collection("t_api_products")
     .find({ $text: { $search: `/.*${searchValue}.*/` } })
     .limit(20)
     .skip(skips)
     .project({ product_information: 1, _id: 0 });
+  
 
   query.toArray(function (err, docs) {
+    console.warn(err);
     docs.forEach((documents) => {
       results.push(documents.product_information);
     });
