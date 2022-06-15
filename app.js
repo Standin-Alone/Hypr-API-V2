@@ -18,6 +18,7 @@ require('./global/schema')
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 //  LOAD ENV FILe
 dotenv.config()
 // VIEW ENGINE  SETUP

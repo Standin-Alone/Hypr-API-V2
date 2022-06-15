@@ -224,42 +224,42 @@ methods.getSignUp = async (req,res)=>{
                                      };
 
                     // SEND VERIFICATION EMAIL
-                    ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
-                        // co
-                        // ready for email otp
-                        var mailOptions = {
-                            from: "Hypr", // sender address
-                            to: email,                                        
-                            subject: 'Hypr Verification  Email',
-                            html:      data,
-                            attachments: [{
-                                filename: 'otp.jpeg',
-                                path: `${process.env.DEV_URL}/images/otp.jpeg`,
-                                cid: 'otp' //same cid value as in the html img src
-                            },{
-                                filename: 'hypr-logo.png',
-                                path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-                                cid: 'logo' //same cid value as in the html img src
-                            }]
-                        }
-                        transporter.sendMail(mailOptions, function (mailError, info) {
-                            if (mailError) {
-                                console.log('Error: ' + mailError);
-                                console.warn('Email not sent');
-                                return  res.json({
-                                    status: false,
-                                    msg: 'Email not sent',
-                                    code: 'E110'
-                                });
-                            } else {
-                               // success create
-                               return  res.send({
-                                    status:true,
-                                    message:'Sucessfully created your account. Please check your email to  verify your account.',                            
-                                })
-                            }
-                        });
-                     });        
+                    // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                    //     // co
+                    //     // ready for email otp
+                    //     var mailOptions = {
+                    //         from: "Hypr", // sender address
+                    //         to: email,                                        
+                    //         subject: 'Hypr Verification  Email',
+                    //         html:      data,
+                    //         attachments: [{
+                    //             filename: 'otp.jpeg',
+                    //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                    //             cid: 'otp' //same cid value as in the html img src
+                    //         },{
+                    //             filename: 'hypr-logo.png',
+                    //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                    //             cid: 'logo' //same cid value as in the html img src
+                    //         }]
+                    //     }
+                    //     transporter.sendMail(mailOptions, function (mailError, info) {
+                    //         if (mailError) {
+                    //             console.log('Error: ' + mailError);
+                    //             console.warn('Email not sent');
+                    //             return  res.json({
+                    //                 status: false,
+                    //                 msg: 'Email not sent',
+                    //                 code: 'E110'
+                    //             });
+                    //         } else {
+                    //            // success create
+                    //            return  res.send({
+                    //                 status:true,
+                    //                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                    //             })
+                    //         }
+                    //     });
+                    //  });        
                 }
             });          
         }

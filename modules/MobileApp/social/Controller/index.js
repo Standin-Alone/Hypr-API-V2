@@ -44,4 +44,170 @@ methods.getAllFriendsPost = async (req,res)=>{
 
 
 
+methods.getReferral = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        
+        let  userId = req.params.id;
+        
+        let checkUserId = await UsersSchema.findById(userId);
+
+
+
+        return res.render('./templates/referral.ejs',{userId:userId});        
+               
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
+
+methods.useReferral = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+              
+             
+        
+
+
+        // INITIALIZE BODY
+        let first_name           = req.body.first_name;
+        let last_name            = req.body.last_name;
+        let email                = req.body.email;
+        let phone                = req.body.contact_number;
+        let birthday             = req.body.birthday;
+        let age                  = req.body.age;
+        let country              = req.body.country;
+        let country_name         = req.body.country_name;
+        let address              = req.body.address;                        
+        let username             = req.body.username;
+        let password             = req.body.password;        
+        let encrypt_password     = await bcrypt.hash(password,8);
+        // let referral_code        = req.body.referral_code;
+        let referral_code_by_id  = req.body.referral_user_id;
+        let referred_by_name     = '';
+        let user_refferal_code   = '';
+
+
+
+
+        // PAYLOAD 
+        let payload = {
+            first_name:first_name,
+            last_name:last_name,
+            email:email,
+            phone:phone,
+            birthday:birthday,
+            age:age,
+            country:country,
+            country_name:country_name,
+            address:address,
+            username:username,
+            password:encrypt_password,
+            referral_code_by_id:referral_code_by_id,
+            referred_by_name:referred_by_name,
+            user_refferal_code:user_refferal_code,
+         
+        }
+
+        let checkUserIfExists = await UsersSchema.findOne({ email: email });
+        // let checkIfRefferalCodeExists = await UsersSchema.findOne({ referral_code: referral_code });
+        
+
+
+        if(checkUserIfExists){
+
+            return res.send({
+                status:false,
+                message:'Your Email already exists.',                
+            })
+
+        }else{             
+            
+            UsersSchema.create(payload, (userError, insertUserResult) => {                    
+                if(userError){
+                    // error create
+                    return  res.send({
+                        status:false,
+                        message:'Something went wrong.',    
+                        error:userError         
+                    })
+                }else if(insertUserResult){
+
+                    // success create
+                  
+
+                    let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
+                    let fullName =  `${first_name} ${last_name}`;            
+
+                    // email payload
+                    let emailPayload = {
+                                        name:fullName,
+                                        toemail:email,                                        
+                                        url:verficationLink
+                                     };
+
+                    // SEND VERIFICATION EMAIL
+                    // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                    //     // co
+                    //     // ready for email otp
+                    //     var mailOptions = {
+                    //         from: "Hypr", // sender address
+                    //         to: email,                                        
+                    //         subject: 'Hypr Verification  Email',
+                    //         html:      data,
+                    //         attachments: [{
+                    //             filename: 'otp.jpeg',
+                    //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                    //             cid: 'otp' //same cid value as in the html img src
+                    //         },{
+                    //             filename: 'hypr-logo.png',
+                    //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                    //             cid: 'logo' //same cid value as in the html img src
+                    //         }]
+                    //     }
+                    //     transporter.sendMail(mailOptions, function (mailError, info) {
+                    //         if (mailError) {
+                    //             console.log('Error: ' + mailError);
+                    //             console.warn('Email not sent');
+                    //             return  res.json({
+                    //                 status: false,
+                    //                 msg: 'Email not sent',
+                    //                 code: 'E110'
+                    //             });
+                    //         } else {
+                    //            // success create
+                    //            return  res.send({
+                    //                 status:true,
+                    //                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                    //             })
+                    //         }
+                    //     });
+                    //  });        
+                        }
+                    });          
+                }
+    }catch(error){
+        // CATCH ERROR 
+        console.warn(error)
+        return  res.send({
+            status:false,
+            message:'Something went wrong',
+            error:JSON.stringify(error)
+        })
+    }
+
+
+  
+
+}
+
 module.exports = methods;
