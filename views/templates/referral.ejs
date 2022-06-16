@@ -47,9 +47,12 @@
 	<!-- ================== END BASE JS ================== -->
 
     <style>
-       input[type=tel]{
-            width:200px!important;
+    
+        .iti--allow-dropdown input, .iti--allow-dropdown input[type=text], .iti--allow-dropdown input[type=tel], .iti--separate-dial-code input, .iti--separate-dial-code input[type=text], .iti--separate-dial-code input[type=tel]{
+            display:block!important; 
+            width: 380px !important;
         }
+   
     </style>
 </head>
 <body class="pace-top bg-white">
@@ -77,12 +80,12 @@
                 <!-- begin register-header -->
                 <h1 class="register-header">
                     Sign Up
-                    <small>Create your Hypr Account. It’s free and always will be.</small>
+                    <small>Create your Hypr Account. To use the referral.</small>
                 </h1>
                 <!-- end register-header -->
                 <!-- begin register-content -->
                 <div class="register-content">
-                    <form id="sign-up-form" method="GET" class="margin-bottom-0">
+                    <form id="sign-up-form" method="POST" class="margin-bottom-0">
                         <label class="control-label">Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control hide" placeholder="First name" name="referral_user_id" required value="<%=userId%>" />
                         <input type="text" class="form-control hide" placeholder="country_name" name="country_name"  />
@@ -90,22 +93,22 @@
                         <input type="text" class="form-control hide" placeholder="age" name="age"  />
                         <div class="row row-space-10">
                             <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="First name" name="first_name" required value="John"/>
+                                <input type="text" class="form-control" placeholder="First name" name="first_name" required />
                             </div>
                             <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="Last name"  name="last_name" required value="doe" />
+                                <input type="text" class="form-control" placeholder="Last name"  name="last_name" required  />
                             </div>
                         </div>
                         <label class="control-label">Email <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
-                                <input type="text" class="form-control" placeholder="Email address" name="email" value="sample@gmail.com"  required />
+                                <input type="text" class="form-control" placeholder="Email address" name="email" required />
                             </div>
                         </div>
                         <label class="control-label">Contact Number <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
-                                <input type="tel" class="form-control  " id="contact-number" placeholder="Contact number" name="contact_number" style="width:200px" required value="9106120892"   />
+                                <input type="tel" class="form-control w-20 " id="contact-number" placeholder="Contact number" name="contact_number" required  />
                             </div>
                         </div>  
 
@@ -119,7 +122,7 @@
                         <label class="control-label">Password <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
-                                <input type="password" class="form-control" placeholder="Password"   name="password" required  value="sample"/>
+                                <input type="password" class="form-control" placeholder="Password"   name="password" required  />
                             </div>
                         </div>
 
@@ -128,12 +131,12 @@
                         <label class="control-label">Re-enter password <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
-                                <input type="password" class="form-control" placeholder="Password"  name="re_enter_password"required   value="sample"/>
+                                <input type="password" class="form-control" placeholder="Password"  name="re_enter_password"required   />
                             </div>
                         </div>
                         <div class="checkbox checkbox-css m-b-30">
                         	<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" value="">
+								<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox" >
 								<label for="agreement_checkbox">
 									By clicking Sign Up, you agree to our <a href="javascript:;">Terms</a> and that you have read our <a href="javascript:;">Data Policy</a>, including our <a href="javascript:;">Cookie Use</a>.
 								</label>
@@ -145,7 +148,7 @@
             
                         <hr />
                         <p class="text-center">
-                            &copy; Color Admin All Right Reserved 2018
+                            Hypr 2022
                         </p>
                     </form>
                 </div>
@@ -212,6 +215,18 @@
             initialCountry: "ph",
             utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.3/build/js/utils.js",
             })
+            $("input[name=country_name]").val(window.iti.getSelectedCountryData().name);
+            $("input[name=country]").val(window.iti.getSelectedCountryData().iso2);
+
+            let getBirthday = $("input[name=birthday]").val();
+            // COMPUTE AGE
+            let getDateNow = moment(new Date(),"MM-DD-YYYY");
+            let birthday = moment(getBirthday,"MM-DD-YYYY");
+            computeAge = getDateNow.diff(birthday, 'years');
+            // VALIDATE AGE                               
+            $("input[name=age]").val(computeAge);   
+
+
             input.addEventListener("countrychange", function(val) {
                  let countryData = window.iti.getSelectedCountryData();
 
@@ -258,6 +273,7 @@
             birthday:{required:true,validateAge:true},          
             password:{required:true},
             re_enter_password:{required:true},
+            agreement_checkbox:{required:true},
 
 			},
 		messages:{
@@ -269,40 +285,44 @@
             age:{required:"<div class='text-danger'>Please enter this required field</div>"},
             password:{required:"<div class='text-danger'>Please enter this required field</div>"},
             re_enter_password:{required:"<div class='text-danger'>Please enter this required field</div>"},	
+            agreement_checkbox:{required:"<div class='text-danger'>Please check the terms and condition first before you sign up.</div>"},	
 			},
               
 		submitHandler:function(){
-                   
+                  
+           
+				Swal.fire({
+					title: 'Signing up...',
+					html: 'Please wait for a while.',			
+					timerProgressBar: true,
+					didOpen: () => {
 
-			// 	Swal.fire({
-			// 		title: 'Saving...',
-			// 		html: 'Please wait for a while.',			
-			// 		timerProgressBar: true,
-			// 		didOpen: () => {
-
-			// 			Swal.showLoading()
-			// 			$.ajax({
-			// 				url:location.origin + 'hypr-mobile/social/use-referral',
-			// 				type:'post',					
-			// 				data:$("#validate-report-form").serialize(),
-			// 				success:function(response){
+						Swal.showLoading()
+                      
+					 $.ajax({
+							url:location.origin + '/hypr-mobile/social/use-referral',
+							type:'post',					
+							data:$("#sign-up-form").serialize(),
+							success:function(response){
 								
-			// 						Swal.fire({
-			// 							target: document.getElementById('addRequest'),
-			// 							icon: response.status == true ? 'success' : 'error',
-			// 							title: 	response.message,	
-			// 						}).then(()=>{
-			// 							$("#validate-report-form")[0].reset();																
-			// 							location.href = '<?php echo base_url();?>ehss/reviewreport';
-			// 						})
+									Swal.fire({						
+										icon: response.status == true ? 'success' : 'error',
+										title: 	response.message,	
+									}).then(()=>{
+																							
+										
+									})
 								
 								
 													
-			// 				}
+							},
+                            error:(error)=>{
+                                console.warn(error)
+                            }
 							
-			// 			})
-			// 	}
-			// });
+						})
+				}
+			});
 				
 		
 			

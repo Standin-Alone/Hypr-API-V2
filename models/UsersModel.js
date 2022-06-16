@@ -28,6 +28,8 @@ let userNewSchema = new schema({
     picture:String,
     coverPic:String,
     user_refferal_code: String,  
+    referral_link: String,  
+    referral_user_id:String,
     access_token:String,
     social_type: String,
     signupType: String,

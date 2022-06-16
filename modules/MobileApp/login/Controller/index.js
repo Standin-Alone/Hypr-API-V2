@@ -211,17 +211,44 @@ methods.getSignUp = async (req,res)=>{
                 }else if(insertUserResult){
 
                     // success create
-                  
+                    let referralLink   = `${process.env.DEV_URL}/hypr-mobile/social/referral/${insertUserResult._id}`;
 
-                    let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
-                    let fullName =  `${first_name} ${last_name}`;            
+                    let setReferralLink = {
+                        $set:{referral_link : referralLink}
+                    }
 
-                    // email payload
-                    let emailPayload = {
-                                        name:fullName,
-                                        toemail:email,                                        
-                                        url:verficationLink
-                                     };
+                    UsersSchema.findByIdAndUpdate(insertUserResult._id,setReferralLink, function (updateError,updateResult) {
+                        if(updateError){
+                            console.warn(updateError)
+                            // error on update
+                            return res.send({
+                                status:false,
+                                message:'Something went wrong',
+                                error:updateError
+                            })
+                
+                        }else{                        
+        
+                            return  res.send({
+                                status:true,
+                                message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                            })
+                        }
+                    
+                    });
+
+                    
+
+
+                    // let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
+                    // let fullName =  `${first_name} ${last_name}`;            
+
+                    // // email payload
+                    // let emailPayload = {
+                    //                     name:fullName,
+                    //                     toemail:email,                                        
+                    //                     url:verficationLink
+                    //                  };
 
                     // SEND VERIFICATION EMAIL
                     // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
@@ -260,6 +287,7 @@ methods.getSignUp = async (req,res)=>{
                     //         }
                     //     });
                     //  });        
+                     
                 }
             });          
         }

@@ -79,10 +79,11 @@ methods.useReferral = async (req,res)=>{
 
 
         // INITIALIZE BODY
+       
         let first_name           = req.body.first_name;
         let last_name            = req.body.last_name;
         let email                = req.body.email;
-        let phone                = req.body.contact_number;
+        let phone                = req.body.contact_number.replace(/ /g,'');
         let birthday             = req.body.birthday;
         let age                  = req.body.age;
         let country              = req.body.country;
@@ -92,7 +93,7 @@ methods.useReferral = async (req,res)=>{
         let password             = req.body.password;        
         let encrypt_password     = await bcrypt.hash(password,8);
         // let referral_code        = req.body.referral_code;
-        let referral_code_by_id  = req.body.referral_user_id;
+        let referral_user_id     = req.body.referral_user_id;
         let referred_by_name     = '';
         let user_refferal_code   = '';
 
@@ -112,7 +113,7 @@ methods.useReferral = async (req,res)=>{
             address:address,
             username:username,
             password:encrypt_password,
-            referral_code_by_id:referral_code_by_id,
+            referral_user_id:referral_user_id,
             referred_by_name:referred_by_name,
             user_refferal_code:user_refferal_code,
          
@@ -132,7 +133,7 @@ methods.useReferral = async (req,res)=>{
 
         }else{             
             
-            UsersSchema.create(payload, (userError, insertUserResult) => {                    
+            await UsersSchema.create(payload, (userError, insertUserResult) => {                    
                 if(userError){
                     // error create
                     return  res.send({
@@ -143,17 +144,43 @@ methods.useReferral = async (req,res)=>{
                 }else if(insertUserResult){
 
                     // success create
-                  
+                    // success create
+                    let referralLink   = `${process.env.DEV_URL}/hypr-mobile/social/referral/${insertUserResult._id}`;
+                    let getReferralUser = UsersSchema.findById();
+                    let setReferralLink = {
+                        $set:{referral_link : referralLink}
+                    }
 
-                    let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
-                    let fullName =  `${first_name} ${last_name}`;            
+                    UsersSchema.findByIdAndUpdate(insertUserResult._id,setReferralLink, function (updateError,updateResult) {
+                        if(updateError){
+                            console.warn(updateError)
+                            // error on update
+                            return res.send({
+                                status:false,
+                                message:'Something went wrong',
+                                error:updateError
+                            })
+                
+                        }else{                        
+        
+                            return  res.send({
+                                status:true,
+                                message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                            })
+                        }
+                    
+                    });
+    
 
-                    // email payload
-                    let emailPayload = {
-                                        name:fullName,
-                                        toemail:email,                                        
-                                        url:verficationLink
-                                     };
+                    // let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
+                    // let fullName =  `${first_name} ${last_name}`;            
+
+                    // // email payload
+                    // let emailPayload = {
+                    //                     name:fullName,
+                    //                     toemail:email,                                        
+                    //                     url:verficationLink
+                    //                  };
 
                     // SEND VERIFICATION EMAIL
                     // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
@@ -191,7 +218,9 @@ methods.useReferral = async (req,res)=>{
                     //             })
                     //         }
                     //     });
-                    //  });        
+                    //  });       
+                    
+                              
                         }
                     });          
                 }
