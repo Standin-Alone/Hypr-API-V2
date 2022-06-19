@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const socialPost = new mongoose.Schema({
     social_post_id:  mongoose.Schema.Types.ObjectId ,
-    post: {
+    caption: {
         type: String,
         default: ''
     },

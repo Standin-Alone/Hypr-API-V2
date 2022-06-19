@@ -10,6 +10,9 @@ route.group('/hypr-mobile/social',()=>{
     route.post('/get-all-friends-post',controller.getAllFriendsPost)    
     route.get('/referral/:id',controller.getReferral)        
     route.post('/use-referral',controller.useReferral)    
+    route.get('/successful/created-account',controller.successfullCreatedAccount)    
+
+    route.post('/create-post',controller.createPost)    
 })
 
 

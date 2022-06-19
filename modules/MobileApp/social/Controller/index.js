@@ -14,8 +14,9 @@ methods.getAllFriendsPost = async (req,res)=>{
     try{
         // initialize body        
         
-        
-        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:['629c76daba51ae90e4fa2728']}});
+        let userId = req.body.userId;
+
+        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:['629c76daba51ae90e4fa2728',userId]}});
         console.warn(getAllFriendsPost);
         if(getAllFriendsPost.length != 0 ){
 
@@ -166,7 +167,10 @@ methods.useReferral = async (req,res)=>{
                             return  res.send({
                                 status:true,
                                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                                link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`
                             })
+
+                            
                         }
                     
                     });
@@ -239,4 +243,65 @@ methods.useReferral = async (req,res)=>{
 
 }
 
+methods.successfullCreatedAccount = (req,res)=>{
+    return  res.render('./templates/createdAccount.ejs');
+}
+
+
+
+methods.createPost = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        
+        let  userId = req.body.userId;
+        let  image  = req.body.image ;
+        let  caption  = req.body.caption ;
+        
+        let checkUserId = await UsersSchema.findById(userId);
+        
+        
+        if(checkUserId){
+            
+            let payload = {
+                post_images:[image],
+                user_id:userId,
+                caption:caption,
+                full_name: `${checkUserId.first_name} ${checkUserId.last_name}`
+
+            }
+            SocialPostSchema.create(payload, (socialError, insertSocialResult) => {                    
+                if(socialError){
+                    // error on insert
+                    return res.send({
+                        status:false,
+                        message:'Something went wrong',
+                        error:socialError
+                    })
+
+                }else{
+                    return  res.send({
+                        status:true,
+                        message:'Successfully posted.',                                                    
+                    })
+                }
+            });
+
+        }else{
+            return res.send({
+                status:false,
+                message:'User cannot be found',                                                
+            })
+        }
+
+        
+               
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 module.exports = methods;
