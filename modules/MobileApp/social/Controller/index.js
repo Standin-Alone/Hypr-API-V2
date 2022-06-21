@@ -69,6 +69,7 @@ methods.getReferral = async (req,res)=>{
 
 
 
+
 methods.useReferral = async (req,res)=>{
 
     try{
@@ -304,4 +305,84 @@ methods.createPost = async (req,res)=>{
 
 
 }
+
+
+methods.hypePost = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        
+        let  userId = req.body.userId;
+        let  post = req.body.post;
+
+        
+        let checkPost = await SocialPostSchema.findById(post._id);
+
+       
+        if(checkPost){
+
+
+            let checkIfAlreadyHype = checkPost.hypes.filter((item)=>item.user_id == userId);
+
+            let updatePayload = [];
+            let hypeStatus = '';
+            if(checkIfAlreadyHype.length == 1){
+                
+                let cleanHypes = checkPost.hypes.filter((item)=>item.user_id != userId);
+
+                updatePayload = {
+                    $set:{hypes :cleanHypes}
+                }
+
+                hypeStatus = 'unHype';
+                
+
+            }else{
+          
+                updatePayload = {
+                    $set:{hypes :[...new Set(checkPost.hypes),{user_id:userId,date_hyped:new Date()}]
+                    
+                    }
+                }                
+                hypeStatus = 'hype';
+            }
+           
+
+            SocialPostSchema.findByIdAndUpdate(post._id,updatePayload, function (updateError,updateResult) {
+                if(updateError){
+                    console.warn(updateError)
+                    // error on update
+                    return res.send({
+                        status:false,        
+                    })
+        
+                }else{        
+                    
+                    return  res.send({
+                        status:true,   
+                        hypes:updateResult.hypes,
+                        hypeCount:updateResult.hypes.length + 1,          
+                        hypeStatus:hypeStatus
+                    })                    
+                }
+            
+            });
+        }else{
+
+        }
+                
+
+
+        
+               
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
 module.exports = methods;

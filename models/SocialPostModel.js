@@ -22,6 +22,7 @@ const socialPost = new mongoose.Schema({
         type: String,
         default: ''
     },
+   hypes:{type:Array,default:[]}, 
    post_images: { type: Array },
    post_location: {type: Array},
    post_tags: { type: Array },

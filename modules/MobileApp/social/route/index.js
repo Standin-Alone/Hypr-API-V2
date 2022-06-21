@@ -13,6 +13,7 @@ route.group('/hypr-mobile/social',()=>{
     route.get('/successful/created-account',controller.successfullCreatedAccount)    
 
     route.post('/create-post',controller.createPost)    
+    route.post('/hype-post',controller.hypePost)    
 })
 
 
