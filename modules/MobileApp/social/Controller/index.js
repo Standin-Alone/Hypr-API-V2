@@ -349,7 +349,7 @@ methods.hypePost = async (req,res)=>{
             }
            
 
-            SocialPostSchema.findByIdAndUpdate(post._id,updatePayload, function (updateError,updateResult) {
+            SocialPostSchema.findByIdAndUpdate(post._id,updatePayload, {new:true},function (updateError,updateResult) {
                 if(updateError){
                     console.warn(updateError)
                     // error on update
