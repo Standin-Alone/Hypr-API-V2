@@ -26,7 +26,7 @@ let userNewSchema = new schema({
     referred_by_id : String,
     referred_by_name : String,
     picture:String,
-    coverPic:String,
+    cover_pic:String,
     user_refferal_code: String,  
     referral_link: String,  
     referral_user_id:String,

@@ -16,17 +16,21 @@ methods.getAllFriendsPost = async (req,res)=>{
         
         let userId = req.body.userId;
 
-        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:['629c76daba51ae90e4fa2728',userId]}});
-        console.warn(getAllFriendsPost);
+        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:['629c76daba51ae90e4fa2728','629ac3b4a07b3cbdd4378e34',userId]}}).sort({date_created: -1});
+        
         if(getAllFriendsPost.length != 0 ){
 
-                         
-        
-                return res.send({
-                    status:true,
-                    message:'Successfully got all post.',
-                    data:getAllFriendsPost
-                }) 
+     
+            getAllFriendsPost.map((posts,index)=>{
+                 posts.filenames = posts.post_images.map((postFiles)=>fs.readFileSync(`./uploads/${postFiles}`, {encoding: 'base64'})) 
+            })
+            
+      
+            return res.send({
+                status:true,
+                message:'Successfully got all post.',
+                data:getAllFriendsPost
+            }) 
             
         }else{
             return res.send({
@@ -257,46 +261,73 @@ methods.createPost = async (req,res)=>{
         
         
         let  userId = req.body.userId;
-        let  image  = req.body.image ;
+        let  file  = req.body.file ;
         let  caption  = req.body.caption ;
+  
+        let countErrorUploads = 0 ;
+        console.warn(file);
+
+        // upload image
+        file.map((fileResponse)=>{
+            let fileBuffer =  Buffer.from(fileResponse.fileBase64, 'base64');
+            fs.writeFile(`./uploads/${fileResponse.fileName}`, fileBuffer , function (err) {  
+                if(err){
+                    countErrorUploads++
+                }                
+            });    
+        })
+      
         
-        let checkUserId = await UsersSchema.findById(userId);
+
+   
+
+
+        if(countErrorUploads == 0 ){
+
+
         
-        
-        if(checkUserId){
+            let checkUserId = await UsersSchema.findById(userId);
             
-            let payload = {
-                post_images:[image],
-                user_id:userId,
-                caption:caption,
-                full_name: `${checkUserId.first_name} ${checkUserId.last_name}`
+            let fileNames = file.map((content)=>content.fileName);
+            if(checkUserId){
+                
+                let payload = {
+                    post_images:fileNames,
+                    user_id:userId,
+                    caption:caption,
+                    full_name: `${checkUserId.first_name} ${checkUserId.last_name}`
 
-            }
-            SocialPostSchema.create(payload, (socialError, insertSocialResult) => {                    
-                if(socialError){
-                    // error on insert
-                    return res.send({
-                        status:false,
-                        message:'Something went wrong',
-                        error:socialError
-                    })
-
-                }else{
-                    return  res.send({
-                        status:true,
-                        message:'Successfully posted.',                                                    
-                    })
                 }
-            });
+                SocialPostSchema.create(payload, (socialError, insertSocialResult) => {                    
+                    if(socialError){
+                        // error on insert
+                        return res.send({
+                            status:false,
+                            message:'Something went wrong',
+                            error:socialError
+                        })
+
+                    }else{
+                        return  res.send({
+                            status:true,
+                            message:'Successfully posted.',                                                    
+                        })
+                    }
+                });
+
+            }else{
+                return res.send({
+                    status:false,
+                    message:'User cannot be found',                                                
+                })
+            }
 
         }else{
             return res.send({
                 status:false,
-                message:'User cannot be found',                                                
+                message:'Failed to post.',                                                
             })
         }
-
-        
                
     }catch(error){
         console.log(error);

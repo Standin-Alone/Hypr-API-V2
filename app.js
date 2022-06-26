@@ -8,7 +8,7 @@ var cors = require('cors')
 var logger = require('morgan');
 var permittedCrossDomainPolicies = require('helmet-crossdomain');
 var  dotenv = require('dotenv');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 require('./global/variables')
 require('./global/schema')
 
@@ -27,9 +27,13 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 
-app.use(express.json());
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json({limit:'25mb'}));
+
+// app.use(express.urlencoded({ extended: true,limit:'25mb'}));
+
+
+
 app.use(cookieParser());
 
 app.set('trust proxy', 1);
@@ -50,11 +54,12 @@ app.use(session({
 
 }));
 
-
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:'1000mb'}));
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  limit: '1000mb'
 }));
+
 
 
 // routes
@@ -86,7 +91,7 @@ app.disable('x-powered-by');
 
 
 
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(permittedCrossDomainPolicies())
 
 

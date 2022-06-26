@@ -9,6 +9,10 @@ global.ejs = require("ejs");
 global.fetch = require('node-fetch');
 global.lodash = require('lodash');
 global.paypal= require('paypal-rest-sdk');
+
+global.fs = require('fs');
+
+  
 let stripeAPI =  { secretKey: 'sk_test_51KnhTJGAX1ovFy7TMDtGCPVy0UOnaZWO0cdMcS5cytztE0a1sw3S2jSEytJfmWzI6SvWNROc7TGoGze41AbIgFsx00szySNDGm'};
 
 global.stripe= require('stripe')(stripeAPI.secretKey);

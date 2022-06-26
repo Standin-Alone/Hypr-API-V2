@@ -526,9 +526,12 @@ methods.getUserInfo = async (req,res)=>{
     
  
         let checkUserId = await UsersSchema.findById(userId);
-        console.warn(checkUserId);
+        
         if(checkUserId){
-                               
+            
+            checkUserId.profile_image = fs.readFileSync(`./uploads/${checkUserId.profile_image}`, {encoding: 'base64'})
+            checkUserId.cover_pic = fs.readFileSync(`./uploads/${checkUserId.cover_pic}`, {encoding: 'base64'})
+    
             return res.send({
                 status:true,
                 message:'User info has been found.',                    

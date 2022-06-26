@@ -14,7 +14,7 @@ methods.getToVerifyOrders = async (req,res)=>{
     try{
         // initialize body        
         const userId = req.body.userId;
-        console.warn(userId);
+      
         let checkUserOrders = await OrdersSchema.find({user_id : userId});
 
         if(checkUserOrders.length != 0 ){
