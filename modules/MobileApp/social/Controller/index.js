@@ -271,6 +271,7 @@ methods.createPost = async (req,res)=>{
         // upload image
         file.map((fileResponse)=>{
             let fileBuffer =  Buffer.from(fileResponse.fileBase64, 'base64');
+            console.warn(fileResponse)
             fs.writeFile(`./uploads/${fileResponse.fileName}`, fileBuffer , function (err) {  
                 if(err){
                     countErrorUploads++

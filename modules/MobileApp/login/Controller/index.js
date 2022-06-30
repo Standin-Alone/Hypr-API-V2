@@ -33,46 +33,42 @@ const sendOtp = (userId,res)=>{
                 otp:generateOtp
             }
 
-            return  res.send({
-                status:true,
-                message:'Successfully send OTP to your email.',     
-                userId:userId.toString(),
-                email:otpEmailPayload.toEmail  
-            })
+         
             // UNCOMMENT WHEN THE NODEMAILER IS FIX
-            // ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
-            //     let mailOptions = {
-            //                         from: "Hypr", // sender address
-            //                         to: otpEmailPayload.toEmail,                                        
-            //                         subject: 'Hypr One Time Password',
-            //                         html:      data,
-            //                         attachments: [{
-            //                         filename: 'otp.jpeg',
-            //                         path: `${process.env.DEV_URL}/images/otp.jpeg`,
-            //                         cid: 'otp' //same cid value as in the html img src
-            //                     },{
-            //                         filename: 'hypr-logo.png',
-            //                         path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-            //                         cid: 'logo' //same cid value as in the html img src
-            //                     }]
-            //                     }
-            //     transporter.sendMail(mailOptions, function (error, info) {
-            //         if (error) {                    
-            //             return  res.send({
-            //                 status:false,
-            //                 message:'Error sent.',                
-            //             })
-            //         } else {
+            ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
+                let mailOptions = {
+                                    from: "Hypr", // sender address
+                                    to: otpEmailPayload.toEmail,                                        
+                                    subject: 'Hypr One Time Password',
+                                    html:      data,
+                                    attachments: [{
+                                    filename: 'otp.jpeg',
+                                    path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                    cid: 'otp' //same cid value as in the html img src
+                                },{
+                                    filename: 'hypr-logo.png',
+                                    path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                    cid: 'logo' //same cid value as in the html img src
+                                }]
+                                }
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {                    
+                        return  res.send({
+                            status:false,
+                            message:'Error sent.',                
+                        })
+                    } else {
                     
-            //             return  res.send({
-            //                 status:true,
-            //                 message:'Successfully send OTP to your email.',     
-            //                 userId:userId.toString(),
-            //                 email:otpEmailPayload.toEmail  
-            //             })
-            //         }            
-            //       });
-            // });
+                        return  res.send({
+                            status:true,
+                            message:'Successfully send OTP to your email.',     
+                            userId:userId.toString(),
+                            email:otpEmailPayload.toEmail  
+                        })
+                        
+                    }            
+                  });
+            });
             
             
         }
@@ -240,53 +236,53 @@ methods.getSignUp = async (req,res)=>{
                     
 
 
-                    // let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
-                    // let fullName =  `${first_name} ${last_name}`;            
+                    let verficationLink = `${process.env.DEV_URL}/hypr-mobile/user/verifyAccount/${insertUserResult._id}`;
+                    let fullName =  `${first_name} ${last_name}`;            
 
-                    // // email payload
-                    // let emailPayload = {
-                    //                     name:fullName,
-                    //                     toemail:email,                                        
-                    //                     url:verficationLink
-                    //                  };
+                    // email payload
+                    let emailPayload = {
+                                        name:fullName,
+                                        toemail:email,                                        
+                                        url:verficationLink
+                                     };
 
                     // SEND VERIFICATION EMAIL
-                    // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
-                    //     // co
-                    //     // ready for email otp
-                    //     var mailOptions = {
-                    //         from: "Hypr", // sender address
-                    //         to: email,                                        
-                    //         subject: 'Hypr Verification  Email',
-                    //         html:      data,
-                    //         attachments: [{
-                    //             filename: 'otp.jpeg',
-                    //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
-                    //             cid: 'otp' //same cid value as in the html img src
-                    //         },{
-                    //             filename: 'hypr-logo.png',
-                    //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-                    //             cid: 'logo' //same cid value as in the html img src
-                    //         }]
-                    //     }
-                    //     transporter.sendMail(mailOptions, function (mailError, info) {
-                    //         if (mailError) {
-                    //             console.log('Error: ' + mailError);
-                    //             console.warn('Email not sent');
-                    //             return  res.json({
-                    //                 status: false,
-                    //                 msg: 'Email not sent',
-                    //                 code: 'E110'
-                    //             });
-                    //         } else {
-                    //            // success create
-                    //            return  res.send({
-                    //                 status:true,
-                    //                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
-                    //             })
-                    //         }
-                    //     });
-                    //  });        
+                    ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                        // co
+                        // ready for email otp
+                        var mailOptions = {
+                            from: "Hypr", // sender address
+                            to: email,                                        
+                            subject: 'Hypr Verification  Email',
+                            html:      data,
+                            attachments: [{
+                                filename: 'otp.jpeg',
+                                path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                cid: 'otp' //same cid value as in the html img src
+                            },{
+                                filename: 'hypr-logo.png',
+                                path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                cid: 'logo' //same cid value as in the html img src
+                            }]
+                        }
+                        transporter.sendMail(mailOptions, function (mailError, info) {
+                            if (mailError) {
+                                console.log('Error: ' + mailError);
+                                console.warn('Email not sent');
+                                return  res.json({
+                                    status: false,
+                                    msg: 'Email not sent',
+                                    code: 'E110'
+                                });
+                            } else {
+                               // success create
+                               return  res.send({
+                                    status:true,
+                                    message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                                })
+                            }
+                        });
+                     });        
                      
                 }
             });          
@@ -403,44 +399,44 @@ methods.getSignIn = async (req,res)=>{
                                     toemail:checkUserIfExists.email,                                        
                                     url:verficationLink
                                  };
-                // UNCOMMENT WHEN THE NODEMAILER IS FIX
+                
                 // SEND VERIFICATION EMAIL
-                // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
-                //     // co
-                //     // ready for email otp
-                //     var mailOptions = {
-                //         from: "Hypr", // sender address
-                //         to: checkUserIfExists.email,                                        
-                //         subject: 'Hypr Verification  Email',
-                //         html:      data,
-                //         attachments: [{
-                //             filename: 'otp.jpeg',
-                //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
-                //             cid: 'otp' //same cid value as in the html img src
-                //         },{
-                //             filename: 'hypr-logo.png',
-                //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-                //             cid: 'logo' //same cid value as in the html img src
-                //         }]
-                //     }
-                //     transporter.sendMail(mailOptions, function (mailError, info) {
-                //         if (mailError) {
-                //             console.log('Error: ' + mailError);
-                //             console.warn('Email not sent');
-                //             res.json({
-                //                 status: false,
-                //                 msg: 'Email not sent',
-                //                 code: 'E110'
-                //             });
-                //         } else {
-                //            // success create
-                //            res.send({
-                //             status:false,
-                //             message:'Please check your email to verify your account.',                
-                //             })    
-                //         }
-                //     });
-                //  });      
+                ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                    // co
+                    // ready for email otp
+                    var mailOptions = {
+                        from: "Hypr", // sender address
+                        to: checkUserIfExists.email,                                        
+                        subject: 'Hypr Verification  Email',
+                        html:      data,
+                        attachments: [{
+                            filename: 'otp.jpeg',
+                            path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                            cid: 'otp' //same cid value as in the html img src
+                        },{
+                            filename: 'hypr-logo.png',
+                            path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                            cid: 'logo' //same cid value as in the html img src
+                        }]
+                    }
+                    transporter.sendMail(mailOptions, function (mailError, info) {
+                        if (mailError) {
+                            console.log('Error: ' + mailError);
+                            console.warn('Email not sent');
+                            res.json({
+                                status: false,
+                                msg: 'Email not sent',
+                                code: 'E110'
+                            });
+                        } else {
+                           // success create
+                           res.send({
+                            status:false,
+                            message:'Please check your email to verify your account.',                
+                            })    
+                        }
+                    });
+                 });      
 
                
             }
