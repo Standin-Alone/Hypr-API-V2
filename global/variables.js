@@ -32,6 +32,6 @@ global.transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     auth: {
         user: 'developer01000@gmail.com',
-        pass: '01000webdeveloper'
+        pass: 'eecwpreoiljnggbl'
     }
 });

@@ -157,7 +157,7 @@ methods.useReferral = async (req,res)=>{
                         $set:{referral_link : referralLink}
                     }
 
-                    UsersSchema.findByIdAndUpdate(insertUserResult._id,setReferralLink, function (updateError,updateResult) {
+                    UsersSchema.findByIdAndUpdate(insertUserResult._id,setReferralLink, {new:true},function (updateError,updateResult) {
                         if(updateError){
                             console.warn(updateError)
                             // error on update
@@ -172,7 +172,8 @@ methods.useReferral = async (req,res)=>{
                             return  res.send({
                                 status:true,
                                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
-                                link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`
+                                link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`,
+                                data:updateResult
                             })
 
                             

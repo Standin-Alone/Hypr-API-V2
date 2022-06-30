@@ -7,7 +7,7 @@ const config = {
     url: env.mongo.url || "mongodb://localhost:27017",
 
     // TODO Change this to your database name:
-    databaseName: env.mongo.dbname || "hypr_db",
+    databaseName: env.mongo.dbname || "hyprDB",
 
     options: {
       useNewUrlParser: true, // removes a deprecation warning when connecting

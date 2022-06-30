@@ -298,26 +298,42 @@
 					didOpen: () => {
 
 						Swal.showLoading()
-                      
+                      // MLM
+                   
+
+
 					 $.ajax({
 							url:location.origin + '/hypr-mobile/social/use-referral',
 							type:'post',					
 							data:$("#sign-up-form").serialize(),
-							success:function(response){
-                                
-                                
-									Swal.fire({						
-										icon: response.status == true ? 'success' : 'error',
-										title: 	response.message,	
-									}).then(()=>{
+							success:function(response){                                                                
+
+                          
+							
+
+
+                            let referral_user_id =  $("input[name=referral_user_id]").val();
+                            let new_user_id =   response.data._id;
+                            // execute MLM
+                            $.ajax({
+                                url:location.origin + '/mlm/api/v1/mlm-insert-team',
+                                type:'post',					
+                                data:{team:[{recruiter_id:referral_user_id,recruited_id:new_user_id}]},
+                                success:function(mlmResponse){
+                                    Swal.fire({						
+                                        icon: response.status == true ? 'success' : 'error',
+                                        title: 	response.message,	
+                                    }).then(()=>{
                                         if(response.status == true){
                                             location.href = response.link
-                                        }
-										
-									})
-								
-								
-													
+                                        }										
+                                    })	
+                                        
+                                }
+                            });
+
+                                           
+                                      																												
 							},
                             error:(error)=>{
                                 console.warn(error)
