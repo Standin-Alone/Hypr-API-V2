@@ -30,8 +30,13 @@ paypal.configure({
 global.transporter = nodemailer.createTransport({
     service: 'gmail.com',
     host: 'smtp.gmail.com',
+    port: 587,    
+    secure: false,
     auth: {
         user: 'developer01000@gmail.com',
-        pass: 'eecwpreoiljnggbl'
+        pass: 'qzcsxdjumeewvdvn'
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });

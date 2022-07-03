@@ -1,24 +1,26 @@
 
-var login = require('../modules/MobileApp/login/route');
-var cj = require('../modules/MobileApp/cj/route');
-var market = require('../modules/MobileApp/market/route');
-var order = require('../modules/MobileApp/order/route');
-var payment = require('../modules/MobileApp/payment/route');
-var tracking = require('../modules/MobileApp/tracking/route');
-var social = require('../modules/MobileApp/social/route');
-var mlm = require('../modules/MobileApp/mlm/route');
+const path = require('path');
+const { readdir } = require('fs');
 
-
-
+// MODULAR 
 module.exports = function(app){
-    // MODULAR ROUTES
-    app.use('',login);
-    app.use('',market);
-    app.use('',cj);
-    app.use('',order);
-    app.use('',payment);
-    app.use('',tracking);
-    app.use('',social);
-    app.use('',mlm);
 
+    readdir(
+        path.resolve(__dirname,'../Modules'),
+        (err, files) => {
+          if (err) throw err;
+            
+          for (let file of files) {
+            
+            readdir(
+                path.resolve(__dirname,`../Modules/${file}`),
+                (err, subFolders) => {
+                    for(let subFolder of subFolders)                    
+                        app.use('',require(`../modules/${file}/${subFolder}/route`));            
+            })
+            
+        
+          }
+        }
+      );
 }
