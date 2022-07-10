@@ -35,48 +35,48 @@ const sendOtp = (userId,res)=>{
 
          
             // UNCOMMENT WHEN THE NODEMAILER IS FIX
-            // ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
-            //     let mailOptions = {
-            //                         from: "Hypr", // sender address
-            //                         to: otpEmailPayload.toEmail,                                        
-            //                         subject: 'Hypr One Time Password',
-            //                         html:      data,
-            //                         attachments: [{
-            //                         filename: 'otp.jpeg',
-            //                         path: `${process.env.DEV_URL}/images/otp.jpeg`,
-            //                         cid: 'otp' //same cid value as in the html img src
-            //                     },{
-            //                         filename: 'hypr-logo.png',
-            //                         path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-            //                         cid: 'logo' //same cid value as in the html img src
-            //                     }]
-            //                     }
-            //     transporter.sendMail(mailOptions, function (error, info) {
-            //         if (error) {       
-            //             console.warn(error);
-            //             return  res.send({
-            //                 status:false,
-            //                 message:'Error sent.',                
-            //             })
-            //         } else {
+            ejs.renderFile('./views/templates/otpEmail.ejs',otpEmailPayload,function(err,data){
+                let mailOptions = {
+                                    from: "Hypr", // sender address
+                                    to: otpEmailPayload.toEmail,                                        
+                                    subject: 'Hypr One Time Password',
+                                    html:      data,
+                                    attachments: [{
+                                    filename: 'otp.jpeg',
+                                    path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                    cid: 'otp' //same cid value as in the html img src
+                                },{
+                                    filename: 'hypr-logo.png',
+                                    path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                    cid: 'logo' //same cid value as in the html img src
+                                }]
+                                }
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {       
+                        console.warn(error);
+                        return  res.send({
+                            status:false,
+                            message:'Error sent.',                
+                        })
+                    } else {
                     
-            //             return  res.send({
-            //                 status:true,
-            //                 message:'Successfully send OTP to your email.',     
-            //                 userId:userId.toString(),
-            //                 email:otpEmailPayload.toEmail  
-            //             })
-                        
-            //         }            
-            //       });
-            // });
-            
-                 return  res.send({
+                        return  res.send({
                             status:true,
                             message:'Successfully send OTP to your email.',     
                             userId:userId.toString(),
                             email:otpEmailPayload.toEmail  
                         })
+                        
+                    }            
+                  });
+            });
+            
+                //  return  res.send({
+                //             status:true,
+                //             message:'Successfully send OTP to your email.',     
+                //             userId:userId.toString(),
+                //             email:otpEmailPayload.toEmail  
+                //         })
         }
     });
 }
