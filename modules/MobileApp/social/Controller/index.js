@@ -26,16 +26,33 @@ methods.getAllFriendsPost = async (req,res)=>{
         if(getAllFriendsPost.length != 0 ){
 
      
-            getAllFriendsPost.map((posts,index)=>{
+            let getPost = getAllFriendsPost.map( async (posts,index)=>{
                  posts.user_picture =fs.readFileSync(`./uploads/${posts.profile_image}`, {encoding: 'base64'}); 
                  posts.filenames = posts.post_images.map((postFiles)=>fs.readFileSync(`./uploads/${postFiles}`, {encoding: 'base64'})) 
+
+                 let commentPromise = Promise.all( posts.post_comment.map(async (item)=>{
+                    let getUserInfo =   await UsersSchema.findById(item.user_id).exec();
+                    
+                    if(getUserInfo){
+                
+                        item.profile_image = fs.readFileSync(`./uploads/${getUserInfo.profile_image}`, {encoding: 'base64'});
+                    }
+                    return item;
+                 }))        
+
+              
+                 posts.post_comment = await commentPromise;
+
+
+                 return posts;
             })
-            
+
+           
       
             return res.send({
                 status:true,
                 message:'Successfully got all post.',
-                data:getAllFriendsPost
+                data:await Promise.all(getPost)
             }) 
             
         }else{
@@ -462,7 +479,7 @@ methods.comment = async (req,res)=>{
 
         
 
-        SocialPostSchema.findByIdAndUpdate(postId,updatePayload, {new:true},function (updateError,updateResult) {
+        SocialPostSchema.findByIdAndUpdate(postId,updatePayload, {new:true},async function (updateError,updateResult) {
             if(updateError){
                 console.warn(updateError)
                 // error on update
@@ -471,10 +488,18 @@ methods.comment = async (req,res)=>{
                 })
     
             }else{        
-                
+             
+                updateResult.post_comment.map( (comment)=>{
+                    let getUserInfo =   UsersSchema.findById(userId);
+                    getUserInfo.then((item)=>{
+                        comment.profile_image = fs.readFileSync(`./uploads/${getUserInfo.profile_image}`, {encoding: 'base64'});                    
+                    })                       
+                      
+                })
+                console.warn(updateResult.post_comment)
                 return  res.send({
                     status:true,   
-                    newComment:updateResult.post_comment,                 
+                    newComment: updateResult.post_comment              
                 })                    
             }
         
