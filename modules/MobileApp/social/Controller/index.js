@@ -25,9 +25,10 @@ methods.getAllFriendsPost = async (req,res)=>{
         
         if(getAllFriendsPost.length != 0 ){
 
-     
+            // GET ALL FRIENDS POST
             let getPost = getAllFriendsPost.map( async (posts,index)=>{
-                 posts.user_picture =fs.readFileSync(`./uploads/${posts.profile_image}`, {encoding: 'base64'}); 
+                 console.warn(posts.user_picture);
+                 posts.user_picture = await fs.readFileSync(`./uploads/${posts.user_picture ? posts.user_picture : 'default-profile.png'}`, {encoding: 'base64'}); 
                  posts.filenames = posts.post_images.map((postFiles)=>fs.readFileSync(`./uploads/${postFiles}`, {encoding: 'base64'})) 
 
                  let commentPromise = Promise.all( posts.post_comment.map(async (item)=>{
@@ -47,8 +48,8 @@ methods.getAllFriendsPost = async (req,res)=>{
                  return posts;
             })
 
-           
-      
+          
+            
             return res.send({
                 status:true,
                 message:'Successfully got all post.',
@@ -324,6 +325,7 @@ methods.createPost = async (req,res)=>{
                     post_images:fileNames,
                     user_id:userId,
                     caption:caption,
+                    user_picture:checkUserId.profile_image,
                     full_name: `${checkUserId.first_name} ${checkUserId.last_name}`
 
                 }

@@ -15,6 +15,7 @@ route.group('/hypr-mobile/user',()=>{
     route.post('/resend-otp',controller.resendOtp)
     route.post('/verify-otp',controller.getVeriyfyOtp);
     route.post('/get-user-info',controller.getUserInfo);
+    route.post('/change-profile-picture',controller.changeProfilePicture);
 
 })
 

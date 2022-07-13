@@ -586,4 +586,34 @@ methods.resendOtp = async (req,res)=>{
 }
 
 
+// CHANGE PROFILE PICTURE
+methods.changeProfilePicture = async (req,res)=>{    
+    try{
+        // initialize body
+        let userId = req.body.userId;
+    
+ 
+        let checkUserId = await UsersSchema.findById(userId);
+
+        if(checkUserId){
+                               
+     
+        }else{
+            return res.send({
+                status:false,
+                message:'User not found.',                    
+            })
+        }
+    }catch(error){
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:'Something went wrong',
+            error:error
+        })
+    }
+}
+
+
+
 module.exports = methods;
