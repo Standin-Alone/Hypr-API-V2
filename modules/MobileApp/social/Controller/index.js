@@ -459,9 +459,8 @@ methods.comment = async (req,res)=>{
         let  userId = req.body.userId;
         let  comment = req.body.comment;
         let  fullName = req.body.fullName;
-        let  profilePicture = req.body.profileImage;
-
-     
+ 
+      
         let checkPost = await SocialPostSchema.findById(postId);
 
 
@@ -492,17 +491,23 @@ methods.comment = async (req,res)=>{
     
             }else{        
              
-                updateResult.post_comment.map( (comment)=>{
-                    let getUserInfo =   UsersSchema.findById(userId);
-                    getUserInfo.then((item)=>{
-                        comment.profile_image = fs.readFileSync(`./uploads/profile_pictures//${getUserInfo.profile_image}`, {encoding: 'base64'});                    
-                    })                       
-                      
-                })
-                console.warn(updateResult.post_comment)
+              
+
+                let commentPromise = Promise.all( updateResult.post_comment.map(async (item)=>{
+                    let getUserInfo =   await UsersSchema.findById(item.user_id).exec();
+                    
+                    if(getUserInfo){
+                
+                        item.profile_image = getUserInfo.profile_image;
+                    }
+                    return item;
+                 }))    
+
+        
+
                 return  res.send({
                     status:true,   
-                    newComment: updateResult.post_comment              
+                    newComment: await  commentPromise             
                 })                    
             }
         
@@ -539,8 +544,8 @@ methods.getProfileInfo = async (req,res)=>{
         
         if(checkUserId){
             
-            checkUserId.profile_image = fs.readFileSync(`./uploads/profile_pictures//${checkUserId.profile_image}`, {encoding: 'base64'})
-            checkUserId.cover_pic = fs.readFileSync(`./uploads/profile_pictures//${checkUserId.cover_pic}`, {encoding: 'base64'})
+            checkUserId.profile_image = checkUserId.profile_image;
+            checkUserId.cover_pic = checkUserId.cover_pic;
             let countPosts =  await SocialPostSchema.find({user_id:userId}).countDocuments();
             let countFriends =  await FriendSchema.find({user_id:userId}).countDocuments();
 
