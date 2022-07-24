@@ -185,6 +185,8 @@ methods.getSignUp = async (req,res)=>{
             referral_code_by_id:referral_code_by_id,
             referred_by_name:referred_by_name,
             user_refferal_code:user_refferal_code,
+            profile_image:'default-profile.png',
+            cover_pic:'default-profile.png'
          
         }
 
@@ -531,8 +533,7 @@ methods.getUserInfo = async (req,res)=>{
         
         if(checkUserId){
             
-            checkUserId.profile_image = fs.readFileSync(`./uploads/${checkUserId.profile_image}`, {encoding: 'base64'})
-            checkUserId.cover_pic = fs.readFileSync(`./uploads/${checkUserId.cover_pic}`, {encoding: 'base64'})
+         
     
             return res.send({
                 status:true,
@@ -586,18 +587,108 @@ methods.resendOtp = async (req,res)=>{
 }
 
 
-// CHANGE PROFILE PICTURE
+// CHANGE PROFILE PICTURE AND COVER PHOTO
 methods.changeProfilePicture = async (req,res)=>{    
     try{
         // initialize body
         let userId = req.body.userId;
-    
+        let imageInfo = req.body.imageInfo;
+        let changeImageType = req.body.changeImageType;
  
         let checkUserId = await UsersSchema.findById(userId);
 
+        let countErrorUploads = 0;
         if(checkUserId){
-                               
-     
+
+            // upload image
+            let fileBuffer =  Buffer.from(imageInfo.data, 'base64');
+            console.warn(imageInfo.data)
+
+            if(changeImageType == 'profile'){
+                fs.writeFile(`./uploads/profile_pictures//${imageInfo.filename}`, fileBuffer , function (err) {  
+            
+                    if(err){
+                        countErrorUploads++
+                    }                
+                });    
+            }else{
+                fs.writeFile(`./uploads/covers//${imageInfo.filename}`, fileBuffer , function (err) {  
+            
+                    if(err){
+                        countErrorUploads++
+                    }                
+                }); 
+            }
+
+            if(countErrorUploads == 0){
+
+                let profileUpdatePayload = {
+                    $set:{
+                        profile_image: imageInfo.filename
+                    }
+                };
+
+                let coverUpdatePayload = {
+                    $set:{
+                        cover_pic: imageInfo.filename
+                    }
+                }
+                
+                UsersSchema.findByIdAndUpdate(userId, changeImageType == 'profile' ? profileUpdatePayload : coverUpdatePayload , {new:true},function (updateError,updateResult) {
+                    if(updateError){
+                        console.warn(updateError)
+                        // error on update
+                        return res.send({
+                            status:false,
+                            message:'Something went wrong',
+                            error:updateError
+                        })
+            
+                    }else{  
+
+                        let updatePostsUserPicture = {
+                            $set:{
+                                user_picture: imageInfo.filename
+                            }
+                        }
+
+                        if(changeImageType == 'profile'){
+                            SocialPostSchema.updateMany({user_id:userId},updatePostsUserPicture, {new:true},function (updatePostUserPictureError,updatePostUserPicture) {
+                                if(updatePostUserPictureError){
+                                    // error on update
+                                    return res.send({
+                                        status:false,
+                                        message:'Something went wrong',
+                                        error:updateError
+                                    })
+                                }else{
+                            
+                                    return res.send({
+                                        status:true,
+                                        message:'Successfully updated your profile picture',
+                                
+                                    })
+                                }
+                            });
+                        }else{
+                            return res.send({
+                                status:true,
+                                message:'Successfully updated your cover picture',
+                        
+                            })
+                        }
+                            
+                       
+                    }
+                });
+
+            }else{
+                return res.send({
+                                status:false,
+                                message:'Failed to upload.',                    
+                })
+            }
+
         }else{
             return res.send({
                 status:false,

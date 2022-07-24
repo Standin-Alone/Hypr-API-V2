@@ -14,7 +14,9 @@ route.group('/hypr-mobile/social',()=>{
 
     route.post('/create-post',controller.createPost)    
     route.post('/comment',controller.comment)    
-    route.post('/hype-post',controller.hypePost)    
+    route.post('/hype-post',controller.hypePost) 
+    
+    route.get('/get-profile-info/:userId',controller.getProfileInfo)    
 })
 
 

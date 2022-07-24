@@ -52,6 +52,14 @@ let userNewSchema = new schema({
        type: Boolean,
        default:1
     },
+    total_posts: {
+        type: Number,
+        default:0
+     },
+     total_friends: {
+        type: Number,
+        default:0
+     }
     //  { collection: "t_product" });
     },{collection:"users"});
 

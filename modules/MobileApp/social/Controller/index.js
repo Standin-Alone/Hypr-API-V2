@@ -18,25 +18,26 @@ methods.getAllFriendsPost = async (req,res)=>{
 
         let getAllFriends = await FriendSchema.find({user_id:userId});
         let cleanGetAllFriends = getAllFriends.map((item)=>item.friend_user_id);
-        
+        console.warn(req.body);
+
+
         cleanGetAllFriends.push(userId);
         
         let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:cleanGetAllFriends}}).sort({date_created: -1});
-        
-        if(getAllFriendsPost.length != 0 ){
+        console.warn(getAllFriendsPost);
+        if(getAllFriendsPost.length > 0 ){
 
             // GET ALL FRIENDS POST
             let getPost = getAllFriendsPost.map( async (posts,index)=>{
-                 console.warn(posts.user_picture);
-                 posts.user_picture = await fs.readFileSync(`./uploads/${posts.user_picture ? posts.user_picture : 'default-profile.png'}`, {encoding: 'base64'}); 
-                 posts.filenames = posts.post_images.map((postFiles)=>fs.readFileSync(`./uploads/${postFiles}`, {encoding: 'base64'})) 
-
+          
+                 posts.user_picture = posts.user_picture ? posts.user_picture : 'default-profile.png'; 
+                 posts.filenames = posts.post_images;
                  let commentPromise = Promise.all( posts.post_comment.map(async (item)=>{
                     let getUserInfo =   await UsersSchema.findById(item.user_id).exec();
                     
                     if(getUserInfo){
                 
-                        item.profile_image = fs.readFileSync(`./uploads/${getUserInfo.profile_image}`, {encoding: 'base64'});
+                        item.profile_image = getUserInfo.profile_image;
                     }
                     return item;
                  }))        
@@ -300,7 +301,7 @@ methods.createPost = async (req,res)=>{
         file.map((fileResponse)=>{
             let fileBuffer =  Buffer.from(fileResponse.fileBase64, 'base64');
             console.warn(fileResponse)
-            fs.writeFile(`./uploads/${fileResponse.fileName}`, fileBuffer , function (err) {  
+            fs.writeFile(`./uploads/posts/${fileResponse.fileName}`, fileBuffer , function (err) {  
                 if(err){
                     countErrorUploads++
                 }                
@@ -494,7 +495,7 @@ methods.comment = async (req,res)=>{
                 updateResult.post_comment.map( (comment)=>{
                     let getUserInfo =   UsersSchema.findById(userId);
                     getUserInfo.then((item)=>{
-                        comment.profile_image = fs.readFileSync(`./uploads/${getUserInfo.profile_image}`, {encoding: 'base64'});                    
+                        comment.profile_image = fs.readFileSync(`./uploads/profile_pictures//${getUserInfo.profile_image}`, {encoding: 'base64'});                    
                     })                       
                       
                 })
@@ -522,5 +523,52 @@ methods.comment = async (req,res)=>{
     }
 
 
+    
 }
+
+
+
+// GET PROFILE INFO
+methods.getProfileInfo = async (req,res)=>{    
+    try{
+        // initialize body
+        let userId = req.params.userId;
+    
+        console.warn(userId)
+        let checkUserId = await UsersSchema.findById(userId);
+        
+        if(checkUserId){
+            
+            checkUserId.profile_image = fs.readFileSync(`./uploads/profile_pictures//${checkUserId.profile_image}`, {encoding: 'base64'})
+            checkUserId.cover_pic = fs.readFileSync(`./uploads/profile_pictures//${checkUserId.cover_pic}`, {encoding: 'base64'})
+            let countPosts =  await SocialPostSchema.find({user_id:userId}).countDocuments();
+            let countFriends =  await FriendSchema.find({user_id:userId}).countDocuments();
+
+   
+            
+            checkUserId.total_posts = countPosts;
+            checkUserId.total_friends = countFriends;
+       
+            return res.send({
+                status:true,
+                message:'User info has been found.',                    
+                data:checkUserId
+            })
+        
+        }else{
+            return res.send({
+                status:false,
+                message:'User not found.',                    
+            })
+        }
+    }catch(error){
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:'Something went wrong',
+            error:error
+        })
+    }
+}
+
 module.exports = methods;

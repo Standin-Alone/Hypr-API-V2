@@ -32,7 +32,7 @@ methods.getAllFriendsSuggestion = async (req,res)=>{
         if(getAllFriendsSuggestion.length != 0 ){
             getAllFriendsSuggestion.map((friend,index)=>{
                
-                friend.picture = fs.readFileSync(`./uploads/${friend.profile_image ? friend.profile_image : 'default-profile.png'}`, {encoding: 'base64'}); 
+                friend.picture = friend.profile_image ? friend.profile_image : 'default-profile.png'; 
            })
            console.warn(getAllFriendsSuggestion);
             return res.send({
@@ -75,7 +75,7 @@ methods.getAllFriendRequests = async (req,res)=>{
         if(getAllFriendRequests.length != 0 ){
             
             getAllFriendRequests.map((friend,index)=>{
-                friend.picture = fs.readFileSync(`./uploads/${friend.profile_image ? friend.profile_image : 'default-profile.png'}`, {encoding: 'base64'}); 
+                friend.picture =friend.profile_image ? friend.profile_image : 'default-profile.png'; 
            })
            
             return res.send({
