@@ -1,5 +1,6 @@
 // MARKET CONTROLLER
 
+const { post } = require("@forkjs/group-router");
 const { method, get } = require("lodash");
 
 
@@ -18,13 +19,13 @@ methods.getAllFriendsPost = async (req,res)=>{
 
         let getAllFriends = await FriendSchema.find({user_id:userId});
         let cleanGetAllFriends = getAllFriends.map((item)=>item.friend_user_id);
-        console.warn(req.body);
+  
 
 
         cleanGetAllFriends.push(userId);
         
         let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:cleanGetAllFriends}}).sort({date_created: -1});
-        console.warn(getAllFriendsPost);
+   
         if(getAllFriendsPost.length > 0 ){
 
             // GET ALL FRIENDS POST
@@ -576,4 +577,149 @@ methods.getProfileInfo = async (req,res)=>{
     }
 }
 
+
+
+methods.getAllFriendsStories = async (req,res)=>{
+
+
+    try{
+        // initialize body        
+        
+        let userId = req.body.userId;
+
+        let getAllFriends = await FriendSchema.find({user_id:userId});
+        let cleanGetAllFriends = getAllFriends.map((item)=>item.friend_user_id);
+
+        console.warn(req.body)
+
+        let getAllFriendsStories = await SocialStoriesSchema.find({ $or:[{user_id : {$in:cleanGetAllFriends,}},{user_id :userId}]}).sort({date_created: -1});
+    
+        if(getAllFriendsStories.length > 0 ){
+
+            // GET ALL FRIENDS STORIES
+            let getStories = Promise.all(getAllFriendsStories.map( async (stories,index)=>{
+        
+                 stories.user_picture = stories.user_picture ? stories.user_picture : 'default-profile.png';              
+                 stories.user_image = stories.user_picture ? `${process.env.DEV_URL}//uploads/profile_pictures//${stories.user_picture}` :  `${process.env.DEV_URL}/uploads/profile_pictures/default-profile.png`  ;              
+                 stories.stories = stories.files.map((file,fileIndex)=>                    
+                   ({
+                        story_id: fileIndex+1,
+                        story_image: `${process.env.DEV_URL}//uploads//stories//${file}`,                           
+                    }))
+                 return stories;
+            }))
+
+          
+            console.warn(await getStories );
+            return res.send({
+                status:true,
+                message:'Successfully got all stories.',
+                data:await getStories
+            }) 
+            
+        }else{
+            return res.send({
+                status:false,
+                message:'Failed to get all friends stories.',                
+            })
+        }
+               
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
+
+
+methods.createStory = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        
+        let  userId = req.body.userId;
+        let  file  = req.body.file ;
+        console.warn(req.body);
+  
+        let countErrorUploads = 0 ;
+        
+
+        // upload image
+        file.map((fileResponse)=>{
+            let fileBuffer =  Buffer.from(fileResponse.fileBase64, 'base64');
+            console.warn(fileResponse)
+            fs.writeFile(`./uploads/stories/${fileResponse.fileName}`, fileBuffer , function (err) {  
+                if(err){
+                    countErrorUploads++
+                }                
+            });    
+        })
+      
+        
+
+   
+
+
+        if(countErrorUploads == 0 ){
+
+
+        
+            let checkUserId = await UsersSchema.findById(userId);
+            
+            let fileNames = file.map((content)=>content.fileName);
+
+            if(checkUserId){
+                
+                let payload = {
+                    files:fileNames,
+                    user_id:userId,
+                    user_picture:checkUserId.profile_image,
+                    full_name: `${checkUserId.first_name} ${checkUserId.last_name}`,
+                    user_image:checkUserId.profile_image,
+                    user_name: `${checkUserId.first_name} ${checkUserId.last_name}`
+
+                }
+
+                SocialStoriesSchema.create(payload, (socialError, insertStoryResult) => {                    
+                    if(socialError){
+                        // error on insert
+                        return res.send({
+                            status:false,
+                            message:'Something went wrong',
+                            error:socialError
+                        })
+
+                    }else{
+                        return  res.send({
+                            status:true,
+                            message:'Successfully added your story.',                                                    
+                        })
+                    }
+                });
+
+            }else{
+                return res.send({
+                    status:false,
+                    message:'User cannot be found',                                                
+                })
+            }
+
+        }else{
+            return res.send({
+                status:false,
+                message:'Failed to create story.',                                                
+            })
+        }
+               
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
 module.exports = methods;
