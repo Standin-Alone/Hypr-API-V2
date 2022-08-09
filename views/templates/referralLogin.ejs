@@ -79,48 +79,25 @@
             <div class="right-content">
                 <!-- begin register-header -->
                 <h1 class="register-header">
-                    Sign Up
-                    <small>Create your Hypr Account. To use the referral.</small>
+                    Sign In
+                    <small>Login your account to get your referral.</small>
                 </h1>
                 <!-- end register-header -->
                 <!-- begin register-content -->
                 <div class="register-content">
-                    <form id="sign-up-form" method="POST" class="margin-bottom-0">
-                        <input type="text" class="form-control hide " placeholder="Email address" name="referralType" required  value="sign-up"/>
+                    <form id="sign-in-form" method="POST" class="margin-bottom-0">
+                        <input type="text" class="form-control hide " placeholder="Email address" name="referralType" required  value="sign-in"/>
+                        <input type="text" class="form-control hide" name="referral_user_id" required value="<%=userId%>" />
 
-                        <label class="control-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control hide" placeholder="First name" name="referral_user_id" required value="<%=userId%>" />
-                        <input type="text" class="form-control hide" placeholder="country_name" name="country_name"  />
-                        <input type="text" class="form-control hide" placeholder="country" name="country"  />
-                        <input type="text" class="form-control hide" placeholder="age" name="age"  />
-                        <div class="row row-space-10">
-                            <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="First name" name="first_name" required />
-                            </div>
-                            <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="Last name"  name="last_name" required  />
-                            </div>
-                        </div>
                         <label class="control-label">Email <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
-                                <input type="text" class="form-control" placeholder="Email address" name="email" required />
+                                <input type="text" class="form-control" placeholder="Email address" name="username" required />
                             </div>
                         </div>
-                        <label class="control-label">Contact Number <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="tel" class="form-control w-20 " id="contact-number" placeholder="Contact number" name="contact_number" required  />
-                            </div>
-                        </div>  
+                 
 
-                        <label class="control-label">Birthday <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="datepicker-default" placeholder="Select Date"  name="birthday"  value="04/04/1999" />
-                            </div>
-                        </div>
-
+                
                         <label class="control-label">Password <span class="text-danger">*</span></label>
                         <div class="row m-b-15">
                             <div class="col-md-12">
@@ -130,25 +107,11 @@
 
                         
 
-                        <label class="control-label">Re-enter password <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="password" class="form-control" placeholder="Password"  name="re_enter_password"required   />
-                            </div>
-                        </div>
-                        <div class="checkbox checkbox-css m-b-30">
-                        	<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox" >
-								<label for="agreement_checkbox">
-									By clicking Sign Up, you agree to our <a href="javascript:;">Terms</a> and that you have read our <a href="javascript:;">Data Policy</a>, including our <a href="javascript:;">Cookie Use</a>.
-								</label>
-							</div>
-                        </div>
                         <div class="register-buttons">
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                            Are you already a member? Click <a href="<%=signInLink%>" class="text-success">here</a> to sign in.
+                            Not a member yet? Click <a href="<%=signUpLink%>" class="text-success">here</a> to register.
                         </div>
                         <hr />
                         <p class="text-center">
@@ -211,46 +174,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js" ></script>
 
 	<script>
-
-                
-            var input = document.querySelector("#contact-number");
-            var iti = window.intlTelInput(input, {
-            // separateDialCode:true,
-            initialCountry: "ph",
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.3/build/js/utils.js",
-            })
-            $("input[name=country_name]").val(window.iti.getSelectedCountryData().name);
-            $("input[name=country]").val(window.iti.getSelectedCountryData().iso2);
-
-            let getBirthday = $("input[name=birthday]").val();
-            // COMPUTE AGE
-            let getDateNow = moment(new Date(),"MM-DD-YYYY");
-            let birthday = moment(getBirthday,"MM-DD-YYYY");
-            computeAge = getDateNow.diff(birthday, 'years');
-            // VALIDATE AGE                               
-            $("input[name=age]").val(computeAge);   
-
-
-            input.addEventListener("countrychange", function(val) {
-                 let countryData = window.iti.getSelectedCountryData();
-
-                 $("input[name=country_name]").val(countryData.name);
-                 $("input[name=country]").val(countryData.iso2);
-            
-            });
-            
-            $.validator.addMethod("validateAge", function (value, element) {
-                let getAge = $("input[name=age]").val();
-               
-               // VALIDATE AGE                   
-               if(getAge > 18){
-                   return true
-               }else{
-                   return false
-               }
-            }, 'Password and Confirm Password should be same')
-
-
+         
 		$(document).ready(function() {
 			App.init();
             FormPlugins.init();
@@ -268,35 +192,27 @@
       
     })
 
-	$('#sign-up-form').validate({	
+	$('#sign-in-form').validate({	
 		rules:{
-            first_name:{required:true},
-            last_name:{required:true},
-            email:{required:true},
-            contact_number:{required:true},
-            birthday:{required:true,validateAge:true},          
+   
+            username:{required:true,email:true},
+                 
             password:{required:true},
-            re_enter_password:{required:true},
-            agreement_checkbox:{required:true},
+     
 
 			},
 		messages:{
-            first_name:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            last_name:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            email:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            contact_number:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            birthday:{required:"<div class='text-danger'>Please enter this required field</div>",validateAge:"<div class='text-danger'>You are below 18</div>"},
-            age:{required:"<div class='text-danger'>Please enter this required field</div>"},
+      
+            username:{required:"<div class='text-danger'>Please enter this required field</div>",email:"<div class='text-danger'>Please enter valid email</div>",},
             password:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            re_enter_password:{required:"<div class='text-danger'>Please enter this required field</div>"},	
-            agreement_checkbox:{required:"<div class='text-danger'>Please check the terms and condition first before you sign up.</div>"},	
+            
 			},
               
 		submitHandler:function(){
                   
            
 				Swal.fire({
-					title: 'Signing up...',
+					title: 'Signing in...',
 					html: 'Please wait for a while.',			
 					timerProgressBar: true,
 					didOpen: () => {
@@ -309,33 +225,40 @@
 					 $.ajax({
 							url:location.origin + '/hypr-mobile/social/use-referral',
 							type:'post',					
-							data:$("#sign-up-form").serialize(),
+							data:$("#sign-in-form").serialize(),
 							success:function(response){                                                                
 
                           
 							
                             
+
                             if(response.status == true){
-                            let referral_user_id =  $("input[name=referral_user_id]").val();
-                            let new_user_id =   response.data._id;
-                            // execute MLM
-                            $.ajax({
-                                url:location.origin + '/mlm/api/v1/mlm-insert-team',
-                                type:'post',					
-                                data:{team:[{recruiter_id:referral_user_id,recruited_id:new_user_id}]},
-                                success:function(mlmResponse){
-                                    Swal.fire({						
-                                        icon: response.status == true ? 'success' : 'error',
-                                        title: 	response.message,	
-                                    }).then(()=>{
-                                        if(response.status == true){
-                                            location.href = response.link
-                                        }										
-                                    })	
-                                        
-                                }
-                            });
-                        
+
+                                let referral_user_id =  $("input[name=referral_user_id]").val();
+                                let new_user_id =   response._id;
+                                // execute MLM
+                                $.ajax({
+                                    url:location.origin + '/mlm/api/v1/mlm-insert-team',
+                                    type:'post',					
+                                    data:{team:[{recruiter_id:referral_user_id,recruited_id:new_user_id}]},
+                                    success:function(mlmResponse){
+                                        Swal.fire({						
+                                            icon: response.status == true ? 'success' : 'error',
+                                            title: 	response.message,	
+                                        }).then(()=>{
+                                            if(response.status == true){
+                                              
+                                                Swal.fire(
+                                                `${response.message}`, 
+                                                '',                                           
+                                                'success'
+                                                )
+                                                //   location.href = response.link
+                                            }										
+                                        })	
+                                            
+                                    }
+                                });
                             }else{
                                 Swal.fire(
                                     `${response.message}`, 

@@ -9,3 +9,4 @@ global.SocialPostSchema = require('../models/SocialPostModel');
 global.SocialStoriesSchema = require('../models/SocialStoriesModel');
 global.FriendRequestSchema = require('../models/FriendRequestModel');
 global.FriendSchema = require('../models/FriendModel');
+global.TeamsSchema =  require('../models/TeamModel');

@@ -1,10 +1,12 @@
-// CJ CONTROLLER
-require('../../../../config/db_context');
+const express = require("express");
+const bodyParser = require("body-parser");
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
 const methods = {};
-
-
-
 const _ = require("lodash");
 const ObjectId = require("mongodb").ObjectId;
 
@@ -19,6 +21,8 @@ async function _isNormalDay(params) {
     downlineCount: 7,
   };
   const users = [];
+  const buyer = [{ id: accessibles.userId }];
+  users.push(...buyer);
 
   _getCurrentRecruiter(accessibles.userId)
     .then((first) => {
@@ -109,7 +113,7 @@ async function _getCurrentRecruiter(_id) {
 
 function _distributeRewards(userId, amount, orderId) {
   _insertBalance(userId, amount, orderId);
-  _updateBalance(userId, amount);
+  _updateBalance(userId, amount, orderId);
 }
 
 async function _insertBalance(userId, amount, orderId) {
@@ -127,7 +131,7 @@ async function _insertBalance(userId, amount, orderId) {
   return await query;
 }
 
-async function _updateBalance(userId, amount) {
+async function _updateBalance(userId, amount, orderId) {
   const u_id = new ObjectId(userId);
 
   const query = await db.collection("users").find({ _id: u_id });
@@ -139,6 +143,16 @@ async function _updateBalance(userId, amount) {
         { _id: u_id },
         { $set: { reward: updated_reward } }
       );
+
+      db.collection("t_rewards_history").insertMany([
+        {
+          user_id: userId,
+          order_id: orderId,
+          old_reward: documents.reward,
+          new_reward: updated_reward,
+          date_created: new Date(),
+        },
+      ]);
     });
   });
 }
@@ -354,9 +368,9 @@ async function allRewards() {
 }
 
 methods.recruiteMember = async (req, res) => {
-
-  const data = req.body.team;
   
+  const data = req.body.team;
+
   const team = data.map(v => ({...v, date_created: new Date() }))
 
   const query = db.collection("r_teams").insertMany(team);
@@ -383,6 +397,60 @@ methods.updator = async (req, res) => {
 };
 
 
+
+
+
+
+methods.getMembers = async (req, res) => {
+
+  try{
+    // initialize body        
+    
+    let userId = req.body.userId;
+
+    let getAllMembersByRecruited =   await TeamsSchema.find({recruiter_id:userId});
+    let getAllMembersByRecruiter =   await TeamsSchema.find({recruited_id:userId});
+    
+    let cleanGetAllMembersByRecruited = getAllMembersByRecruited.map((item)=>item.recruited_id);
+    let cleanGetAllMembersByRecruiter = getAllMembersByRecruiter.map((item)=>item.recruiter_id);
+
+    let cleanGetAllMembers  = [...cleanGetAllMembersByRecruited,...cleanGetAllMembersByRecruiter]
+
+    // cleanGetAllMembers.push(userId);
+    
+ 
+    let getAllCleanMembers = await UsersSchema.find({_id : {$in:cleanGetAllMembers}}).sort({date_created: -1});
+
+    if(getAllCleanMembers.length > 0 ){
+
+        // GET ALL MEMBERS 
+        let getUserMembers = getAllCleanMembers.map( async (member,index)=>{      
+             member.user_picture = member.profile_image ? member.user_picture : 'default-profile.png';                   
+             return member;
+        })
+
+      
+        
+        return res.send({
+            status:true,
+            message:'Successfully got all members.',
+            data:await Promise.all(getUserMembers)
+        }) 
+        
+    }else{
+        return res.send({
+            status:false,
+            message:'Failed to get all post.',                
+        })
+    }
+           
+}catch(error){
+    console.log(error);
+    res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+}
+
+
+};
 
 
 

@@ -59,6 +59,10 @@ let userNewSchema = new schema({
      total_friends: {
         type: Number,
         default:0
+     },
+     reward:{
+        type: Number,
+        default:0
      }
     //  { collection: "t_product" });
     },{collection:"users"});
