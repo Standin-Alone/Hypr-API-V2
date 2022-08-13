@@ -13,7 +13,7 @@ require('./global/variables')
 require('./global/schema')
 
 
-
+var socket = require('./socket-io/socket');
 
 var app = express();
 
@@ -101,9 +101,13 @@ app.use(permittedCrossDomainPolicies())
   
 
 const port = process.env.PORT || 9002;
+const socketPort = process.env.SOCKET_PORT || 9090;
 app.listen(port, () => {
     console.log('Server running at ' + port)
 });
-  
+
+socket.listen(socketPort, ()=>{
+  console.log('Socket running at ' + 9090)
+});
 
 module.exports = app;

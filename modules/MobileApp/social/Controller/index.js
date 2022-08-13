@@ -94,6 +94,7 @@ methods.getAllFriendsPost = async (req,res)=>{
         // initialize body        
         
         let userId = req.body.userId;
+        let currentPage = req.body.currentPage;
 
         let getAllFriends = await FriendSchema.find({user_id:userId});
         let cleanGetAllFriends = getAllFriends.map((item)=>item.friend_user_id);
@@ -102,7 +103,7 @@ methods.getAllFriendsPost = async (req,res)=>{
 
         cleanGetAllFriends.push(userId);
         
-        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:cleanGetAllFriends}}).sort({date_created: -1});
+        let getAllFriendsPost = await SocialPostSchema.find({user_id : {$in:cleanGetAllFriends}}).limit(2).skip(currentPage).sort({date_created: -1});
    
         if(getAllFriendsPost.length > 0 ){
 
