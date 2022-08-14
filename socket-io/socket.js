@@ -12,7 +12,7 @@ io.on("connection", (socket) => {
   })
   socket.on('message',(data)=>{
     console.warn("MESSAGE",data);
-    socket.to('room').emit('message-from-server',data)
+    socket.to(data.room).emit('message-from-server',data)
   })
 });
 
