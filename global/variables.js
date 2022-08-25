@@ -18,11 +18,18 @@ let stripeAPI =  { secretKey: 'sk_test_51KnhTJGAX1ovFy7TMDtGCPVy0UOnaZWO0cdMcS5c
 global.stripe= require('stripe')(stripeAPI.secretKey);
 
 
+// old
+// paypal.configure({
+//     'mode': 'sandbox', //sandbox or live    
+//     'client_id': 'AQCApKV7adW0kyMNrVLUrEYaXT5NOfB4LkyLuhygjvlTyswou_xrtmdvdAIOgGtEg6EgcZSXqK84-0Sp',
+//     'client_secret': 'EFzba5tSihQ6UPq9BqpmQk6Bhc5TxGUDXgSR4Jb1yymu2R4TEnXdDEj9rxTQsvvKaq5P1UMOgAaGK7R3'
+// });
+
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live    
-    'client_id': 'AQCApKV7adW0kyMNrVLUrEYaXT5NOfB4LkyLuhygjvlTyswou_xrtmdvdAIOgGtEg6EgcZSXqK84-0Sp',
-    'client_secret': 'EFzba5tSihQ6UPq9BqpmQk6Bhc5TxGUDXgSR4Jb1yymu2R4TEnXdDEj9rxTQsvvKaq5P1UMOgAaGK7R3'
+    'client_id': 'AVftVb8vLyABhrVDEJ0TmEJ_aRNDiKhPFTnzKvdKSX1kExoUslYgB1edMFdQzDTmaY3InwHRWckpzRTs',
+    'client_secret': 'EA7ObUjml8dYL33uLpllqhfRrSNKFweHr6Ba-C3zFDyg2cknbTklw1WhOEonGXmKlaa4WegjScP3lX9Q'
 });
 
 

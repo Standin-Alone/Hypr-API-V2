@@ -9,6 +9,8 @@ const controller  = require('../Controller');
 route.group('/hypr-mobile/chat',()=>{    
     route.post('/send-message',controller.sendMessage)   
     route.post('/check-room',controller.checkRoom)   
+    route.post('/get-friends-messages',controller.getFriendsMessages)   
+
 
 })
 

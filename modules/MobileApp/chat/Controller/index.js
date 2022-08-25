@@ -123,4 +123,78 @@ methods.checkRoom = async (req,res)=>{
 
 }
 
+
+
+methods.getFriendsMessages = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        let userId = req.body.userId;
+ 
+   
+        
+        let getAllFriendsMessages = await ChatRoomSchema.find({ $or:[{"messages.user_id" :userId},{"messages.friend_user_id": userId}]})
+
+    
+
+    let getCleanMessages = [];
+
+
+    Promise.all(getAllFriendsMessages.map(async (friendMessages,index)=>{
+            let getLastMessageCount = friendMessages.messages.length-1;
+
+            let lastMessage = friendMessages.messages[getLastMessageCount];
+      
+            if(lastMessage.user_id == userId){
+
+
+                let getReceiverInfo = await UsersSchema.findOne({_id:lastMessage.friend_user_id });
+
+                getCleanMessages.push({
+                    userId:lastMessage.friend_user_id,
+                    name: `${getReceiverInfo.first_name} ${getReceiverInfo.middle_name ? getReceiverInfo.middle_name : ''} ${getReceiverInfo.last_name}`,
+                    profileImage: getReceiverInfo.profile_image,
+                    lastMessage:lastMessage.text
+                });
+            
+
+            }else{
+
+                let getReceiverInfo = await UsersSchema.findOne({_id:lastMessage.user_id });
+            
+                getCleanMessages.push({
+                    userId:lastMessage.user_id,
+                    name: `${getReceiverInfo.first_name} ${getReceiverInfo.middle_name ? getReceiverInfo.middle_name : '' } ${getReceiverInfo.last_name}`,
+                    profileImage: getReceiverInfo.profile_image,
+                    lastMessage:lastMessage.text
+                });
+
+            }
+
+            return friendMessages;
+        })).then(()=>{
+      
+
+            if(getAllFriendsMessages ){
+    
+                return res.send({status:true,data:getCleanMessages})
+            }else{
+                return res.send({status:false})
+            }
+        })
+      
+     
+
+
+               
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
 module.exports = methods;
