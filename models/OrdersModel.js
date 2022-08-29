@@ -22,6 +22,7 @@ let orderNewSchema = new mongoose.Schema({
     billing_country_code:  String ,
     billing_contact:  String ,
     billing_zip_code:  String ,
+    sub_total:  String ,  
     total_amount:  String ,    
     currency_format:  String ,
     currency:  String ,

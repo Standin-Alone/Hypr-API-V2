@@ -26,10 +26,17 @@ global.stripe= require('stripe')(stripeAPI.secretKey);
 // });
 
 
+// paypal.configure({
+//     'mode': 'sandbox', //sandbox or live    
+//     'client_id': 'AVftVb8vLyABhrVDEJ0TmEJ_aRNDiKhPFTnzKvdKSX1kExoUslYgB1edMFdQzDTmaY3InwHRWckpzRTs',
+//     'client_secret': 'EA7ObUjml8dYL33uLpllqhfRrSNKFweHr6Ba-C3zFDyg2cknbTklw1WhOEonGXmKlaa4WegjScP3lX9Q'
+// });
+
+
 paypal.configure({
     'mode': 'sandbox', //sandbox or live    
-    'client_id': 'AVftVb8vLyABhrVDEJ0TmEJ_aRNDiKhPFTnzKvdKSX1kExoUslYgB1edMFdQzDTmaY3InwHRWckpzRTs',
-    'client_secret': 'EA7ObUjml8dYL33uLpllqhfRrSNKFweHr6Ba-C3zFDyg2cknbTklw1WhOEonGXmKlaa4WegjScP3lX9Q'
+    'client_id': 'AYNolU0VyDais29eo0s-xtQDO4LRoCkDewq8AofnGNH6anthr-ajdeNfYRct8pGXYsr_TUNkvo_FqaVH',
+    'client_secret': 'EPD-NXWHMJiHSeqdLOHqf7kcJdXlxQjLs8xLh3FF3eBOJ8WRnlfYE61m5XbxILz4Ye4l_XrjHaWEOCbg'
 });
 
 
@@ -41,7 +48,7 @@ global.transporter = nodemailer.createTransport({
     secure: false,
     auth: {
         user: 'developer01000@gmail.com',
-        pass: 'qzcsxdjumeewvdvn'
+        pass: 'hcbpotoequswoonl'
     },
     tls: {
         rejectUnauthorized: false

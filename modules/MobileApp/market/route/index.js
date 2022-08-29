@@ -23,6 +23,7 @@ route.group('/hypr-mobile/market',()=>{
     route.post('/delete-address',controller.deleteAddress)
     route.post('/increase-quantity',controller.increaseQuantity)
     route.post('/decrease-quantity',controller.decreaseQuantity)
+    route.post('/remove-item-in-cart',controller.removeItemInCart)
 
 })
 
