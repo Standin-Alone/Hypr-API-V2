@@ -1180,18 +1180,19 @@ methods.getOrder = (req, res) => {
     }
   )
     .then((response) => {
-      console.warn(response)
+    
       if (!response.ok) {
         throw "error on fetching token";
       }
       return response.json();
     })
     .then((response) => {
+      console.warn(response)
       return res.send(response);
     })
     .catch((err) => {
 
-      console.warn(err)
+      console.warn(err.response)
       res.send({ response: "something went wrong :<" });
       if (err.name === "AbortError") {
         res.send("Timed out");

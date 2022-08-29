@@ -226,8 +226,10 @@ methods.finalSuccessPayment = async (req,res)=>{
 
     
         let shippingAddress = cart[0].shipping_address[0];
-        let cleanTotal = total_amount = cart.reduce((prev, current) => prev + (current.product_price * current.quantity), 0).toFixed(2);
+      
 
+        let cleanTotal = total_amount = cart.reduce((prev, current) => prev + (current.product_price * current.quantity), 0).toFixed(2);
+        
         // T_ORDER PAYLOAD
         let payload = {
             user_id:userId,
@@ -246,7 +248,8 @@ methods.finalSuccessPayment = async (req,res)=>{
             billing_country_code:shippingAddress.country_code,
             billing_contact:shippingAddress.contact,
             billing_zip_code:shippingAddress.zip_code,
-            total_amount:cleanTotal,
+            sub_total:cleanTotal,
+            total_amount:(parseFloat(cleanTotal) + parseFloat(cart[0].freight_calculation[0].logisticPrice)).toFixed(2),
             currency_format:'$',
             currency:'USD',
             status:true
@@ -329,12 +332,46 @@ methods.finalSuccessPayment = async (req,res)=>{
             });
 
 
+            // DECREASE REWARD POINTS WHEN PAYMENT METHOD IS HYPR
+            if(paymentMethod == 'hypr'){
+
+                let getLatestReward = await UsersSchema.findById(userId);
+                
+                let computeNewReward = parseFloat(getLatestReward.reward) - parseFloat(cleanTotal);
+                let updatePayload = {
+                    $set: {reward:computeNewReward.toFixed(2)}
+                }
+
+
+                UsersSchema.findByIdAndUpdate(userId,updatePayload, function (updateError,updateResult) {
+                    if(updateError){
+                        console.warn(updateError)
+                        // error on update
+                        return res.send({
+                            status:false,
+                            message:'Something went wrong',
+                            error:updateError
+                        })
+            
+                    }else{                        
+    
+                        return res.send({
+                            status:true,
+                            message:'Thank you for buying. Please wait for the delivery.'                
+                        })
+                    }
+                
+                });
+            
+            }else{
+                return res.send({
+                    status:true,
+                    message:'Thank you for buying. Please wait for the delivery.'                
+                })
+            }
             
 
-            return res.send({
-                status:true,
-                message:'Thank you for buying. Please wait for the delivery.'                
-            })
+    
         }else{
             return res.send({
                 status:false,
@@ -351,6 +388,23 @@ methods.finalSuccessPayment = async (req,res)=>{
         console.log(error);
         res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
     }
+
+}
+
+
+
+methods.payWithReward = async (req,res)=>{
+
+    try{
+        // initialize body        
+
+
+    
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
 
 }
 

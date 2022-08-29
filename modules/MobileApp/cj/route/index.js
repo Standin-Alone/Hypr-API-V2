@@ -43,7 +43,7 @@ const isAuth = (req, res, next) => {
 };
   
 //URL mapping
-route.group("/hypr-mobile/cj/api/market", () => {
+route.group("/cj/api/market", () => {
     route.post("/search-products", controller.searchProducts);
     route.router.use(isAuth);
     route.post("/get-token", controller.getToken);

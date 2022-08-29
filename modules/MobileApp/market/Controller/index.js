@@ -612,21 +612,33 @@ methods.addToCart = async (req,res)=>{
                 let getShippingAddressInCart = await CartSchema.find({buyer_id:userId});
 
                 
-                if(getShippingAddressInCart.length > 0){
+                // if(getShippingAddressInCart.length > 0){
                 
-                    // CHECK SHIPPING ADDRESSS IF THE SAME
-                    getShippingAddressInCart.map((item)=>{
-                        if(!lodash.isEqual(item.shipping_address , shippingAddress)){
-                            let deleteCart ={                                
-                                buyer_id:userId,                                
-                            };
-                    
-                            CartSchema.deleteMany(deleteCart, function (err) {
-                                if (err) return handleError(err);                          
-                            });
-                        }               
-                    })  
-                }
+                //     // CHECK SHIPPING ADDRESSS IF THE SAME
+                //     // getShippingAddressInCart.map((item)=>{
+
+                //     //     item.shipping_address.map(address=>{
+
+                //     //         if(
+                //     //             address.country == shippingAddress.country&&
+                //     //             address.country_code == shippingAddress.country_code &&                
+                //     //             address.address == shippingAddress.address &&
+                //     //             address.city == shippingAddress.city &&
+                //     //             address.state == shippingAddress.state                                
+                //     //         ){
+                //     //                let deleteCart ={                                
+                //     //                     _id:item._id,                                
+                //     //                 };
+
+                //     //                CartSchema.deleteMany(deleteCart, function (err) {
+                //     //                     if (err) return handleError(err);                          
+                //     //                 });
+                //     //         }
+
+
+                //     //     })                           
+                //     // })  
+                // }
 
 
           
