@@ -186,7 +186,7 @@ methods.getSignUp = async (req,res)=>{
             referred_by_name:referred_by_name,
             user_refferal_code:user_refferal_code,
             profile_image:'default-profile.png',
-            cover_pic:'default-profile.png'
+            cover_pic:'default-cover.png'
          
         }
 
@@ -265,8 +265,8 @@ methods.getSignUp = async (req,res)=>{
                             html:      data,
                             attachments: [{
                                 filename: 'otp.jpeg',
-                                path: `public/images/otp.jpeg`,
-                                cid: 'otp' //same cid value as in the html img src
+                                path: `public/images/verification.jpeg`,
+                                cid: 'verification' //same cid value as in the html img src
                             },{
                                 filename: 'hypr-logo.png',
                                 path: `public/images/hypr-logo.png`,
@@ -411,7 +411,7 @@ methods.getSignIn = async (req,res)=>{
                 // SEND VERIFICATION EMAIL
                 ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
                     // co
-                    // ready for email otp
+                    // ready for email verification
                     var mailOptions = {
                         from: "Hypr", // sender address
                         to: checkUserIfExists.email,                                        
@@ -419,8 +419,8 @@ methods.getSignIn = async (req,res)=>{
                         html:      data,
                         attachments: [{
                             filename: 'otp.jpeg',
-                            path: `public/images/otp.jpeg`,
-                            cid: 'otp' //same cid value as in the html img src
+                            path: `public/images/verification.jpg`,
+                            cid: 'verification' //same cid value as in the html img src
                         },{
                             filename: 'hypr-logo.png',
                             path: `public/images/hypr-logo.png`,

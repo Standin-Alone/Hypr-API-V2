@@ -43,7 +43,7 @@ const isAuth = (req, res, next) => {
 };
   
 //URL mapping
-route.group("/cj/api/market", () => {
+route.group("/cj/api/v1", () => {
     route.post("/search-products", controller.searchProducts);
     route.router.use(isAuth);
     route.post("/get-token", controller.getToken);
