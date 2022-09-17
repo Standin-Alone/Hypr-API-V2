@@ -46,8 +46,8 @@ const sendOtp = (userId,res)=>{
                                     path: `public/images/otp.jpeg`,
                                     cid: 'otp' //same cid value as in the html img src
                                 },{
-                                    filename: 'hypr-logo.png',
-                                    path: `public/images/hypr-logo.png`,
+                                    filename: 'hypr-logo-v2.png',
+                                    path: `public/images/hypr-logo-v2.png`,
                                     cid: 'logo' //same cid value as in the html img src
                                 }]
                                 }
@@ -215,7 +215,7 @@ methods.getSignUp = async (req,res)=>{
                 }else if(insertUserResult){
 
                     // success create
-                    let referralLink   = `${process.env.DEV_URL}/hypr-mobile/social/referral/${insertUserResult._id}`;
+                    let referralLink   = `/hypr-mobile/social/referral/${insertUserResult._id}`;
 
                     let setReferralLink = {
                         $set:{referral_link : referralLink}
@@ -265,11 +265,11 @@ methods.getSignUp = async (req,res)=>{
                             html:      data,
                             attachments: [{
                                 filename: 'otp.jpeg',
-                                path: `public/images/verification.jpeg`,
+                                path: `public/images/verification.jpg`,
                                 cid: 'verification' //same cid value as in the html img src
                             },{
-                                filename: 'hypr-logo.png',
-                                path: `public/images/hypr-logo.png`,
+                                filename: 'hypr-logo-v2.png',
+                                path: `public/images/hypr-logo-v2.png`,
                                 cid: 'logo' //same cid value as in the html img src
                             }]
                         }
@@ -422,8 +422,8 @@ methods.getSignIn = async (req,res)=>{
                             path: `public/images/verification.jpg`,
                             cid: 'verification' //same cid value as in the html img src
                         },{
-                            filename: 'hypr-logo.png',
-                            path: `public/images/hypr-logo.png`,
+                            filename: 'hypr-logo-v2.png',
+                            path: `public/images/hypr-logo-v2.png`,
                             cid: 'logo' //same cid value as in the html img src
                         }]
                     }
@@ -588,6 +588,8 @@ methods.resendOtp = async (req,res)=>{
 }
 
 
+
+
 // CHANGE PROFILE PICTURE AND COVER PHOTO
 methods.changeProfilePicture = async (req,res)=>{    
     try{
@@ -707,5 +709,172 @@ methods.changeProfilePicture = async (req,res)=>{
 }
 
 
+
+
+
+// SEND FORGOT PASSWORD LINK
+methods.sendForgotPasswordLink = async (req,res)=>{    
+    try{
+        // initialize body
+        let email = req.body.email;
+    
+ 
+        let checkUser = await UsersSchema.findOne({email:email});
+
+        
+        if(checkUser){
+
+
+            let emailPayload = {
+                url: `${process.env.DEV_URL}/hypr-mobile/user/forgot-password/${checkUser._id}`,
+                name:`${checkUser.first_name} ${checkUser.last_name}`,
+
+            }
+            // SEND FORGOT PASSWORD EMAIL
+            ejs.renderFile('./views/templates/forgotPasswordEmail.ejs',emailPayload,function(err,data){                                                   
+                // co
+                // ready for email verification
+                var mailOptions = {
+                    from: "Hypr", // sender address
+                    to: email,                                        
+                    subject: 'Hypr Verification  Email',
+                    html:      data,
+                    attachments: [{
+                        filename: 'reset-password.jpg',
+                        path: `public/images/reset-password.jpg`,
+                        cid: 'resetPassword' //same cid value as in the html img src
+                    },{
+                        filename: 'hypr-logo-v2.png',
+                        path: `public/images/hypr-logo-v2.png`,
+                        cid: 'logo' //same cid value as in the html img src
+                    }]
+                }
+                transporter.sendMail(mailOptions, function (mailError, info) {
+                    if (mailError) {
+                        console.log('Error: ' + mailError);
+                        console.warn('Email not sent');
+                        res.json({
+                            status: false,
+                            msg: 'Email not sent',
+                            code: 'E110'
+                        });
+                    } else {
+                       // success create
+                       res.send({
+                        status:true,
+                        message:'Successfully sent reset password link to your email.',                
+                        })    
+                    }
+                });
+             });      
+            
+        }else{
+            return res.send({
+                status:false,
+                message:'Email not found.',                    
+            })
+        }
+    }catch(error){
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:'Something went wrong',
+            error:error
+        })
+    }
+}
+
+
+
+
+// CHANGE PASSWORD BUTTON (resetPassword.ejs)
+methods.renderForgotPassword = async (req,res)=>{    
+
+    try{
+        // initialize body        
+        let userId = req.params.userId;
+        let checkUserId = await UsersSchema.findById(userId);
+
+
+        // CHECK IF USER ID EXIST
+        if(checkUserId){
+
+                                      
+             
+
+        
+                            
+            // success on update
+            return  res.render('./templates/resetPassword.ejs',{userId:userId});
+                
+              
+           
+        }else{            
+            return  res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return  res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
+
+
+//CHANGE PASSWORD OF ACCOUNT
+methods.changePassword = async (req,res)=>{    
+
+    try{
+        // initialize body        
+        let userId = req.body.userId;
+        let newPassword = req.body.password;
+        let encrypt_new_password  = await bcrypt.hash(newPassword,8);
+        let checkUserId = await UsersSchema.findById(userId);
+
+
+        // CHECK IF USER ID EXIST
+        if(checkUserId){
+
+                                      
+                // initialize update options
+                let updateOptions = {
+                    password: encrypt_new_password
+                }
+
+        
+                // UPDATE TABLE
+                UsersSchema.findByIdAndUpdate(userId,updateOptions,(updateError, updateResult)=>{
+              
+                    if(updateError){
+                        console.warn(updateError);
+                        // error on update
+                        return res.send({
+                            status:false,
+                            message:'Something went wrong',
+                            error:updateError
+                        })
+
+                    }else{                   
+                        // success on update
+                        return res.send({
+                            status:true,
+                            message:'Successfully Change Password',                     
+                        })
+                    }
+                })
+              
+           
+        }else{            
+            return  res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+    }catch(error){
+        console.log(error);
+        return  res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
 
 module.exports = methods;

@@ -84,4 +84,59 @@ methods.getOrderedProducts = async (req,res)=>{
 
 
 
+methods.updateTracking = async (req,res)=>{
+
+    try{
+        // initialize body        
+        const userId = req.body.userId;
+        const orderNumber = req.body.orderNumber;
+        const tracks = req.body.tracks;
+     
+      
+        let checkUserOrders = await OrdersSchema.find({user_id : userId,order_number:orderNumber});
+
+        if(checkUserOrders.length > 0 ){
+
+            let updatePayload = {
+                $set:{
+                    tracking:tracks
+                }
+            };
+
+            OrdersSchema.findOneAndUpdate({user_id : userId,order_number:orderNumber},updatePayload,{new:true},function(error,result){
+
+                if(error){
+            
+                    // error on update
+                    return res.send({
+                        status:false,        
+                    })
+        
+                }else{        
+                 
+                    return res.send({
+                        status:true,
+                        message:'Successfully get the to verify orders.',
+                        data:checkUserOrders
+                    })             
+                }
+
+            });
+        
+
+            
+        }else{
+            return res.send({
+                status:false,
+                message:'You have no active orders.',
+                data:[]
+            })
+        }
+               
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
+
 module.exports = methods;

@@ -197,4 +197,55 @@ methods.getFriendsMessages = async (req,res)=>{
 }
 
 
+
+
+
+methods.searchFriend = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        let userId = req.body.userId;
+        let searchValue = req.body.searchValue;
+
+     
+        let tempGetAllMyFriends = await FriendSchema.find({user_id:userId});
+        
+        let cleanAllFriendRequests = tempGetAllMyFriends.map((item)=>item.friend_user_id);
+        
+        let getAllMyFriends = await UsersSchema.find({_id:{ $in: cleanAllFriendRequests } });
+
+        
+        if(getAllMyFriends.length != 0 ){
+            
+            
+            getAllMyFriends.map((friend,index)=>{
+                friend.picture =friend.profile_image ? friend.profile_image : 'default-profile.png'; 
+           })
+
+           let searchedFriends = getAllMyFriends.filter((itemFiltered)=>{
+                let fullName = `${itemFiltered.first_name} ${itemFiltered.last_name}`;
+             
+                return fullName.toLowerCase().includes(searchValue.toLowerCase());
+
+           })
+           
+
+            return res.send({
+                status:true,
+                message:'Successfully got all friends.',
+                data:searchedFriends
+            }) 
+            
+        }
+               
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+
+
+}
+
+
 module.exports = methods;
