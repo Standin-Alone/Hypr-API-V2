@@ -63,6 +63,10 @@ let userNewSchema = new schema({
      reward:{
         type: Number,
         default:0
+     },
+     is_forgot_password:{
+        type: Number,
+        default:0,
      }
     //  { collection: "t_product" });
     },{collection:"users"});

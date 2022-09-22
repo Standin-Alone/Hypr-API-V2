@@ -729,44 +729,61 @@ methods.sendForgotPasswordLink = async (req,res)=>{
                 url: `${process.env.DEV_URL}/hypr-mobile/user/forgot-password/${checkUser._id}`,
                 name:`${checkUser.first_name} ${checkUser.last_name}`,
 
-            }
-            // SEND FORGOT PASSWORD EMAIL
-            ejs.renderFile('./views/templates/forgotPasswordEmail.ejs',emailPayload,function(err,data){                                                   
-                // co
-                // ready for email verification
-                var mailOptions = {
-                    from: "Hypr", // sender address
-                    to: email,                                        
-                    subject: 'Hypr Verification  Email',
-                    html:      data,
-                    attachments: [{
-                        filename: 'reset-password.jpg',
-                        path: `public/images/reset-password.jpg`,
-                        cid: 'resetPassword' //same cid value as in the html img src
-                    },{
-                        filename: 'hypr-logo-v2.png',
-                        path: `public/images/hypr-logo-v2.png`,
-                        cid: 'logo' //same cid value as in the html img src
-                    }]
+            }   
+
+            let updatePayload = {
+                $set:{
+                    is_forgot_password:1
                 }
-                transporter.sendMail(mailOptions, function (mailError, info) {
-                    if (mailError) {
-                        console.log('Error: ' + mailError);
-                        console.warn('Email not sent');
-                        res.json({
-                            status: false,
-                            msg: 'Email not sent',
-                            code: 'E110'
+            }
+            UsersSchema.findOneAndUpdate({_id:checkUser._id},updatePayload,function(errorUpdate,successUpdate){
+                if(errorUpdate){
+                    return res.send({
+                        status:false,
+                        message:'Something went wrong.',                    
+                    })
+                }else{
+                    // SEND FORGOT PASSWORD EMAIL
+                    ejs.renderFile('./views/templates/forgotPasswordEmail.ejs',emailPayload,function(err,data){                                                   
+                        // co
+                        // ready for email verification
+                        var mailOptions = {
+                            from: "Hypr", // sender address
+                            to: email,                                        
+                            subject: 'Hypr Reset Password',
+                            html:      data,
+                            attachments: [{
+                                filename: 'reset-password.jpg',
+                                path: `public/images/reset-password.jpg`,
+                                cid: 'resetPassword' //same cid value as in the html img src
+                            },{
+                                filename: 'hypr-logo-v2.png',
+                                path: `public/images/hypr-logo-v2.png`,
+                                cid: 'logo' //same cid value as in the html img src
+                            }]
+                        }
+                        transporter.sendMail(mailOptions, function (mailError, info) {
+                            if (mailError) {
+                                console.log('Error: ' + mailError);
+                                console.warn('Email not sent');
+                                res.json({
+                                    status: false,
+                                    msg: 'Email not sent',
+                                    code: 'E110'
+                                });
+                            } else {
+                            // success create
+                            res.send({
+                                status:true,
+                                message:'Successfully sent reset password link to your email.',                
+                                })    
+                            }
                         });
-                    } else {
-                       // success create
-                       res.send({
-                        status:true,
-                        message:'Successfully sent reset password link to your email.',                
-                        })    
-                    }
-                });
-             });      
+                    });  
+                }
+
+            });
+              
             
         }else{
             return res.send({
@@ -798,17 +815,12 @@ methods.renderForgotPassword = async (req,res)=>{
 
         // CHECK IF USER ID EXIST
         if(checkUserId){
-
-                                      
-             
-
-        
-                            
-            // success on update
-            return  res.render('./templates/resetPassword.ejs',{userId:userId});
-                
-              
-           
+            if(checkUserId.is_forgot_password == 1){
+                return  res.render('./templates/resetPassword.ejs',{userId:userId});    
+            }else{
+                return  res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});                
+            }                                        
+            
         }else{            
             return  res.send({
                 status:false,
@@ -839,7 +851,8 @@ methods.changePassword = async (req,res)=>{
                                       
                 // initialize update options
                 let updateOptions = {
-                    password: encrypt_new_password
+                    password: encrypt_new_password,
+                    is_forgot_password:0
                 }
 
         
@@ -859,7 +872,8 @@ methods.changePassword = async (req,res)=>{
                         // success on update
                         return res.send({
                             status:true,
-                            message:'Successfully Change Password',                     
+                            message:'Successfully Change Password',
+                            link:'/hypr-mobile/user/success-change-password'                  
                         })
                     }
                 })
@@ -877,4 +891,15 @@ methods.changePassword = async (req,res)=>{
     }
 }
 
+
+methods.successChangePassword = async (req,res)=>{    
+
+    try{
+        // initialize body        
+       return res.render('./templates/change_password_success.ejs')
+    }catch(error){
+        console.log(error);
+        return  res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
 module.exports = methods;

@@ -11,7 +11,7 @@ global.lodash = require('lodash');
 global.paypal= require('paypal-rest-sdk');
 
 global.fs = require('fs');
-
+global.moment = require('moment');
   
 let stripeAPI =  { secretKey: 'sk_test_51KnhTJGAX1ovFy7TMDtGCPVy0UOnaZWO0cdMcS5cytztE0a1sw3S2jSEytJfmWzI6SvWNROc7TGoGze41AbIgFsx00szySNDGm'};
 

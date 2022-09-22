@@ -862,6 +862,39 @@ methods.getAllFriendsStories = async (req,res)=>{
         let getAllFriendsStories = await SocialStoriesSchema.find({ $or:[{user_id : {$in:cleanGetAllFriends,}},{user_id :userId}]}).sort({date_created: -1});
     
         if(getAllFriendsStories.length > 0 ){
+            // check if story is already one day
+            getAllFriendsStories.map(stories=>{                
+
+                let prevStoriesFile = stories.files;
+                let dateToday = new Date();
+                prevStoriesFile.map(prevStory =>{
+                    console.warn(moment(prevStory.date_created).isAfter(dateToday, 'day'));
+                    if(moment(dateToday ).isAfter(prevStory.date_created, 'day')){
+                        prevStory.status = 0 ;
+                    }else{
+                        prevStory.status = 1;
+                    }
+
+                    return prevStory;
+
+                });
+                
+                let updateSocialStory = {
+                    $set:{
+                        files:prevStoriesFile
+                    }
+                }
+
+
+                SocialStoriesSchema.findOneAndUpdate({_id:stories._id},updateSocialStory,function(errorUpdate,storyUpdateResult){
+                    if(errorUpdate){
+                        console.log(errorUpdate)
+                    }else{
+                        
+                    }
+                });
+                
+            });
 
             // GET ALL FRIENDS STORIES
             let getStories = Promise.all(getAllFriendsStories.map( async (stories,index)=>{
@@ -871,13 +904,15 @@ methods.getAllFriendsStories = async (req,res)=>{
                  stories.stories = stories.files.map((file,fileIndex)=>                    
                    ({
                         story_id: fileIndex+1,
-                        story_image: `${process.env.DEV_URL}//uploads//stories//${file.file_name}`,                           
-                    }))
+                        story_image: `${process.env.DEV_URL}//uploads//stories//${file.file_name}`,                  
+                        date_created: file.date_created,
+                        status:file.status
+                    })).filter((storyFilter)=>storyFilter.status == 1)
                  return stories;
             }))
 
           
-            console.warn((await getStories)[0].stories );
+         
             return res.send({
                 status:true,
                 message:'Successfully got all stories.',
@@ -910,7 +945,7 @@ methods.createStory = async (req,res)=>{
         
         let  userId = req.body.userId;
         let  file  = req.body.file ;
-        console.warn(req.body);
+  
   
         let countErrorUploads = 0 ;
         
@@ -937,7 +972,7 @@ methods.createStory = async (req,res)=>{
         
             let checkUserId = await UsersSchema.findById(userId);
             
-            let fileNames = file.map((content)=>({file_name:content.fileName,date_created:  new Date}));
+            let fileNames = file.map((content)=>({file_name:content.fileName,date_created:  new Date,status:1}));
 
             if(checkUserId){
                 

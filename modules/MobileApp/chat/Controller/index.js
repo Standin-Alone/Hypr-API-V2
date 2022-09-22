@@ -20,12 +20,12 @@ methods.sendMessage = async (req,res)=>{
         let friendUserId = req.body.friendUserId;
         let room = req.body.room;
         let message = req.body.message[0].text;
-
+        console.warn(`BODY`,req.body);
         let checkRoom = await ChatRoomSchema.findOne({room_name:room});
 
         if(checkRoom)
         {   
-            console.warn(checkRoom);
+          
              checkRoom.messages.push({user_id:userId,friend_user_id:friendUserId,text:message,giftedChatInfo:req.body.message});
            
             
@@ -37,7 +37,7 @@ methods.sendMessage = async (req,res)=>{
 
             ChatRoomSchema.findOneAndUpdate({room_name:room},updatePayload, {new:true},function (updateError,updateResult) {
                 if(updateError){
-                    console.warn(updateError)
+                 
                     // error on update
                     return res.send({
                         status:false,        
@@ -77,12 +77,6 @@ methods.sendMessage = async (req,res)=>{
             });
 
         }
-
-
-
-
-     
-    
                
     }catch(error){
         console.log(error);
@@ -105,12 +99,12 @@ methods.checkRoom = async (req,res)=>{
    
         
         let checkRoom = await ChatRoomSchema.findOne({ $or:[{"messages.user_id" :userId, "messages.friend_user_id": friendUserId },{"messages.friend_user_id": userId,"messages.user_id" :friendUserId}]})
-
-
+        
+        console.log('CHECK ROOMS',{"messages.user_id" :userId, "messages.friend_user_id": friendUserId });
         if(checkRoom ){
             return res.send({status:true,data:checkRoom})
         }else{
-            return res.send({status:false,data:{room:room}})
+            return res.send({status:false,data:{room_name:room}})
         }
 
 
@@ -155,7 +149,8 @@ methods.getFriendsMessages = async (req,res)=>{
                     userId:lastMessage.friend_user_id,
                     name: `${getReceiverInfo.first_name} ${getReceiverInfo.middle_name ? getReceiverInfo.middle_name : ''} ${getReceiverInfo.last_name}`,
                     profileImage: getReceiverInfo.profile_image,
-                    lastMessage:lastMessage.text
+                    lastMessage:lastMessage.text,
+                    room:friendMessages.room_name
                 });
             
 
@@ -167,7 +162,8 @@ methods.getFriendsMessages = async (req,res)=>{
                     userId:lastMessage.user_id,
                     name: `${getReceiverInfo.first_name} ${getReceiverInfo.middle_name ? getReceiverInfo.middle_name : '' } ${getReceiverInfo.last_name}`,
                     profileImage: getReceiverInfo.profile_image,
-                    lastMessage:lastMessage.text
+                    lastMessage:lastMessage.text,
+                    room:friendMessages.room_name
                 });
 
             }

@@ -5,7 +5,7 @@ const httpServer = createServer();
 const io = new Server(httpServer, { /* options */ });
 
 io.on("connection", (socket) => {
-  
+  console.warn('connected');
   socket.on('join-room',(data)=>{
     console.warn(`room`,data);
     socket.join(data);

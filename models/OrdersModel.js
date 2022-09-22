@@ -27,6 +27,7 @@ let orderNewSchema = new mongoose.Schema({
     currency_format:  String ,
     currency:  String ,
     status:  Boolean ,
+    tracking:Array,
     created_at:  {
       type: Date,
       default: Date.now()

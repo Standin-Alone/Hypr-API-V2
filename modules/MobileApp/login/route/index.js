@@ -19,6 +19,7 @@ route.group('/hypr-mobile/user',()=>{
     route.post('/send-forgot-password-link',controller.sendForgotPasswordLink);  
     route.get('/forgot-password/:userId',controller.renderForgotPassword);
     route.post('/change-password',controller.changePassword);
+    route.get('/success-change-password',controller.successChangePassword);
 })
 
 
