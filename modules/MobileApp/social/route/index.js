@@ -20,6 +20,8 @@ route.group('/hypr-mobile/social',()=>{
     
     route.get('/get-profile-info/:userId',controller.getProfileInfo)  
     route.post('/create-story',controller.createStory)   
+    route.post('/boost',controller.boost)   
+    
     
     route.post('/get-all-my-post',controller.getAllMyPost)    
 })

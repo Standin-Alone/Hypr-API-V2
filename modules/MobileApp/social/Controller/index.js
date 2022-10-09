@@ -317,47 +317,44 @@ methods.useReferral = async (req,res)=>{
                                         };
                         
                         // SEND VERIFICATION EMAIL
-                        // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
-                        //     // co
-                        //     // ready for email otp
-                        //     var mailOptions = {
-                        //         from: "Hypr", // sender address
-                        //         to: checkUserIfExists.email,                                        
-                        //         subject: 'Hypr Verification  Email',
-                        //         html:      data,
-                        //         attachments: [{
-                        //             filename: 'otp.jpeg',
-                        //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
-                        //             cid: 'otp' //same cid value as in the html img src
-                        //         },{
-                        //             filename: 'hypr-logo.png',
-                        //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-                        //             cid: 'logo' //same cid value as in the html img src
-                        //         }]
-                        //     }
-                        //     transporter.sendMail(mailOptions, function (mailError, info) {
-                        //         if (mailError) {
-                        //             console.log('Error: ' + mailError);
-                        //             console.warn('Email not sent');
-                        //             res.json({
-                        //                 status: false,
-                        //                 msg: 'Email not sent',
-                        //                 code: 'E110'
-                        //             });
-                        //         } else {
-                        //         // success create
-                        //         res.send({
-                        //             status:false,
-                        //             message:'Please check your email to verify your account.',                
-                        //             })    
-                        //         }
-                        //     });
-                        // });      
-
-                          res.send({
+                        ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                            // co
+                            // ready for email otp
+                            var mailOptions = {
+                                from: "Hypr", // sender address
+                                to: checkUserIfExists.email,                                        
+                                subject: 'Hypr Verification  Email',
+                                html:      data,
+                                attachments: [{
+                                    filename: 'otp.jpeg',
+                                    path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                    cid: 'otp' //same cid value as in the html img src
+                                },{
+                                    filename: 'hypr-logo.png',
+                                    path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                    cid: 'logo' //same cid value as in the html img src
+                                }]
+                            }
+                            transporter.sendMail(mailOptions, function (mailError, info) {
+                                if (mailError) {
+                                    console.log('Error: ' + mailError);
+                                    console.warn('Email not sent');
+                                    res.json({
+                                        status: false,
+                                        msg: 'Email not sent',
+                                        code: 'E110'
+                                    });
+                                } else {
+                                // success create
+                                res.send({
                                     status:false,
                                     message:'Please check your email to verify your account.',                
                                     })    
+                                }
+                            });
+                        });      
+
+                      
 
                     
                     } 
@@ -473,51 +470,46 @@ methods.useReferral = async (req,res)=>{
                                              };
         
                             // SEND VERIFICATION EMAIL
-                            // ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
-                            //     // co
-                            //     // ready for email otp
-                            //     var mailOptions = {
-                            //         from: "Hypr", // sender address
-                            //         to: email,                                        
-                            //         subject: 'Hypr Verification  Email',
-                            //         html:      data,
-                            //         attachments: [{
-                            //             filename: 'otp.jpeg',
-                            //             path: `${process.env.DEV_URL}/images/otp.jpeg`,
-                            //             cid: 'otp' //same cid value as in the html img src
-                            //         },{
-                            //             filename: 'hypr-logo.png',
-                            //             path: `${process.env.DEV_URL}/images/hypr-logo.png`,
-                            //             cid: 'logo' //same cid value as in the html img src
-                            //         }]
-                            //     }
-                            //     transporter.sendMail(mailOptions, function (mailError, info) {
-                            //         if (mailError) {
-                            //             console.log('Error: ' + mailError);
-                            //             console.warn('Email not sent');
-                            //             return  res.json({
-                            //                 status: false,
-                            //                 msg: 'Email not sent',
-                            //                 code: 'E110'
-                            //             });
-                            //         } else {
-                            //            // success create
-                            //            return  res.send({
-                            //                 status:true,                                            
-                            //                 message:'Sucessfully created your account. Please check your email to  verify your account.',                            
-                            //                 link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`,
-                            //                 data:updateResult
-                            //             })
-                            //         }
-                            //     });
-                            //  });       
+                            ejs.renderFile('./views/templates/accountVerificationEmail.ejs',emailPayload,function(err,data){                                                   
+                                // co
+                                // ready for email otp
+                                var mailOptions = {
+                                    from: "Hypr", // sender address
+                                    to: email,                                        
+                                    subject: 'Hypr Verification  Email',
+                                    html:      data,
+                                    attachments: [{
+                                        filename: 'otp.jpeg',
+                                        path: `${process.env.DEV_URL}/images/otp.jpeg`,
+                                        cid: 'otp' //same cid value as in the html img src
+                                    },{
+                                        filename: 'hypr-logo.png',
+                                        path: `${process.env.DEV_URL}/images/hypr-logo.png`,
+                                        cid: 'logo' //same cid value as in the html img src
+                                    }]
+                                }
+                                transporter.sendMail(mailOptions, function (mailError, info) {
+                                    if (mailError) {
+                                        console.log('Error: ' + mailError);
+                                        console.warn('Email not sent');
+                                        return  res.json({
+                                            status: false,
+                                            msg: 'Email not sent',
+                                            code: 'E110'
+                                        });
+                                    } else {
+                                       // success create
+                                       return  res.send({
+                                            status:true,                                            
+                                            message:'Sucessfully created your account. Please check your email to  verify your account.',                            
+                                            link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`,
+                                            data:updateResult
+                                        })
+                                    }
+                                });
+                             });       
 
-                            return  res.send({
-                                status:true,                                            
-                                message:'Sucessfully created your account. Please check your email to  verify your account.',                            
-                                link:`${process.env.DEV_URL}/hypr-mobile/social/successful/created-account`,
-                                data:updateResult
-                            })
+                          
                             
                         }
                     
@@ -555,45 +547,69 @@ methods.successfullCreatedAccount = (req,res)=>{
 methods.createPost = async (req,res)=>{
 
     try{
-        // initialize body        
+
+ 
+        // initialize body     
+        let userId = req.body.userId; 
+        let caption = req.body.caption;
+        let productLink = JSON.parse(req.body.productLink);
+        let  files = req.files;  
         
         
-        let  userId = req.body.userId;
-        let  file  = req.body.file ;
-        let  caption  = req.body.caption ;
-  
-        let countErrorUploads = 0 ;
-        console.warn(file);
 
-        // upload image
-        file.map((fileResponse)=>{
-            let fileBuffer =  Buffer.from(fileResponse.fileBase64, 'base64');
-            console.warn(fileResponse)
-            fs.writeFile(`./uploads/posts/${fileResponse.fileName}`, fileBuffer , function (err) {  
-                if(err){
-                    countErrorUploads++
-                }                
-            });    
-        })
-      
+        let uploads =  files ? Object.values(files) : [];
+
+        let fileNames = uploads.map(function(file) {
+            if(file.length > 1){
+                return file.map((fileResponse)=>fileResponse?.name);
+            }else{
+                return file?.name
+            }                       
+        })[0];      
+        console.warn(fileNames);
+        let countErrorUploads = 0 ;       
+        if(uploads.length > 0){
+            uploads.map(item=>{
+                if(item.length > 1){
+                    item.map((responseFile)=>{
+
+                     
+                        responseFile.mv(`./uploads/posts/${responseFile.name}`,(err)=>{
+                            if(err){
+                                countErrorUploads++;
+                                return  res.send({
+                                    status:true,
+                                    message:'Failed to upload.',                                                    
+                                })
+                            }
+                        });
+                    
+                    })    
+                }else{
+                    item.mv(`./uploads/posts/${item.name}`,(err)=>{
+                        if(err){
+                            countErrorUploads++;
+                            return  res.send({
+                                status:true,
+                                message:'Failed to upload.',                                                    
+                            })
+                        }
+                    });        
+                }       
+            })
+        }
+
         
-
-   
-
-
         if(countErrorUploads == 0 ){
-
-
-        
             let checkUserId = await UsersSchema.findById(userId);
-            
-            let fileNames = file.map((content)=>content.fileName);
+     
             if(checkUserId){
-                
+           
                 let payload = {
                     post_images:fileNames,
                     user_id:userId,
                     caption:caption,
+                    product_link:productLink,
                     user_picture:checkUserId.profile_image,
                     full_name: `${checkUserId.first_name} ${checkUserId.last_name}`
 
@@ -679,7 +695,6 @@ methods.hypePost = async (req,res)=>{
                 hypeStatus = 'hype';
             }
            
-            console.warn(post._id)
             SocialPostSchema.findByIdAndUpdate(post._id,updatePayload, {new:true},function (updateError,updateResult) {
                 if(updateError){
                     console.warn(updateError)
@@ -904,7 +919,7 @@ methods.getAllFriendsStories = async (req,res)=>{
                  stories.stories = stories.files.map((file,fileIndex)=>                    
                    ({
                         story_id: fileIndex+1,
-                        story_image: `${process.env.DEV_URL}//uploads//stories//${file.file_name}`,                  
+                        story_image: file.hasOwnProperty('variantInfo') ? file.file_name : `${process.env.DEV_URL}//uploads//stories//${file.file_name}`,                  
                         date_created: file.date_created,
                         status:file.status
                     })).filter((storyFilter)=>storyFilter.status == 1)
@@ -1053,5 +1068,111 @@ methods.createStory = async (req,res)=>{
     }
 
 
+}
+
+
+
+
+methods.boost = async (req,res)=>{
+
+    try{
+        // initialize body        
+        
+        
+        let  userId = req.body.userId;
+        let  variant = req.body.variant;  
+        
+        
+        
+        let countErrorUploads = 0 ;
+           
+
+   
+
+
+        if(countErrorUploads == 0 ){
+
+
+        
+            let checkUserId = await UsersSchema.findById(userId);
+            let variantData = {file_name:variant.variantImage,date_created:  new Date,status:1,variantInfo:variant};
+
+            if(checkUserId){
+                
+                let payload = {
+                    files:variantData,
+                    user_id:userId,
+                    user_picture:checkUserId.profile_image,
+                    full_name: `${checkUserId.first_name} ${checkUserId.last_name}`,
+                    user_image:checkUserId.profile_image,
+                    user_name: `${checkUserId.first_name} ${checkUserId.last_name}`
+
+                }   
+
+
+                let checkIfUserHasAlreadyStory = await SocialStoriesSchema.find({user_id:userId});
+          
+
+                
+                if(checkIfUserHasAlreadyStory.length > 0){
+                    let updatePayload = {
+                        $set:{
+                                files:[...checkIfUserHasAlreadyStory[0].files,variantData]
+                            }
+                    };
+                    
+                    SocialStoriesSchema.findOneAndUpdate({user_id:userId},updatePayload, {new:true},async function (updateError,updateResult) {
+                        if(updateError){
+                            // error on insert
+                            return res.send({
+                                status:false,
+                                message:'Something went wrong',
+                                error:socialError
+                            })
+
+                        }else{
+                            return  res.send({
+                                status:true,
+                                message:'Successfully boosted.',                                                    
+                            })
+                        }
+                    });
+            
+                }else{
+                    SocialStoriesSchema.create(payload, (socialError, insertStoryResult) => {                    
+                        if(socialError){
+                            // error on insert
+                            return res.send({
+                                status:false,
+                                message:'Something went wrong',
+                                error:socialError
+                            })
+
+                        }else{
+                            return  res.send({
+                                status:true,
+                                message:'Successfully boosted.',                                                    
+                            })
+                        }
+                    });
+                }
+            }else{
+                return res.send({
+                    status:false,
+                    message:'User cannot be found',                                                
+                })
+            }
+
+        }else{
+            return res.send({
+                status:false,
+                message:'Failed to boost.',                                                
+            })
+        }
+              
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
 }
 module.exports = methods;

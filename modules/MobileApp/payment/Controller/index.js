@@ -282,6 +282,7 @@ methods.finalSuccessPayment = async (req,res)=>{
 
                 cart.map((items)=>{
                     orderDetailsPayload.push({
+                        pid:items.product_id,
                         order_number:   getOrderNumber ,                            
                         product_id:   items.product_code ,
                         variant_id: items.variant_id,    

@@ -9,7 +9,9 @@ const controller  = require('../Controller');
 route.group('/hypr-mobile/tracking',()=>{    
     route.post('/update-tracking',controller.updateTracking)    
     route.post('/get-to-verify-orders',controller.getToVerifyOrders)    
-    route.post('/get-ordered-products',controller.getOrderedProducts)    
+    route.post('/get-to-review-orders',controller.getToReviewOrders)    
+    route.post('/get-ordered-products',controller.getOrderedProducts)  
+    route.post('/order-received',controller.orderReceived)     
 })
 
 

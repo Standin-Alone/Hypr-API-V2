@@ -582,7 +582,7 @@ methods.addToCart = async (req,res)=>{
         if(checkUser){
              
             let cleanPayload = {
-                product_id: variant.pid,
+                product_id: variant.variantPid,
                 variant_id: variant.variantVid,
                 product_price: variant.variantPrice,
                 prouct_price_cny: '',

@@ -3,6 +3,7 @@ require('../global/variables');
 
 let orderDetailsSchema = new schema({
     order_id:   mongoose.Schema.Types.ObjectId ,
+    pid:String,
     order_number:   String ,              
     product_id:   String ,
     variant_id: String,   
@@ -19,7 +20,10 @@ let orderDetailsSchema = new schema({
     updated_at:{
       type:Date,
       default:Date.now()
-    },  
+    }, 
+    mark_up:{
+      type:Number
+    } 
 }, { collection: "t_order_details" });
 
 module.exports = orderDetailsSchema = mongoose.model("t_order_details", orderDetailsSchema);
