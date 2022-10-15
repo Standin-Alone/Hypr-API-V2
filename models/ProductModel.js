@@ -32,6 +32,9 @@ let productSchema = new mongoose.Schema({
       },
       product_review:{
         type: Array
+      },
+      markup_price:{
+        type: String
       }
   }, { collection: "t_api_products" });
 

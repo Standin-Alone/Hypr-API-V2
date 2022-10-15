@@ -14,6 +14,8 @@ route.group('/hypr-mobile/market',()=>{
     route.post('/get-shipping-address',controller.getShippingAddress)
     route.post('/get-cart',controller.getCart)
     route.post('/get-cart-count',controller.getCartCount)
+    route.post('/get-review-count',controller.getReviewCount)
+    route.post('/get-product-reviews',controller.getProductReviews)
     route.post('/update-selected-address',controller.updateSelectedAddress)
     route.post('/get-wish-list',controller.getWishList)
     route.get('/get-cities/:countryCode',controller.getCities)

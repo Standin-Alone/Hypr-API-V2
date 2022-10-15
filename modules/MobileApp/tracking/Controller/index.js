@@ -46,43 +46,42 @@ methods.getToVerifyOrders = async (req,res)=>{
 
 
 
-methods.getToReviewOrders = async (req,res)=>{
+methods.getToReviewOrders = async (req,res,next)=>{
 
     try{
         // initialize body        
         const userId = req.body.userId;
       
-        let checkUserOrders = await OrdersSchema.find({user_id : userId,order_status:'Received'}).sort({order_date: -1}).lean();
+        // let checkUserOrders = await OrdersSchema.find({user_id : userId,order_status:'Received'}).sort({order_date: -1}).lean();
+        let checkUserOrders = await OrdersSchema.aggregate([{
+            $lookup:{
+                from:"t_order_details",
+                localField:"order_number",
+                foreignField:"order_number",
+                as:'orderForReviews'
+            }          
+        },{
+        $match:{
+            user_id : userId,
+            order_number:'1579084954116296704'
+          
+        }}]);
 
         if(checkUserOrders.length != 0 ){
-
-            Promise.all(checkUserOrders.map( async (item)=>{
-                let getOrderDetails = await OrderDetailsSchema.find({order_number:item.order_number}).lean();
-                if(getOrderDetails.length > 0){
-                    item.orderedProducts = getOrderDetails;
-                }
-                return item;
-            })).then((data)=>{
-                console.warn(data);
+            Promise.all(checkUserOrders.map((item)=>item.orderForReviews.flat())).then(data=>{
                 return res.send({
                     status:true,
                     message:'Successfully get the orders for review.',
-                    data:data
-                })
+                    data:data.flat()
+                })            
             })
-
-
-
-        
-            
         }else{
             return res.send({
                 status:false,
                 message:'You have no active orders.',
                 data:[]
             })
-        }
-               
+        }     
     }catch(error){
         console.log(error);
         res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
@@ -97,15 +96,15 @@ methods.getOrderedProducts = async (req,res)=>{
         // initialize body        
         const orderNumber = req.body.orderNumber;
         
-        let checkOrderDetails = await OrderDetailsSchema.find({order_number : orderNumber});
+        let checkOrderDetails = await OrderDetailsSchema.find({order_number : orderNumber}).lean();
 
         if(checkOrderDetails.length != 0 ){
    
         Promise.all(checkOrderDetails.map(async item=>{
-            let getMarkups = await ProductSchema.findOne({pid:item.pid});
+            let getProduct = await ProductSchema.findOne({pid:item.pid});
             
-            console.warn(getMarkups.product_add_price);
-            item.mark_up = getMarkups.product_add_price;
+            // get markup price
+            item.computed_markup_price = getProduct.price + (getProduct.price  * (getProduct.markup_price /100) ) ;
 
             return item;
         })).then((data)=>{
@@ -226,6 +225,100 @@ methods.orderReceived = async (req,res)=>{
                 data:[]
             })
         }      
+    }catch(error){
+        console.log(error);
+        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
+
+
+
+
+methods.reviewProduct = async (req,res)=>{
+    try{
+        // initialize body        
+        const userId = req.body.userId;
+        const rating = req.body.rating;
+        const productReview = req.body.productReview;
+        const pid = req.body.pid;
+
+        let  files = req.files;          
+        let uploads =  files ? Object.values(files) : [];
+
+        
+        let fileNames = uploads.map(function(file) {
+
+         
+            if(file.length > 1){
+                return file.map((fileResponse)=>fileResponse?.name);
+            }else{
+                return file?.name
+            }                       
+        });      
+
+
+        
+    
+        let countErrorUploads = 0 ;       
+        if(uploads.length > 0){
+            uploads.map(item=>{
+                if(item.length > 1){
+                    item.map((responseFile)=>{
+
+                     
+                        responseFile.mv(`./uploads/reviews/${responseFile.name}`,(err)=>{
+                            if(err){
+                                countErrorUploads++;
+                                return  res.send({
+                                    status:true,
+                                    message:'Failed to upload.',                                                    
+                                })
+                            }
+                        });
+                    
+                    })    
+                }else{
+                    item.mv(`./uploads/reviews/${item.name}`,(err)=>{
+                        if(err){
+                            countErrorUploads++;
+                            return  res.send({
+                                status:true,
+                                message:'Failed to upload.',                                                    
+                            })
+                        }
+                    });        
+                }       
+            })
+        }
+
+
+        let payload = {
+            pid: pid,
+            user_id: userId,
+            review:productReview,
+            rating:rating,            
+            file_names:fileNames
+        }
+
+        ProductReviewSchema.create(payload, (error, response) => {                    
+            if(error){
+                // error on insert
+                return res.send({
+                    status:false,
+                    message:'Something went wrong',
+                    error:error
+                })
+
+            }else{
+                return  res.send({
+                    status:true,
+                    message:'Successfully sent a review.',  
+                    data:response                                                  
+                })
+            }
+        });
+
+  
     }catch(error){
         console.log(error);
         res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        

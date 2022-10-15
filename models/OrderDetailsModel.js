@@ -20,10 +20,7 @@ let orderDetailsSchema = new schema({
     updated_at:{
       type:Date,
       default:Date.now()
-    }, 
-    mark_up:{
-      type:Number
-    } 
+    }
 }, { collection: "t_order_details" });
 
 module.exports = orderDetailsSchema = mongoose.model("t_order_details", orderDetailsSchema);
