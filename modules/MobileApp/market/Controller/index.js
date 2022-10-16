@@ -596,10 +596,11 @@ methods.getProductReviews =  async (req,res)=>{
                     "file_names":true,
                     "user_info.profile_image":true,
                     "user_info.first_name":true,
-                    "user_info.last_name":true                                             
-                }
-                }
-        ]);
+                    "user_info.last_name":true,
+                    "date_created":true
+
+                }                
+        }]).sort({'date_created': -1});
 
 
         // CHECK IF PRODUCT REVIEW EXIST
@@ -621,6 +622,49 @@ methods.getProductReviews =  async (req,res)=>{
     }
 }
 
+
+
+methods.countProductReviews =  async (req,res)=>{
+    try{
+        // initialize body        
+        let pid = req.body.pid;
+
+        let aggregateOption = [
+        {$match:{
+            pid:pid
+        }},
+        {
+            $group: {
+                _id: "$rating",    
+                pid:{$first:"$pid"},            
+                count: { $sum: 1 }
+            }
+        }
+    ]
+    
+        let countProductReview = await ProductReviewSchema.aggregate(aggregateOption);
+
+        console.warn(countProductReview);
+
+        // CHECK IF PRODUCT REVIEW EXIST
+        if(countProductReview.length > 0){
+            return res.send({
+                status:true,
+                message:'category products',                
+                data:countProductReview
+            })
+        }else{            
+            return res.send({
+                status:false,
+                message:'User Cannot be found',                
+            })
+        }
+
+    }catch(error){
+        console.log(error);
+        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+    }
+}
 
 methods.getWishList =  async (req,res)=>{
 
