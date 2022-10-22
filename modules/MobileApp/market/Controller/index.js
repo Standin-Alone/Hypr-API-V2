@@ -410,25 +410,17 @@ methods.getShippingAddress =  async (req,res)=>{
         // initialize body        
         let userId = req.body.userId;
         
-
         let checkUser = await UsersSchema.findById(userId);
-
-
         // CHECK IF USER ID EXIST
         if(checkUser){
-
-
             // get shipping address
             if(checkUser.shipping_address){    
-                console.warn(checkUser.shipping_address)
+       
                 return res.send({
                     status:true,
                     message:'Successfully get the shipping address',                                        
                     data:checkUser.shipping_address
                 })  
-
-                
-                
             }else{
                 
                 return res.send({
@@ -1146,4 +1138,10 @@ methods.removeItemInCart = async (req,res)=>{
     }
 
 }
+
+
+
+
+
+
 module.exports = methods;

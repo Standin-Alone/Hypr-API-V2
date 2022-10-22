@@ -919,6 +919,11 @@ methods.getToken = (req, res) => {
     });
 };
 
+
+
+
+
+
 methods.getProducts = async (req, res) => {
   const page = checkParamsIfUndefined(req) ? "1" : req.query.pageNum;
   const results = [];
@@ -929,6 +934,7 @@ methods.getProducts = async (req, res) => {
 
   query.toArray(function (err, docs) {
     docs.forEach((documents) => {
+      documents.product_information.markup_price = documents.markup_price ? documents.markup_price : 1;
       results.push(documents.product_information);
     });
 
@@ -972,12 +978,49 @@ methods.getProductsInAPI = (req, res) => {
     });
 };
 
+
+// TEMP MARK UP PRICE FUNCTION 
+const getProductDisplayPrice = (productId) =>{
+  const _id = new ObjectId(productId);
+
+  return new Promise(function (resolve, reject) {
+    db.collection('t_api_products')
+      .find({ _id: { $eq: _id } })
+      .project({ markup_price: 1, _id: 0 }).toArray(function (err, items) {
+        err ? reject(err) : resolve(items);
+      });
+  });
+}
+
+// CASHBACK
+const getCashBack = (markupPrice)=>{
+  const halfKickBack = markupPrice / 2;
+  const buyerKickBack = _.round( halfKickBack / 2, 2);
+  return buyerKickBack;
+}
+
+// ADD MARK UP PER VARIANT
+const computeMarkUp = (variants,markupPrice)=>{
+  Promise.all(variants.data.map((item)=>{
+    let displayPrice = item.variantSellPrice + (item.variantSellPrice  * ((markupPrice ? markupPrice : 1) /100) ); 
+    let markupValue =  (item.variantSellPrice  * ((markupPrice ? markupPrice : 1) /100) ); 
+    
+    item.markup_value = markupValue;
+    item.display_price = _.round(displayPrice, 2);
+    item.cashBack = getCashBack(markupValue);
+    return item;
+  })).then((newResponse)=>{
+     variants.data = newResponse;
+  });
+  return variants;
+}
+
 methods.getVariants = (req, res) => {
   const token = req.cookies.auth;
   const search = _getParamString(req);
+  const markupPrice = req.query.markupPrice;
 
-  fetch(
-    `https://developers.cjdropshipping.com/api2.0/v1/product/variant/query?${search}`,
+  fetch(`https://developers.cjdropshipping.com/api2.0/v1/product/variant/query?${search}`,
     {
       headers: {
         "CJ-Access-Token": token,
@@ -991,10 +1034,14 @@ methods.getVariants = (req, res) => {
       }
       return response.json();
     })
-    .then((response) => {
-      return res.send(response);
+    .then(async (response) => {
+      let cleanVariantProduct =  await computeMarkUp(response,markupPrice);
+
+  
+      return res.send(cleanVariantProduct);
     })
     .catch((err) => {
+      console.warn("MARKUP ERROR",err);
       res.send({ response: "something went wrong :<" });
       if (err.name === "AbortError") {
         res.send("Timed out");
