@@ -8,7 +8,7 @@ const controller  = require('../Controller');
 // GROUP ROUTE
 route.group('/hypr-mobile/market',()=>{
 
-    route.post('/add-to-wishlist',controller.addToWishList)
+    route.post('/add-to-wishlist',controller.addToWishList)    
     route.post('/remove-product-from-wishlist',controller.removeProductFromWishList)
     route.post('/add-to-cart',controller.addToCart)
     route.post('/get-shipping-address',controller.getShippingAddress)

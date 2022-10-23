@@ -50,7 +50,7 @@ global.transporter = nodemailer.createTransport({
     secure: false,
     auth: {
         user: 'hyprweb@gmail.com',
-        pass: 'mdaxadhenuxdzpie'
+        pass: 'rxswmuualcfufenl'
     },
     tls: {
         rejectUnauthorized: false

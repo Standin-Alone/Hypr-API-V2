@@ -622,17 +622,17 @@ methods.countProductReviews =  async (req,res)=>{
         let pid = req.body.pid;
 
         let aggregateOption = [
-        {$match:{
-            pid:pid
-        }},
-        {
-            $group: {
-                _id: "$rating",    
-                pid:{$first:"$pid"},            
-                count: { $sum: 1 }
+            {$match:{
+                pid:pid
+            }},
+            {
+                $group: {
+                    _id: "$rating",    
+                    pid:{$first:"$pid"},            
+                    count: { $sum: 1 }
+                }
             }
-        }
-    ]
+        ]
     
         let countProductReview = await ProductReviewSchema.aggregate(aggregateOption);
 

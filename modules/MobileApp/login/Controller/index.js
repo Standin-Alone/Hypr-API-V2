@@ -530,12 +530,14 @@ methods.getUserInfo = async (req,res)=>{
         let userId = req.body.userId;
     
  
-        let checkUserId = await UsersSchema.findById(userId);
-        
-        if(checkUserId){
+        let checkUserId = await UsersSchema.findById(userId).lean();        
+        if(checkUserId){            
             
-         
-    
+
+            let countPals = await TeamsSchema.countDocuments({$or:[{recruited_id:userId},{recruiter_id:userId}]});
+            checkUserId.totalPals = countPals;
+
+            
             return res.send({
                 status:true,
                 message:'User info has been found.',                    
