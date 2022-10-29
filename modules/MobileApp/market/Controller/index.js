@@ -721,6 +721,7 @@ methods.addToCart = async (req,res)=>{
                 total_amount:  variant.variantPrice,
                 total_amount_cny: '',  
                 variant_name : variant.variantName,
+                cash_back : variant.variantCashBack,
                 status: 1,              
                 freight_calculation:freightCalculation[0],
                 shipping_address:shippingAddress

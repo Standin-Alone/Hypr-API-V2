@@ -20,6 +20,7 @@ require('../global/variables');
   total_amount: String,
   total_amount_cny: String,  
   variant_name : String,
+  cash_back : String,
   status: Boolean,
   created_at: {
     type: Date,
