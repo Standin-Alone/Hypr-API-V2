@@ -1338,6 +1338,37 @@ methods.trackingDetails = (req, res) => {
     });
 };
 
+
+methods.getCategories = (req, res) => {
+
+  const token = req.cookies.auth;
+  fetch(
+    `https://developers.cjdropshipping.com/api2.0/v1/product/getCategory`,
+    {
+      headers: {
+      "CJ-Access-Token": token,
+     },
+      method: "GET",
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw "error on fetching token";
+      }
+      return response.json();
+    })
+    .then((response) => {
+      return res.send(response);
+    })
+    .catch((err) => {
+      res.send({ response: "something went wrong :<" });
+      if (err.name === "AbortError") {
+        res.send("Timed out");
+      }
+    });
+};
+
+
 methods.productSync = (req, res) => {
   const token = req.cookies.auth;
   const search = _getParamString(req);

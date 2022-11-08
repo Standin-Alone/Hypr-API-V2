@@ -64,6 +64,7 @@ route.group("/cj/api/v1", () => {
     route.get("/countries", controller.getCountryCode);
     route.get("/logistics", controller.getLogistics);
     route.get("/tracking-details", controller.trackingDetails);
+    route.get("/get-categories", controller.getCategories);
 
     route.post("/products-sync", controller.productSync);
     route.post("/get-sync-products", controller.getSyncProducts);
