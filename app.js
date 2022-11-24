@@ -54,13 +54,13 @@ app.use(session({
 }));
 
 app.use(express.json({limit:'5000mb'}));
-app.use(express.urlencoded({ extended: false,limit:'5000mb'}));
+app.use(express.urlencoded({ extended: true,limit:'5000mb'}));
 
 
 app.use(bodyParser.json({limit:'5000mb'}));
 
 app.use(bodyParser.urlencoded({
-  extended: false,
+  extended: true,
   limit: '5000mb',
 }));
 

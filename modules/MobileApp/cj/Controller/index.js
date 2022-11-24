@@ -1,5 +1,5 @@
 // CJ CONTROLLER
-require('../../../../config/db_context');
+require('../../../../config/mongoDbConfig');
 
 const methods = {};
 
@@ -926,12 +926,14 @@ methods.getToken = (req, res) => {
 
 methods.getProducts = async (req, res) => {
   const page = checkParamsIfUndefined(req) ? "1" : req.query.pageNum;
-  const results = [];
+  const categoryName = checkParamsIfUndefined(req) ? "" : decodeURIComponent(req.query.categoryName);
+
+  const results = []; 
   const query = await db
     .collection("t_api_products")
-    .find({ page_number: { $eq: page } })
+    .find({ page_number: { $eq: page }, category_name:{$regex:categoryName == 'All' ? '' : categoryName ,$options:'i'}})
     .limit(20);
-
+ 
   query.toArray(function (err, docs) {
     docs.forEach((documents) => {
       documents.product_information.markup_price = documents.markup_price ? documents.markup_price : 1;
@@ -995,7 +997,7 @@ const getProductDisplayPrice = (productId) =>{
 // CASHBACK
 const getCashBack = (markupPrice)=>{
   const halfKickBack = markupPrice / 2;
-  const buyerKickBack = _.round( halfKickBack / 2, 2);
+  const buyerKickBack = lodash.round( halfKickBack / 2, 2);
   return buyerKickBack;
 }
 
@@ -1006,7 +1008,7 @@ const computeMarkUp = (variants,markupPrice)=>{
     let markupValue =  (item.variantSellPrice  * ((markupPrice ? markupPrice : 1) /100) ); 
     
     item.markup_value = markupValue;
-    item.display_price = _.round(displayPrice, 2);
+    item.display_price = lodash.round(displayPrice, 2);
     item.cashBack = getCashBack(markupValue);
     return item;
   })).then((newResponse)=>{
@@ -1052,7 +1054,7 @@ methods.getVariants = (req, res) => {
 function checkParamsIfUndefined(req) {
   // temporary checking
   const _ = require('lodash');
-  if (_.isUndefined(req.query.pageNum)) {
+  if (lodash.isUndefined(req.query.pageNum)) {
     return true;
   }
   return false;
@@ -1234,7 +1236,7 @@ methods.getOrder = (req, res) => {
       return response.json();
     })
     .then((response) => {
-      console.warn(response)
+  
       return res.send(response);
     })
     .catch((err) => {

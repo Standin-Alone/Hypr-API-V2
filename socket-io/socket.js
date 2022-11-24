@@ -14,6 +14,15 @@ io.on("connection", (socket) => {
     console.warn("MESSAGE",data);
     socket.to(data.room).emit('message-from-server',data)
   })
+
+  socket.on('join-payment-room',(data)=>{
+    socket.join(data);
+  })
+
+  socket.on('payment-notif',(data)=>{
+    
+  })
+  
 });
 
 module.exports = httpServer;

@@ -8,7 +8,6 @@ global.schema  = mongoose.Schema;
 global.ejs = require("ejs");
 global.fetch = require('node-fetch');
 global.lodash = require('lodash');
-global._ = require('lodash');
 global.paypal= require('paypal-rest-sdk');
 
 global.fs = require('fs');

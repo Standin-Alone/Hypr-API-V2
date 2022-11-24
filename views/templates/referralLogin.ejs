@@ -33,8 +33,7 @@
 	<link href="../../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
 	<link href="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 	<link href="../../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />    
     <link href="../../../assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="../../../assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css" rel="stylesheet" />
     <link href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.css" rel="stylesheet" />
@@ -66,7 +65,7 @@
         <div class="register register-with-news-feed">
             <!-- begin news-feed -->
             <div class="news-feed">
-                <div class="news-image" style="background-image: url(../../../assets/img/login-bg/login-bg-9.jpg)"></div>
+                <div class="news-image" style="background-image: url(../../../assets/img/login-bg/hypr-bg.jpg)"></div>
                 <div class="news-caption">
                     <h4 class="caption-title"><b>Hypr</b></h4>
                     <p>
@@ -159,13 +158,13 @@
 	<script src="../../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
     <script src="../../../assets/plugins/bootstrap-daterangepicker/moment.js"></script>
     <script src="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="../../../assets/plugins/select2/dist/js/select2.min.js"></script>
+    
     <script src="../../../assets/plugins/bootstrap-eonasdan-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="../../../assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
     <script src="../../../assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette.js"></script>
     <script src="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
     <script src="../../../assets/plugins/clipboard/clipboard.min.js"></script>
-	<script src="../../../assets/js/demo/form-plugins.demo.min.js"></script>
+	
 	<!-- ================== END PAGE LEVEL JS ================== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -177,20 +176,7 @@
          
 		$(document).ready(function() {
 			App.init();
-            FormPlugins.init();
-          
-    $("input[name=birthday]").on('change',()=>{
-
-        let getBirthday = $("input[name=birthday]").val();
-        // COMPUTE AGE
-        let getDateNow = moment(new Date(),"MM-DD-YYYY");
-        let birthday = moment(getBirthday,"MM-DD-YYYY");
-        computeAge = getDateNow.diff(birthday, 'years');
-        // VALIDATE AGE                   
-        
-        $("input[name=age]").val(computeAge);                 
-      
-    })
+            
 
 	$('#sign-in-form').validate({	
 		rules:{
@@ -226,11 +212,7 @@
 							url:location.origin + '/hypr-mobile/social/use-referral',
 							type:'post',					
 							data:$("#sign-in-form").serialize(),
-							success:function(response){                                                                
-
-                          
-							
-                            
+							success:function(response){                                                                                          							                            
 
                             if(response.status == true){
 
@@ -238,7 +220,7 @@
                                 let new_user_id =   response._id;
                                 // execute MLM
                                 $.ajax({
-                                    url:location.origin + '/mlm/api/v1/mlm-insert-team',
+                                    url:location.origin + '/hypr-mobile/mlm/api/v1/mlm-insert-team',
                                     type:'post',					
                                     data:{team:[{recruiter_id:referral_user_id,recruited_id:new_user_id}]},
                                     success:function(mlmResponse){
@@ -246,15 +228,7 @@
                                             icon: response.status == true ? 'success' : 'error',
                                             title: 	response.message,	
                                         }).then(()=>{
-                                            if(response.status == true){
-                                              
-                                                Swal.fire(
-                                                `${response.message}`, 
-                                                '',                                           
-                                                'success'
-                                                )
-                                                //   location.href = response.link
-                                            }										
+                                        									
                                         })	
                                             
                                     }

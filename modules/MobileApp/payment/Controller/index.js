@@ -2,7 +2,25 @@
 
 const { method } = require("lodash");
 
+const sendNotif = (userId)=>{
+    let notificationPayload = {
+        receiver_user_id:userId,
+        message:"You successfully bought a product. Please wait for verification"
+    }
+    // NOTIFICATION
+    NotificationSchema.create(notificationPayload, (notificationError, insertNotificationResult) => {     
+        if(notificationError){                    
+            // error on insert
+            return res.send({
+                status:false,
+                message:'Something went wrong',
+                error:notificationError
+            })                
+        }else{
 
+        }
+    })
+}
 
 const methods = {};
 
@@ -211,6 +229,8 @@ methods.paypalSuccess = async (req,res)=>{
 
 
 
+
+
 methods.finalSuccessPayment = async (req,res)=>{
 
     try{
@@ -354,8 +374,10 @@ methods.finalSuccessPayment = async (req,res)=>{
                             error:updateError
                         })
             
-                    }else{                        
-    
+                    }else{              
+                        // SEND NOTIF
+                        sendNotif(userId)
+
                         return res.send({
                             status:true,
                             message:'Thank you for buying. Please wait for the delivery.'                
@@ -365,6 +387,8 @@ methods.finalSuccessPayment = async (req,res)=>{
                 });
             
             }else{
+                // SEND NOTIF
+                await sendNotif(userId)
                 return res.send({
                     status:true,
                     message:'Thank you for buying. Please wait for the delivery.'                

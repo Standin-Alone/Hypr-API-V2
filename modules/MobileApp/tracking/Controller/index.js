@@ -19,7 +19,7 @@ methods.getToVerifyOrders = async (req,res)=>{
 
         if(checkUserOrders.length != 0 ){
 
-            console.warn(checkUserOrders);
+          
             return res.send({
                 status:true,
                 message:'Successfully get the to verify orders.',
@@ -103,8 +103,8 @@ methods.getOrderedProducts = async (req,res)=>{
         Promise.all(checkOrderDetails.map(async item=>{
             let getProduct = await ProductSchema.findOne({pid:item.pid});
             
-            // get markup price
-            item.computed_markup_price = getProduct.price + (getProduct.price  * (getProduct.markup_price /100) ) ;
+            // get markup value
+            item.computed_markup_price = item?.price + (item?.price  * ((getProduct.markup_price ? getProduct.markup_price : 0.5 ) /100) ) ;
 
             return item;
         })).then((data)=>{
@@ -165,7 +165,8 @@ methods.updateTracking = async (req,res)=>{
                     return res.send({
                         status:true,
                         message:'Successfully get the to verify orders.',
-                        data:checkUserOrders
+                        data:checkUserOrders,
+                        tracking:result.tracking
                     })             
                 }
 
@@ -227,7 +228,11 @@ methods.orderReceived = async (req,res)=>{
         }      
     }catch(error){
         console.log(error);
-        res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+        return res.send({
+            status:false,
+            message:error,
+        
+        })      
     }
 }
 

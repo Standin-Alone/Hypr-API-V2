@@ -548,14 +548,18 @@ methods.createPost = async (req,res)=>{
 
     try{
 
- 
+        console.warn(req.body.productLink);
         // initialize body     
         let userId = req.body.userId; 
         let caption = req.body.caption;
-        let productLink = JSON.parse(req.body.productLink);
+        let rawProductLink = req.body.productLink;
         let  files = req.files;  
         
-        
+        console.warn(`RAW PRODUCT LINK`,rawProductLink)
+
+        let productLink = JSON.parse(rawProductLink);
+       
+        console.warn(`PRODUCT LINK`,productLink)
 
         let uploads =  files ? Object.values(files) : [];
 
@@ -566,7 +570,7 @@ methods.createPost = async (req,res)=>{
                 return file?.name
             }                       
         })[0];      
-        console.warn(fileNames);
+       
         let countErrorUploads = 0 ;       
         if(uploads.length > 0){
             uploads.map(item=>{
@@ -646,8 +650,11 @@ methods.createPost = async (req,res)=>{
         }
                
     }catch(error){
-        console.log(error);
-        return res.render('./error.ejs',{message:'ERROR! PAGE NOT FOUND',status:404,stack:false});        
+        console.warn(error);
+        return res.send({
+            status:false,
+            message:error,                                                
+        })   
     }
 
 

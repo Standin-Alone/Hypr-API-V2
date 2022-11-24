@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.raw());
+// const app = express();
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.raw());
+
 
 const methods = {};
 const _ = require('lodash');
@@ -194,14 +195,14 @@ async function processRewards(items, request) {
       const markUp = request.body.markUp;
       const orderId = request.body.orderId;
       const userId = request.body.userId;
-      const reverse = request.body.reverse;
+      // const reverse = request.body.reverse;
 
       const lastItem = items.find(
         (item) => item.name.toLowerCase() === 'reverse day'
       );
 
       const day = _.toNumber(lastItem.percent);
-      const is_reverse_day = (reverse === undefined) ? isReverseDay(day) : reverse;
+      const is_reverse_day = isReverseDay(day);
 
       try {
         if (is_reverse_day) {
@@ -327,12 +328,13 @@ methods.recruiteMember = async (req, res) => {
   
   const data = req.body.team;
 
-  const team = data.map(v => ({...v, date_created: new Date() }))
+  if (data) {
+    const team = data.map(v => ({...v, date_created: new Date() }))
 
-  const query = db.collection('r_teams').insertMany(team);
+    const query = db.collection('r_teams').insertMany(team);
 
-  (query) ? res.json({ response: 'success' }) : res.status(500).send({ error: '500' });
-
+    (query) ? res.json({ response: 'success' }) : res.status(500).send({ error: '500' });
+  }
 };
 
 methods.updator = async (req, res) => {
@@ -351,7 +353,6 @@ methods.updator = async (req, res) => {
   (query) ? res.json({ response: 'success' }) : res.status(500).send({ error: '500' });
 
 };
-
 
 
 methods.getMembers = async (req, res) => {
