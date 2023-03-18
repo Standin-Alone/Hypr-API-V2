@@ -1208,7 +1208,7 @@ methods.FreightCalculate = (req, res) => {
       return res.send(response);
     })
     .catch((err) => {
-      res.send({ response: "something went wrong :<" });
+      res.send({ response: "something went wrong :<" ,message:err});
       if (err.name === "AbortError") {
         res.send("Timed out");
       }

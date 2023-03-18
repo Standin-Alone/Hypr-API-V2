@@ -920,7 +920,7 @@ methods.getAllFriendsStories = async (req,res)=>{
 
             // GET ALL FRIENDS STORIES
             let getStories = Promise.all(getAllFriendsStories.map( async (stories,index)=>{
-        
+                
                  stories.user_picture = stories.user_picture ? stories.user_picture : 'default-profile.png';              
                  stories.user_image = stories.user_picture ? `${process.env.DEV_URL}//uploads/profile_pictures//${stories.user_picture}` :  `${process.env.DEV_URL}/uploads/profile_pictures/default-profile.png`  ;              
                  stories.stories = stories.files.map((file,fileIndex)=>                    

@@ -2,199 +2,377 @@
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-<!--<![endif]-->
-<head>
-	<meta charset="utf-8" />
-	<title>Hypr</title>
-	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
-	
-	<!-- ================== BEGIN BASE CSS STYLE ================== -->
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-	<link href="../../../assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/font-awesome/5.0/css/fontawesome-all.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/animate/animate.min.css" rel="stylesheet" />
-	<link href="../../../assets/css/default/style.min.css" rel="stylesheet" />
-	<link href="../../../assets/css/default/style-responsive.min.css" rel="stylesheet" />
-	<link href="../../../assets/css/default/theme/default.css" rel="stylesheet" id="theme" />
-	<!-- ================== END BASE CSS STYLE ================== -->
-		
-	<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-	<link href="../../../assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
-	<link href="../../../assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-   
-    <link href="../../../assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-fontawesome.css" rel="stylesheet" />
-    <link href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css" rel="stylesheet" />
-	<!-- ================== END PAGE LEVEL STYLE ================== -->
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <title>Quarta</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      name="viewport"
+    />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
 
-	<!-- ================== BEGIN BASE JS ================== -->
-	<script src="../../../assets/plugins/pace/pace.min.js"></script>
-	<!-- ================== END BASE JS ================== -->
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link
+      href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/jquery-ui/jquery-ui.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap/4.0.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/font-awesome/5.0/css/fontawesome-all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/animate/animate.min.css"
+      rel="stylesheet"
+    />
+    <link href="../../../assets/css/default/style.min.css" rel="stylesheet" />
+    <link
+      href="../../../assets/css/default/style-responsive.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/css/default/theme/default.css"
+      rel="stylesheet"
+      id="theme"
+    />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link
+      href="../../../assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/ionRangeSlider/css/ion.rangeSlider.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/password-indicator/css/password-indicator.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-select/bootstrap-select.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/jquery-tag-it/css/jquery.tagit.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="../../../assets/plugins/bootstrap-eonasdan-datetimepicker/build/css/bootstrap-datetimepicker.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-fontawesome.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"
+      rel="stylesheet"
+    />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../../assets/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
 
     <style>
-    
-        .iti--allow-dropdown input, .iti--allow-dropdown input[type=text], .iti--allow-dropdown input[type=tel], .iti--separate-dial-code input, .iti--separate-dial-code input[type=text], .iti--separate-dial-code input[type=tel]{
-            display:block!important; 
-            width: 380px !important;
-        }
-   
+      .iti--allow-dropdown input,
+      .iti--allow-dropdown input[type="text"],
+      .iti--allow-dropdown input[type="tel"],
+      .iti--separate-dial-code input,
+      .iti--separate-dial-code input[type="text"],
+      .iti--separate-dial-code input[type="tel"] {
+        display: block !important;
+        width: 380px !important;
+      }
+
+      .checkbox {
+        cursor: pointer;
+      }
     </style>
-</head>
-<body class="pace-top bg-white">
-	<!-- begin #page-loader -->
-	<div id="page-loader" class="fade show"><span class="spinner"></span></div>
-	<!-- end #page-loader -->
-	
-	<!-- begin #page-container -->
-	<div id="page-container" class="fade">
-	    <!-- begin register -->
-        <div class="register register-with-news-feed">
-            <!-- begin news-feed -->
-            <div class="news-feed">
-                <div class="news-image" style="background-image: url(../../../assets/img/login-bg/hypr-bg.jpg)"></div>
-                <div class="news-caption">
-                    <h4 class="caption-title"><b>Hypr</b></h4>
-                    <p>
-                       Number one e-commerce website.
-                    </p>
-                </div>
-            </div>
-            <!-- end news-feed -->
-            <!-- begin right-content -->
-            <div class="right-content">
-                <!-- begin register-header -->
-                <h1 class="register-header">
-                    Sign Up
-                    <small>Create your Hypr Account. To use the referral.</small>
-                </h1>
-                <!-- end register-header -->
-                <!-- begin register-content -->
-                <div class="register-content">
-                    <form id="sign-up-form" method="POST" class="margin-bottom-0">
-                        <input type="text" class="form-control hide " placeholder="Email address" name="referralType" required  value="sign-up"/>
+  </head>
+  <body class="pace-top bg-white">
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade show"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
 
-                        <label class="control-label">Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control hide" placeholder="First name" name="referral_user_id" required value="<%=userId%>" />
-                        <input type="text" class="form-control hide" placeholder="country_name" name="country_name"  />
-                        <input type="text" class="form-control hide" placeholder="country" name="country"  />
-                        <input type="text" class="form-control hide" placeholder="age" name="age"  />
-                        <div class="row row-space-10">
-                            <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="First name" name="first_name" required />
-                            </div>
-                            <div class="col-md-6 m-b-15">
-                                <input type="text" class="form-control" placeholder="Last name"  name="last_name" required  />
-                            </div>
-                        </div>
-                        <label class="control-label">Email <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" placeholder="Email address" name="email" required />
-                            </div>
-                        </div>
-                        <label class="control-label">Contact Number <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="tel" class="form-control w-20 " id="contact-number" placeholder="Contact number" name="contact_number" required  />
-                            </div>
-                        </div>  
-
-                        <label class="control-label">Birthday <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" id="datepicker-default" placeholder="Select Date"  name="birthday"  value="04/04/1999" />
-                            </div>
-                        </div>
-
-                        <label class="control-label">Password <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="password" class="form-control" placeholder="Password"   name="password" required  />
-                            </div>
-                        </div>
-
-                        
-
-                        <label class="control-label">Re-enter password <span class="text-danger">*</span></label>
-                        <div class="row m-b-15">
-                            <div class="col-md-12">
-                                <input type="password" class="form-control" placeholder="Password"  name="re_enter_password"required   />
-                            </div>
-                        </div>
-                        <div class="checkbox checkbox-css m-b-30">
-                        	<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox" >
-								<label for="agreement_checkbox">
-									By clicking Sign Up, you agree to our <a href="javascript:;">Terms</a> and that you have read our <a href="javascript:;">Data Policy</a>, including our <a href="javascript:;">Cookie Use</a>.
-								</label>
-							</div>
-                        </div>
-                        <div class="register-buttons">
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
-                        </div>
-                        <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                            Are you already a member? Click <a href="<%=signInLink%>" class="text-success">here</a> to sign in.
-                        </div>
-                        <hr />
-                        <p class="text-center">
-                            Hypr 2022
-                        </p>
-                    </form>
-                </div>
-                <!-- end register-content -->
-            </div>
-            <!-- end right-content -->
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade">
+      <!-- begin register -->
+      <div class="register register-with-news-feed">
+        <!-- begin news-feed -->
+        <div class="news-feed">
+          <div
+            class="news-image"
+            style="
+              background-image: url(../../../assets/img/login-bg/hypr-bg.jpg);
+            "
+          ></div>
+          <div class="news-caption">
+            <h4 class="caption-title"><b>Quarta</b></h4>
+            <p>Number one e-commerce website.</p>
+          </div>
         </div>
-        <!-- end register -->
-        
-      
-	</div>
-	<!-- end page container -->
-	
-	<!-- ================== BEGIN BASE JS ================== -->
-	<script src="../../../assets/plugins/jquery/jquery-3.2.1.min.js"></script>
-	<script src="../../../assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-	<script src="../../../assets/plugins/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-	<!--[if lt IE 9]>
-		<script src="../../../assets/crossbrowserjs/html5shiv.js"></script>
-		<script src="../../../assets/crossbrowserjs/respond.min.js"></script>
-		<script src="../../../assets/crossbrowserjs/excanvas.min.js"></script>
-	<![endif]-->
-	<script src="../../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="../../../assets/plugins/js-cookie/js.cookie.js"></script>
-	<script src="../../../assets/js/theme/default.min.js"></script>
-	<script src="../../../assets/js/apps.min.js"></script>
-	<!-- ================== END BASE JS ================== -->
+        <!-- end news-feed -->
+        <!-- begin right-content -->
+        <div class="right-content">
+          <!-- begin register-header -->
+          <h1 class="register-header">
+            Sign Up
+            <small>Create your Quarta Account. To use the referral.</small>
+          </h1>
+          <!-- end register-header -->
+          <!-- begin register-content -->
+          <div class="register-content">
+            <form id="sign-up-form" method="POST" class="margin-bottom-0">
+              <input
+                type="text"
+                class="form-control hide"
+                placeholder="Email address"
+                name="referralType"
+                required
+                value="sign-up"
+              />
 
-    
-	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
-	<script src="../../../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-	<script src="../../../assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
-	<script src="../../../assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-	<script src="../../../assets/plugins/masked-input/masked-input.min.js"></script>
-	<script src="../../../assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-	<script src="../../../assets/plugins/password-indicator/js/password-indicator.js"></script>
-	<script src="../../../assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
-	<script src="../../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-	<script src="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
-	<script src="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
-	<script src="../../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+              <label class="control-label"
+                >Name <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control hide"
+                placeholder="First name"
+                name="referral_user_id"
+                required
+                value="<%=userId%>"
+              />
+              <input
+                type="text"
+                class="form-control hide"
+                placeholder="country_name"
+                name="country_name"
+              />
+              <input
+                type="text"
+                class="form-control hide"
+                placeholder="country"
+                name="country"
+              />
+              <input
+                type="text"
+                class="form-control hide"
+                placeholder="age"
+                name="age"
+              />
+              <div class="row row-space-10">
+                <div class="col-md-6 m-b-15">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="First name"
+                    name="first_name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 m-b-15">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Last name"
+                    name="last_name"
+                    required
+                  />
+                </div>
+              </div>
+              <label class="control-label"
+                >Email <span class="text-danger">*</span></label
+              >
+              <div class="row m-b-15">
+                <div class="col-md-12">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Email address"
+                    name="email"
+                    required
+                  />
+                </div>
+              </div>
+              <label class="control-label"
+                >Contact Number <span class="text-danger">*</span></label
+              >
+              <div class="row m-b-15">
+                <div class="col-md-12">
+                  <input
+                    type="tel"
+                    class="form-control w-20"
+                    id="contact-number"
+                    placeholder="Contact number"
+                    name="contact_number"
+                    required
+                  />
+                </div>
+              </div>
+
+              <label class="control-label"
+                >Birthday <span class="text-danger">*</span></label
+              >
+              <div class="row m-b-15">
+                <div class="col-md-12">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="datepicker-default"
+                    placeholder="Select Date"
+                    name="birthday"
+                    value="04/04/1999"
+                  />
+                </div>
+              </div>
+
+              <label class="control-label"
+                >Password <span class="text-danger">*</span></label
+              >
+              <div class="row m-b-15">
+                <div class="col-md-12">
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    name="password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <label class="control-label"
+                >Re-enter password <span class="text-danger">*</span></label
+              >
+              <div class="row m-b-15">
+                <div class="col-md-12">
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    name="re_enter_password"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="checkbox checkbox-css m-b-30">
+                <div class="checkbox checkbox-css m-b-30">
+                  <input
+                    type="checkbox"
+                    id="agreement_checkbox"
+                    name="agreement_checkbox"
+                  />
+                  <label for="agreement_checkbox">
+                    By clicking Sign Up, you agree to our
+                    <a href="javascript:;">Terms</a> and that you have read our
+                    <a href="javascript:;">Data Policy</a>, including our
+                    <a href="javascript:;">Cookie Use</a>.
+                  </label>
+                </div>
+              </div>
+              <div class="register-buttons">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                  Sign Up
+                </button>
+              </div>
+              <div class="m-t-20 m-b-40 p-b-40 text-inverse">
+                Are you already a member? Click
+                <a href="<%=signInLink%>" class="text-success">here</a> to sign
+                in.
+              </div>
+              <hr />
+              <p class="text-center">Quarta 2022</p>
+            </form>
+          </div>
+          <!-- end register-content -->
+        </div>
+        <!-- end right-content -->
+      </div>
+      <!-- end register -->
+    </div>
+    <!-- end page container -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../../assets/plugins/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../../assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../../../assets/plugins/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="../../../assets/crossbrowserjs/html5shiv.js"></script>
+      <script src="../../../assets/crossbrowserjs/respond.min.js"></script>
+      <script src="../../../assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="../../../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../../../assets/plugins/js-cookie/js.cookie.js"></script>
+    <script src="../../../assets/js/theme/default.min.js"></script>
+    <script src="../../../assets/js/apps.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../../../assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="../../../assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="../../../assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="../../../assets/plugins/masked-input/masked-input.min.js"></script>
+    <script src="../../../assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script src="../../../assets/plugins/password-indicator/js/password-indicator.js"></script>
+    <script src="../../../assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
+    <script src="../../../assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="../../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
+    <script src="../../../assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
     <script src="../../../assets/plugins/bootstrap-daterangepicker/moment.js"></script>
     <script src="../../../assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -203,165 +381,192 @@
     <script src="../../../assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette.js"></script>
     <script src="../../../assets/plugins/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
     <script src="../../../assets/plugins/clipboard/clipboard.min.js"></script>
-	<script src="../../../assets/js/demo/form-plugins.demo.min.js"></script>
-	<!-- ================== END PAGE LEVEL JS ================== -->
+    <script src="../../../assets/js/demo/form-plugins.demo.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 
-	<script>
+    <script>
+      var input = document.querySelector("#contact-number");
+      var iti = window.intlTelInput(input, {
+        // separateDialCode:true,
+        initialCountry: "ph",
+        utilsScript:
+          "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.3/build/js/utils.js",
+      });
+      $("input[name=country_name]").val(
+        window.iti.getSelectedCountryData().name
+      );
+      $("input[name=country]").val(window.iti.getSelectedCountryData().iso2);
 
-                
-            var input = document.querySelector("#contact-number");
-            var iti = window.intlTelInput(input, {
-            // separateDialCode:true,
-            initialCountry: "ph",
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.3/build/js/utils.js",
-            })
-            $("input[name=country_name]").val(window.iti.getSelectedCountryData().name);
-            $("input[name=country]").val(window.iti.getSelectedCountryData().iso2);
+      let getBirthday = $("input[name=birthday]").val();
+      // COMPUTE AGE
+      let getDateNow = moment(new Date(), "MM-DD-YYYY");
+      let birthday = moment(getBirthday, "MM-DD-YYYY");
+      computeAge = getDateNow.diff(birthday, "years");
+      // VALIDATE AGE
+      $("input[name=age]").val(computeAge);
 
-            let getBirthday = $("input[name=birthday]").val();
-            // COMPUTE AGE
-            let getDateNow = moment(new Date(),"MM-DD-YYYY");
-            let birthday = moment(getBirthday,"MM-DD-YYYY");
-            computeAge = getDateNow.diff(birthday, 'years');
-            // VALIDATE AGE                               
-            $("input[name=age]").val(computeAge);   
+      input.addEventListener("countrychange", function (val) {
+        let countryData = window.iti.getSelectedCountryData();
 
+        $("input[name=country_name]").val(countryData.name);
+        $("input[name=country]").val(countryData.iso2);
+      });
 
-            input.addEventListener("countrychange", function(val) {
-                 let countryData = window.iti.getSelectedCountryData();
+      $.validator.addMethod(
+        "validateAge",
+        function (value, element) {
+          let getAge = $("input[name=age]").val();
 
-                 $("input[name=country_name]").val(countryData.name);
-                 $("input[name=country]").val(countryData.iso2);
-            
+          // VALIDATE AGE
+          if (getAge > 18) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        "Password and Confirm Password should be same"
+      );
+
+      $(document).ready(function () {
+        App.init();
+        FormPlugins.init();
+
+        $("input[name=birthday]").on("change", () => {
+          let getBirthday = $("input[name=birthday]").val();
+          // COMPUTE AGE
+          let getDateNow = moment(new Date(), "MM-DD-YYYY");
+          let birthday = moment(getBirthday, "MM-DD-YYYY");
+          computeAge = getDateNow.diff(birthday, "years");
+          // VALIDATE AGE
+
+          $("input[name=age]").val(computeAge);
+        });
+
+        $("#sign-up-form").validate({
+          rules: {
+            first_name: { required: true },
+            last_name: { required: true },
+            email: {
+              required: true,
+              email: true,
+              remote: {
+                url:  location.origin + "/hypr-mobile/user/check-email",
+                type: "get",
+              },
+            },
+            contact_number: { required: true },
+            birthday: { required: true, validateAge: true },
+            password: { required: true },
+            re_enter_password: { required: true },
+            agreement_checkbox: { required: true },
+          },
+          messages: {
+            first_name: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            last_name: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            email: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+              email:
+                '<div class="text-danger">Please enter a valid email address.</div>',
+              remote:
+                '<div class="text-danger">This email is already exist.</div>',
+            },
+            contact_number: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            birthday: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+              validateAge: "<div class='text-danger'>You are below 18</div>",
+            },
+            age: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            password: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            re_enter_password: {
+              required:
+                "<div class='text-danger'>Please enter this required field</div>",
+            },
+            agreement_checkbox: {
+              required:
+                "<div class='text-danger'>Please check the terms and condition first before you sign up.</div>",
+            },
+          },
+
+          submitHandler: function () {
+            Swal.fire({
+              title: "Signing up...",
+              html: "Please wait for a while.",
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                // MLM
+
+                $.ajax({
+                  url: location.origin + "/hypr-mobile/social/use-referral",
+                  type: "post",
+                  data: $("#sign-up-form").serialize(),
+                  success: function (response) {
+                    if (response.status == true) {
+                      let referral_user_id = $(
+                        "input[name=referral_user_id]"
+                      ).val();
+                      let new_user_id = response.data._id;
+                      // execute MLM
+                      $.ajax({
+                        url: location.origin + "/mlm/api/v1/mlm-insert-team",
+                        type: "post",
+                        data: {
+                          team: [
+                            {
+                              recruiter_id: referral_user_id,
+                              recruited_id: new_user_id,
+                            },
+                          ],
+                        },
+                        success: function (mlmResponse) {
+                          Swal.fire({
+                            icon: response.status == true ? "success" : "error",
+                            title: response.message,
+                          }).then(() => {
+                            if (response.status == true) {
+                              location.href = response.link;
+                            }
+                          });
+                        },
+                      });
+                    } else {
+                      Swal.fire(`${response.message}`, "", "error");
+                    }
+                  },
+                  error: (error) => {
+                    console.warn(error);
+                  },
+                });
+              },
             });
-            
-            $.validator.addMethod("validateAge", function (value, element) {
-                let getAge = $("input[name=age]").val();
-               
-               // VALIDATE AGE                   
-               if(getAge > 18){
-                   return true
-               }else{
-                   return false
-               }
-            }, 'Password and Confirm Password should be same')
-
-
-		$(document).ready(function() {
-			App.init();
-            FormPlugins.init();
-          
-    $("input[name=birthday]").on('change',()=>{
-
-        let getBirthday = $("input[name=birthday]").val();
-        // COMPUTE AGE
-        let getDateNow = moment(new Date(),"MM-DD-YYYY");
-        let birthday = moment(getBirthday,"MM-DD-YYYY");
-        computeAge = getDateNow.diff(birthday, 'years');
-        // VALIDATE AGE                   
-        
-        $("input[name=age]").val(computeAge);                 
-      
-    })
-
-	$('#sign-up-form').validate({	
-		rules:{
-            first_name:{required:true},
-            last_name:{required:true},
-            email:{required:true},
-            contact_number:{required:true},
-            birthday:{required:true,validateAge:true},          
-            password:{required:true},
-            re_enter_password:{required:true},
-            agreement_checkbox:{required:true},
-
-			},
-		messages:{
-            first_name:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            last_name:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            email:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            contact_number:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            birthday:{required:"<div class='text-danger'>Please enter this required field</div>",validateAge:"<div class='text-danger'>You are below 18</div>"},
-            age:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            password:{required:"<div class='text-danger'>Please enter this required field</div>"},
-            re_enter_password:{required:"<div class='text-danger'>Please enter this required field</div>"},	
-            agreement_checkbox:{required:"<div class='text-danger'>Please check the terms and condition first before you sign up.</div>"},	
-			},
-              
-		submitHandler:function(){
-                  
-           
-				Swal.fire({
-					title: 'Signing up...',
-					html: 'Please wait for a while.',			
-					timerProgressBar: true,
-					didOpen: () => {
-
-						Swal.showLoading()
-                      // MLM
-                   
-
-
-					 $.ajax({
-							url:location.origin + '/hypr-mobile/social/use-referral',
-							type:'post',					
-							data:$("#sign-up-form").serialize(),
-							success:function(response){                                                                
-
-                          
-							
-                            
-                            if(response.status == true){
-                            let referral_user_id =  $("input[name=referral_user_id]").val();
-                            let new_user_id =   response.data._id;
-                            // execute MLM
-                            $.ajax({
-                                url:location.origin + '/mlm/api/v1/mlm-insert-team',
-                                type:'post',					
-                                data:{team:[{recruiter_id:referral_user_id,recruited_id:new_user_id}]},
-                                success:function(mlmResponse){
-                                    Swal.fire({						
-                                        icon: response.status == true ? 'success' : 'error',
-                                        title: 	response.message,	
-                                    }).then(()=>{
-                                        if(response.status == true){
-                                            location.href = response.link
-                                        }										
-                                    })	
-                                        
-                                }
-                            });
-                        
-                            }else{
-                                Swal.fire(
-                                    `${response.message}`, 
-                                    '',                                           
-                                    'error'
-                                    )
-                            }
-
-                                           
-                                      																												
-							},
-                            error:(error)=>{
-                                console.warn(error)
-                            }
-							
-						})
-				}
-			});
-				
-		
-			
-			
-		}
-	})
-		});
-	</script>
-</body>
+          },
+        });
+      });
+    </script>
+  </body>
 </html>
